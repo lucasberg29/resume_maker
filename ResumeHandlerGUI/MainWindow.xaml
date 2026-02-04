@@ -1,0 +1,25 @@
+﻿<Window x:Class="ResumeHandlerGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Resume Preview" Height="500" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Top toolbar -->
+            <RowDefinition Height="*"/>
+            <!-- Main content -->
+        </Grid.RowDefinitions>
+
+        <!-- Top toolbar -->
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button Content="Create and Preview" Click="CreateAndPreview_Click" Width="120" Margin="5"/>
+                <Button Content="Open Resume" Click="Click_OpenResume" Width="120" Margin="5"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <!-- Main content -->
+        <FlowDocumentScrollViewer Grid.Row="1" x:Name="DocViewer" VerticalScrollBarVisibility="Auto" Margin="10"/>
+    </Grid>
+</Window>

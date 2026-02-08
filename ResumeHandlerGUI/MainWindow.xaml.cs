@@ -1,81 +1,127 @@
-﻿using System.IO;
-using System.Linq;
+﻿
 using System.Windows;
 using System.Windows.Documents;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Win32;
+using System.Windows.Media;
 
 namespace ResumeHandlerGUI
 {
     public partial class MainWindow : Window
     {
-        private readonly DocumentHandler.DocumentHandler _handler;
+        private readonly DocumentHandler.DocumentHandler _documentHandler;
+        FlowDocument flowDoc = new FlowDocument();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _handler = new DocumentHandler.DocumentHandler();
-            _handler.InitHandler();
+            _documentHandler = new DocumentHandler.DocumentHandler();
+            _documentHandler.InitHandler();
+
+            ShowResume("", "");
         }
 
         private void CreateAndPreview_Click(object sender, RoutedEventArgs e)
         {
             string fileName = "[2026 Dev] LucasBerg_Resume.docx";
+            string docPath = _documentHandler.CreateSampleDocument(fileName);
 
-            string docPath = _handler.CreateSampleDocument(fileName);
-
-            ShowResume(docPath);
+            ShowResume(docPath, fileName);
         }
 
-        private void ShowResume(string docPath)
+        private void ShowResume(string docPath, string safeFileName)
         {
-            var flowDoc = new FlowDocument();
+            _documentHandler.LoadResumeFromDocument(docPath, safeFileName);
+            UpdateResume();
+        }
 
-            using var wordDoc = WordprocessingDocument.Open(docPath, false);
-            var body = wordDoc.MainDocumentPart.Document.Body;
-
-            foreach (var para in body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>())
+        private void UpdateResume()
+        {
+            var text = new System.Windows.Documents.Run(_documentHandler.CurrentResume.FullName)
             {
-                // Check if this paragraph has a bullet
-                bool isBullet = para.ParagraphProperties?.NumberingProperties != null;
+                FontWeight = FontWeights.Bold,
+                FontSize = 14,
+                FontFamily = new FontFamily("Roboto Serif")
+            };
 
-                string text = string.Join("", para.Descendants<Text>().Select(t => t.Text));
+            var FullNameParagraph = new System.Windows.Documents.Paragraph(text)
+            {
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 5),
+            };
 
-                // Prepend bullet symbol if detected
-                if (isBullet) text = "• " + text;
+            flowDoc.Blocks.Add(FullNameParagraph);
 
-                var wpfParagraph = new System.Windows.Documents.Paragraph(new System.Windows.Documents.Run(text))
-                {
-                    
-                    Margin = new Thickness(0, 0, 0, 5) // add spacing between paragraphs
-                };
+            string contatInfo = $"{_documentHandler.CurrentResume.Email} - {_documentHandler.CurrentResume.PhoneNumber} - {_documentHandler.CurrentResume.Location}";
+            AddParagraph(contatInfo);
 
-                flowDoc.Blocks.Add(wpfParagraph);
-            }
+            string technicalSkills = string.Join(" ◈ ", _documentHandler.CurrentResume.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Name));
+            AddParagraph(technicalSkills);
+
+            string experienceHeader = "Experience";
+            AddHeader(experienceHeader);
 
             DocViewer.Document = flowDoc;
         }
 
-
-        // Button: Open existing resume
-        private void Click_OpenResume(object sender, RoutedEventArgs e)
+        private void AddHeader(string experienceHeader)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var text = new System.Windows.Documents.Run(experienceHeader)
             {
-                InitialDirectory = Path.Combine(AppContext.BaseDirectory, "Data", "Resume"),
-                Filter = "Word Documents (*.docx)|*.docx",
-                Title = "Select a Resume"
+                FontFamily = new FontFamily("Roboto Serif"),
+                FontWeight = FontWeights.Bold,
+                FontSize = 12
             };
 
-            if (openFileDialog.ShowDialog() == true)
+            var paragraph = new System.Windows.Documents.Paragraph(text)
             {
-                string selectedPath = openFileDialog.FileName;
+                Margin = new Thickness(0, 0, 0, 5),
+            };
 
+            flowDoc.Blocks.Add(paragraph);
+        }
 
-                ShowResume(selectedPath);
+        private bool AddParagraph(string paragraphText)
+        {
+            var text = new System.Windows.Documents.Run(paragraphText)
+            {
+                FontSize = 12,
+                FontFamily = new FontFamily("Roboto Serif")
+            };
+
+            var paragraph = new System.Windows.Documents.Paragraph(text)
+            {
+                Margin = new Thickness(0, 0, 0, 5),
+                TextAlignment = TextAlignment.Center
+            };
+
+            flowDoc.Blocks.Add(paragraph);
+
+            return true;
+        }
+
+        private void Click_OpenResume(object sender, RoutedEventArgs e)
+        {
+            ShowResume("selectedPath", "openFileDialog.SafeFileName");
+        }
+
+        private void AddTechnicalSkill_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddSkillDialog
+            {
+                Owner = this
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                _documentHandler.AddTechnicalSkill(dialog.SkillName, dialog.SkillType.ToLower());
+                flowDoc = new FlowDocument();
+                UpdateResume();
             }
+        }
+
+        private void SaveResume_Click(object sender, RoutedEventArgs e)
+        {
+            _documentHandler.SaveResume();
         }
     }
 }

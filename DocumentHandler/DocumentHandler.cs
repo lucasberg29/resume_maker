@@ -1,39 +1,26 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentHandler.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 
 namespace DocumentHandler
 {
-    public class DocumentHandler
+    public class DocumentHandler : IDocumentHandler
     {
-        public string DataFolderName = "Data";
-        public string ResumeFolderName = "Resume";
-        public string ResumeFileName = "Resume.docx";
+        public Resume CurrentResume = new Resume();
+
+        private string DocumentPath = string.Empty;
+        private string DataFolderName = "Data";
+        private string ResumeFolderName = "Resume";
         public string ResumeFolderPath { get; } = Path.Combine(AppContext.BaseDirectory, "Data", "Resume");
 
-        public void InitHandler()
-        {
-            CreateFolder();
-            //CreateFile();
-        }
-
-        private bool CreateFile(string ResumeFileName)
-        {
-            string resumePath = Path.Combine(
-                AppContext.BaseDirectory,
-                DataFolderName,
-                ResumeFolderName,
-                ResumeFileName
-            );
-
-            DocumentReaderWriter.CreateDocument(resumePath);
-
-            return true;
-        }
+        public string ResumeFileName = "Resume.docx";
 
         private void CreateFolder()
         {
@@ -48,11 +35,29 @@ namespace DocumentHandler
             Directory.CreateDirectory(folderPath);
         }
 
+        private void ParseResume()
+        {
+            JsonReaderWriter.ReadResumeFromJson(ref CurrentResume);
+
+            Console.WriteLine($"Resume loaded from {DocumentPath}");
+        }
+
+        public void InitHandler()
+        {
+            CreateFolder();
+        }
+
+        public bool SaveResume()
+        {
+            JsonReaderWriter.WriteResumeToJson(CurrentResume);
+            return true;
+        }
+
         public string CreateSampleDocument(string fileName)
         {
             string path = Path.Combine(ResumeFolderPath, fileName);
 
-            if (File.Exists(path))
+
                 File.Delete(path);
 
             using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
@@ -61,8 +66,33 @@ namespace DocumentHandler
 
             mainPart.Document.Body.AppendChild(new Paragraph(new Run(new Text("Hello, this is a test resume!"))));
 
-            return path;
+            if (path.EndsWith(".docx"))
+            {
+                return DocumentPath;
+            }
+
+            return DocumentPath;
         }
 
+        public void LoadResumeFromDocument(string docPath, string safeFileName)
+        {
+            DocumentPath = docPath;
+            ResumeFileName = safeFileName;
+            ParseResume();
+        }
+
+        public string GetResumeFileName()
+        {
+            return ResumeFileName;
+        }
+
+        public void AddTechnicalSkill(string skillName, string skillType)
+        {
+            CurrentResume.TechnicalSkills.Add(new TechnicalSkill
+            {
+                Name = skillName,
+                Type = skillType
+            });
+        }
     }
 }

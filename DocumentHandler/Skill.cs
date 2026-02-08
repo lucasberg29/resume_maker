@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DocumentHandler
 {
-    internal class Skill
+    public class Skill
     {
 
     }

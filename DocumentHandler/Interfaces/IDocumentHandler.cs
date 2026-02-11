@@ -20,5 +20,8 @@ namespace DocumentHandler.Interfaces
         public bool SaveResume();
 
         void AddTechnicalSkill(string skillName, string skillType);
+        void AddExperience(Experience experience);
+        void AddEducation();
+        void AddSkill();
     }
 }

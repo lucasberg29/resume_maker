@@ -50,6 +50,8 @@ namespace DocumentHandler
         public bool SaveResume()
         {
             JsonReaderWriter.WriteResumeToJson(CurrentResume);
+
+            XmlParser.SaveResumeToDocx(CurrentResume, "Resume.docx");
             return true;
         }
 
@@ -94,5 +96,22 @@ namespace DocumentHandler
                 Type = skillType
             });
         }
+
+        public void AddExperience(Experience experience)
+        {
+            CurrentResume.Experience.Add(experience);
+        }
+
+        public void AddEducation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSkill()
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

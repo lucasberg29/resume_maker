@@ -10,7 +10,6 @@ namespace DocumentHandler
     {
         [JsonPropertyName("fullName")]
         public string FullName { get; set; } = "";
-
         [JsonPropertyName("phoneNumber")]
         public string PhoneNumber { get; set; } = "";
         [JsonPropertyName("email")]
@@ -19,14 +18,15 @@ namespace DocumentHandler
         public string Location { get; set; } = "";
         [JsonPropertyName("introduction")]
         public string Introduction { get; set; } = "";
+        [JsonPropertyName("socialMediaLinks")]
+        public List<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
         [JsonPropertyName("technicalSkills")]
         public List<TechnicalSkill> TechnicalSkills { get; set; } = new List<TechnicalSkill>();
         [JsonPropertyName("experience")]
-        public Experience[] Experience { get; set; } = Array.Empty<Experience>();
+        public List<Experience> Experience { get; set; } = new List<Experience>();
         [JsonPropertyName("education")]
-        public Education[] Education { get; set; } = Array.Empty<Education>();
+        public List<Education> Education { get; set; } = new List<Education>();
         [JsonPropertyName("skills")]
-        public Skill[] Skills { get; set; } = Array.Empty<Skill>();
-
+        public List<Skill> Skills { get; set; } = new List<Skill>();
     }
 }

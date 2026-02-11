@@ -4,24 +4,7 @@
   "phoneNumber": "(226) 504 3957",
   "location": "London, ON",
   "introduction": "Bilingual software developer with strong interpersonal skills",
-  "technicalSkills": [
-    {
-      "name": "C/C++",
-      "type": "language"
-    },
-    {
-      "name": "C#",
-      "type": "language"
-    },
-    {
-      "name": "Python",
-      "type": "language"
-    },
-    {
-      "name": "Java",
-      "type": "language"
-    }
-  ],
+  "technicalSkills": [],
   "Experience": [],
   "Education": [],
   "Skills": []

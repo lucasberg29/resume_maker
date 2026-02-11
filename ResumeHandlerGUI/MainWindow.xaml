@@ -12,12 +12,59 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ToolBarTray Grid.Row="0">
-            <ToolBar>
-                <Button x:Name="AddTechnicalSkill" Content="Add Technical Skill" Click="AddTechnicalSkill_Click"/>
-                <Button x:Name="SaveResume" Content="Save Resume" Click="SaveResume_Click"/>
-            </ToolBar>
-        </ToolBarTray>
+
+        <Menu Grid.Row="0">
+
+            <MenuItem Header="_Header">
+                <MenuItem Name="MenuEditFullName" Header="Full Name"/>
+                <MenuItem Name="MenuEditEmail" Header="Email"/>
+                <MenuItem Name="MenuEditPhoneNumber" Header="Phone Number"/>
+                <MenuItem Header="Address"
+              Click="EditAddress_Click"/>
+                <MenuItem Header="Introduction"
+              Click="EditIntroduction_Click"/>
+                <Separator/>
+                <MenuItem Header="Add Social Media Link"
+              Click="AddSocialMediaLink_Click"/>
+                <MenuItem Header="Edit Social Media Link"
+              Click="EditSocialMediaLink_Click"/>
+                <MenuItem Header="Remove Social Media Link"
+              Click="ClearSocialMediaLinks_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="_Technical Skills">
+                <MenuItem Header="Add Technical Skill"/>
+                <MenuItem Header="Edit Technical Skill"/>
+                <MenuItem Header="Clear All Technical Skills"/>
+            </MenuItem>
+
+            <MenuItem Header="_Experience">
+                <MenuItem Name="MenuAddExperience" Header="Add Experience"/>
+                <MenuItem Name="MenuEditExperience" Header="Edit Experience"/>
+                <MenuItem Name="MenuClearExperience" Header="Clear All Experience"/>
+            </MenuItem>
+
+            <MenuItem Header="_Education">
+                <MenuItem Header="Add Education"/>
+                <MenuItem Header="Edit Education"/>
+                <MenuItem Header="Clear All Education"/>
+            </MenuItem>
+
+            <MenuItem Header="_Skills">
+                <MenuItem Header="Add Skill"/>
+                <MenuItem Header="Edit Skill"/>
+                <MenuItem Header="Clear All Skill"/>
+            </MenuItem>
+
+            <MenuItem Header="_Resume">
+                <MenuItem Header="New Resume"/>
+                <MenuItem Header="Open Resume"/>
+                <Separator/>
+                <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
+                <MenuItem Header="Export to PDF"/>
+            </MenuItem>
+
+        </Menu>
 
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
@@ -37,5 +84,8 @@
             </Border>
 
         </ScrollViewer>
+        <Expander HorizontalAlignment="Left" Height="100" Header="Expander" Margin="-72,458,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100">
+            <Grid Background="#FFE5E5E5"/>
+        </Expander>
     </Grid>
 </Window>

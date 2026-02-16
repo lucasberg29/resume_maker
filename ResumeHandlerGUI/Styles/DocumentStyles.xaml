@@ -1,0 +1,51 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="Paragraph">
+        <Setter Property="Foreground"
+            Value="{StaticResource Resume.PrimaryTextBrush}"/>
+        <Setter Property="FontFamily"
+            Value="Roboto Serif, Arial, sans-serif"/>
+    </Style>
+
+    <Style x:Key="Resume.FullName"
+           TargetType="Run">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily"
+                Value="Roboto Serif, Arial, sans-serif"/>
+    </Style>
+    <Style x:Key="Resume.FullNameParagraph"
+           TargetType="Paragraph" BasedOn="{StaticResource {x:Type Paragraph}}">
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="FontFamily"
+                Value="Roboto Serif, Arial, sans-serif"/>
+    </Style>
+
+    <Style x:Key="Resume.SectionHeader"
+           TargetType="Paragraph">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0,8,0,5"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Foreground" Value="#4c1130"/>
+    </Style>
+
+    <!-- Normal body text -->
+    <Style x:Key="Resume.Body"
+           TargetType="Paragraph">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Margin" Value="0,0,0,3"/>
+    </Style>
+
+    <!-- Bullet -->
+    <Style x:Key="Resume.Bullet"
+           TargetType="Paragraph">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Margin" Value="15,0,0,0"/>
+    </Style>
+
+</ResourceDictionary>

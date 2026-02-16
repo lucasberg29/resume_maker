@@ -92,6 +92,15 @@ namespace ResumeHandlerGUI
             }
         }
 
+        public void AddTechnicalSkill()
+        {
+            var dialog = new AddTechnicalSkillWindow();
+            if (ShowDialog(dialog))
+            {
+                _owner.UpdateResume();
+            }
+        }
+
         private bool ShowDialog(Window dialog)
         {
             dialog.Owner = _owner;

@@ -33,9 +33,9 @@
             </MenuItem>
 
             <MenuItem Header="_Technical Skills">
-                <MenuItem Header="Add Technical Skill"/>
-                <MenuItem Header="Edit Technical Skill"/>
-                <MenuItem Header="Clear All Technical Skills"/>
+                <MenuItem Name="MenuAddTechnicalSkill" Header="Add Technical Skill"/>
+                <MenuItem Name="MenuEditTechincalSkill" Header="Edit Technical Skill"/>
+                <MenuItem Name="MenuClearTechincalSkills" Header="Clear All Technical Skills"/>
             </MenuItem>
 
             <MenuItem Header="_Experience">
@@ -63,8 +63,12 @@
                 <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
                 <MenuItem Header="Export to PDF"/>
             </MenuItem>
-
         </Menu>
+
+        <Image x:Name="ProfileImage"
+       Width="120"
+       Height="120"
+       Stretch="UniformToFill" />
 
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"

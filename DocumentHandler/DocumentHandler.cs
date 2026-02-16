@@ -49,32 +49,40 @@ namespace DocumentHandler
 
         public bool SaveResume()
         {
+            // Copy Images is social media links
+            foreach (var socialMediaLink in CurrentResume.SocialMediaLinks)
+            {
+
+                CopyResumeImage(socialMediaLink.FilePath, ResumeFolderPath);
+
+                socialMediaLink.FilePath = Path.Combine(ResumeFolderPath, socialMediaLink.FileName);
+            }
+
             JsonReaderWriter.WriteResumeToJson(CurrentResume);
 
             XmlParser.SaveResumeToDocx(CurrentResume, "Resume.docx");
             return true;
         }
 
-        public string CreateSampleDocument(string fileName)
-        {
-            string path = Path.Combine(ResumeFolderPath, fileName);
+        //public string CreateSampleDocument(string fileName)
+        //{
+        //    string path = Path.Combine(ResumeFolderPath, fileName);
 
+        //    File.Delete(path);
 
-                File.Delete(path);
+        //    using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
+        //    var mainPart = doc.AddMainDocumentPart();
+        //    mainPart.Document = new Document(new Body());
 
-            using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
-            var mainPart = doc.AddMainDocumentPart();
-            mainPart.Document = new Document(new Body());
+        //    mainPart.Document.Body.AppendChild(new Paragraph(new Run(new Text("Hello, this is a test resume!"))));
 
-            mainPart.Document.Body.AppendChild(new Paragraph(new Run(new Text("Hello, this is a test resume!"))));
+        //    if (path.EndsWith(".docx"))
+        //    {
+        //        return DocumentPath;
+        //    }
 
-            if (path.EndsWith(".docx"))
-            {
-                return DocumentPath;
-            }
-
-            return DocumentPath;
-        }
+        //    return DocumentPath;
+        //}
 
         public void LoadResumeFromDocument(string docPath, string safeFileName)
         {
@@ -112,6 +120,36 @@ namespace DocumentHandler
             throw new NotImplementedException();
         }
 
+        public void AddSocialMediaLink(SocialMediaLink socialMediaLink)
+        {
+            CurrentResume.SocialMediaLinks.Add(socialMediaLink);
+        }
 
+        public static string CopyResumeImage(string sourcePath, string destinationFolder)
+        {
+            Directory.CreateDirectory(destinationFolder);
+
+            string fileName = System.IO.Path.GetFileName(sourcePath);
+            string destinationPath = System.IO.Path.Combine(destinationFolder, fileName);
+
+            int counter = 1;
+
+            while (File.Exists(destinationPath))
+            {
+                string name = System.IO.Path.GetFileNameWithoutExtension(fileName);
+                string ext = System.IO.Path.GetExtension(fileName);
+
+                destinationPath = System.IO.Path.Combine(
+                    destinationFolder,
+                    $"{name}_{counter}{ext}"
+                );
+
+                counter++;
+            }
+
+            File.Copy(sourcePath, destinationPath);
+
+            return System.IO.Path.GetFileName(destinationPath);
+        }
     }
 }

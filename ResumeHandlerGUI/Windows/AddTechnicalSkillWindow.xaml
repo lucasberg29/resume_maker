@@ -1,7 +1,7 @@
-﻿<Window x:Class="ResumeHandlerGUI.AddSkillDialog"
+﻿<Window x:Class="ResumeHandlerGUI.AddTechnicalSkillWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add Skill"
+        Title="Add Technical Skill"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">

@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:ResumeHandlerGUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Colours.xaml"/>
+                <ResourceDictionary Source="Styles/DocumentStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

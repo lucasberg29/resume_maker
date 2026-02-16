@@ -3,12 +3,12 @@ using System.Windows.Controls;
 
 namespace ResumeHandlerGUI
 {
-    public partial class AddSkillDialog : Window
+    public partial class AddTechnicalSkillWindow : Window
     {
         public string SkillName { get; private set; } = "";
         public string SkillType { get; private set; } = "";
 
-        public AddSkillDialog()
+        public AddTechnicalSkillWindow()
         {
             InitializeComponent();
         }
@@ -25,6 +25,7 @@ namespace ResumeHandlerGUI
                 return;
             }
 
+            MainWindow._documentHandler.AddTechnicalSkill(SkillName, SkillType.ToLower());
             DialogResult = true;
         }
 

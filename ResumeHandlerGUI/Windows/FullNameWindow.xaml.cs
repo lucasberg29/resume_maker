@@ -20,7 +20,7 @@ namespace ResumeHandlerGUI
         public FullNameWindow()
         {
             InitializeComponent();
-            CurrentFullName.Text = MainWindow._documentHandler.CurrentResume.FullName;
+            CurrentFullName.Text = MainWindow._documentHandler.CurrentResume.FullName.Text;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -31,7 +31,7 @@ namespace ResumeHandlerGUI
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow._documentHandler.CurrentResume.FullName = NewFullNameInputField.Text.Trim();
+            MainWindow._documentHandler.CurrentResume.FullName.Text = NewFullNameInputField.Text.Trim();
             DialogResult = true;
             Close();
         }

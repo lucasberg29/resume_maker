@@ -1,4 +1,4 @@
-﻿using DocumentHandler;
+﻿using DocumentHandler.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,15 +44,20 @@ namespace ResumeHandlerGUI
 
             Experience experience = new Experience()
             {
-                CompanyName = CompanyNameTextBox.Text,
-                JobTitle = JobTitleTextBox.Text,
-                Location = JobLocationTextBox.Text,
-                CompanyWebsiteLink = CompanyWebsiteTextBox.Text,
+                CompanyName = new Element(CompanyNameTextBox.Text),
+                JobTitle = new Element(JobTitleTextBox.Text),
+                Location = new Element(JobLocationTextBox.Text),
+                CompanyWebsiteLink = new Element(CompanyWebsiteTextBox.Text),
                 StartDate = StartDatePicker.SelectedDate ?? DateTime.MinValue,
                 EndDate = EndDatePicker.SelectedDate ?? DateTime.MinValue,
-                BulletPoints = BulletPoints.ToList()
             };
-            
+
+            var bulletPoints = BulletPoints.ToList();
+            foreach (var bullet in bulletPoints)
+            {
+                experience.BulletPoints.Add(new Element(bullet));
+            }
+
             MainWindow._documentHandler.AddExperience(experience);
 
             DialogResult = true;

@@ -1,23 +1,25 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
 using System.Text.Json.Serialization;
 
-namespace DocumentHandler
+namespace DocumentHandler.DTO
 {
     public class Experience
     {
+        [JsonPropertyName("position")]
+        public int Position { get; set; } = 0;
         [JsonPropertyName("jobTitle")]
-        public string JobTitle { get; set; } = "";
+        public Element JobTitle { get; set; } = new Element();
         [JsonPropertyName("location")]
-        public string Location { get; set; } = "";
+        public Element Location { get; set; } = new Element();
         [JsonPropertyName("companyName")]
-        public string CompanyName { get; set; } = "";
+        public Element CompanyName { get; set; } = new Element();
         [JsonPropertyName("companyWebsiteLink")]
-        public string CompanyWebsiteLink { get; set; } = "";
+        public Element CompanyWebsiteLink { get; set; } = new Element();
         [JsonPropertyName("startDate")]
         public DateTime StartDate { get; set; }
         [JsonPropertyName("endDate")]
         public DateTime EndDate { get; set; }
         [JsonPropertyName("bulletPoints")]
-        public List<string> BulletPoints { get; set; } = new List<string>();
+        public List<Element> BulletPoints { get; set; } = new();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentHandler.DTO;
 
 namespace DocumentHandler
 {
@@ -14,18 +15,17 @@ namespace DocumentHandler
 
             var bodyElements = wordDoc.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
 
-            resume.FullName = bodyElements.ElementAt(0).InnerText.Trim();
+            resume.FullName.Text = bodyElements.ElementAt(0).InnerText.Trim();
 
             string[] contact = bodyElements.ElementAt(1).InnerText.Trim().Split(" - ", StringSplitOptions.TrimEntries);
 
-            resume.Email = contact[0];
-            resume.PhoneNumber = contact[1];
-            resume.Location = contact[2];
+            resume.Email.Text = contact[0];
+            resume.PhoneNumber.Text = contact[1];
+            resume.Location.Text = contact[2];
 
             var socialMediaLinks = bodyElements.ElementAt(3);
 
-            resume.Introduction = bodyElements.ElementAt(3).InnerText.Trim();
-
+            resume.Introduction.Text = bodyElements.ElementAt(3).InnerText.Trim();
 
             int experienceIndex = FindTextIndexByText("Experience", docPath);
 
@@ -45,12 +45,12 @@ namespace DocumentHandler
             var body = mainPart.Document.Body;
 
             body.Append(CreateParagraph(
-                resume.FullName,
+                resume.FullName.Text,
                 bold: true,
                 fontSize: "14"));
 
-            body.Append(CreateParagraph(resume.Email));
-            body.Append(CreateParagraph(resume.PhoneNumber));
+            body.Append(CreateParagraph(resume.Email.Text));
+            body.Append(CreateParagraph(resume.PhoneNumber.Text));
 
             body.Append(new Paragraph(new Run(new Break())));
 

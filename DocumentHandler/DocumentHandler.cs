@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentHandler.DTO;
 using DocumentHandler.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,6 @@ namespace DocumentHandler
             // Copy Images is social media links
             foreach (var socialMediaLink in CurrentResume.SocialMediaLinks)
             {
-
                 CopyResumeImage(socialMediaLink.FilePath, ResumeFolderPath);
 
                 socialMediaLink.FilePath = Path.Combine(ResumeFolderPath, socialMediaLink.FileName);
@@ -100,7 +100,7 @@ namespace DocumentHandler
         {
             CurrentResume.TechnicalSkills.Add(new TechnicalSkill
             {
-                Name = skillName,
+                Text = skillName,
                 Type = skillType
             });
         }

@@ -20,6 +20,20 @@ namespace ResumeHandlerGUI
         public AddressWindow()
         {
             InitializeComponent();
+            CurrentAddress.Text = MainWindow._documentHandler.CurrentResume.Location.Text;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._documentHandler.CurrentResume.Location.Text = NewAddressInputField.Text.Trim();
+            DialogResult = true;
+            Close();
         }
     }
 }

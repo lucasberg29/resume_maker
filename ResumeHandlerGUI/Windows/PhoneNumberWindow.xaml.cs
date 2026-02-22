@@ -20,6 +20,20 @@ namespace ResumeHandlerGUI
         public PhoneNumberWindow()
         {
             InitializeComponent();
+            CurrentPhoneNumber.Text = MainWindow._documentHandler.CurrentResume.PhoneNumber.Text;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._documentHandler.CurrentResume.PhoneNumber.Text = NewPhoneNumberInputField.Text.Trim();
+            DialogResult = true;
+            Close();
         }
     }
 }

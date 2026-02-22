@@ -61,7 +61,8 @@
                 <MenuItem Header="Open Resume"/>
                 <Separator/>
                 <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
-                <MenuItem Header="Export to PDF"/>
+                <MenuItem Header="Export to DOCX" Click="ExportToDOCX_Click"/>
+                <MenuItem Header="Export to PDF" Click="ExportToPDF_Click"/>
             </MenuItem>
         </Menu>
 

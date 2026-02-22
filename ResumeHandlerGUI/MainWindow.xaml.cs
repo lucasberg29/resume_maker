@@ -3,6 +3,7 @@ using ResumeHandlerGUI.Windows;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -66,7 +67,6 @@ namespace ResumeHandlerGUI
 
             DocViewer.Document = flowDoc;
         }
-
 
 
         private void UpdateHeader()
@@ -378,8 +378,8 @@ namespace ResumeHandlerGUI
         {
             Style newStyle = new Style();
 
-            newStyle.Setters.Add(new Setter(FontWeightProperty, style.Bold ? FontWeights.Bold : FontWeights.Normal));
-            newStyle.Setters.Add(new Setter(FontSizeProperty, double.TryParse(style.FontSize, out double fontSize) ? fontSize : 10));
+            newStyle.Setters.Add(new Setter(FontWeightProperty, style.IsBold ? FontWeights.Bold : FontWeights.Normal));
+            newStyle.Setters.Add(new Setter(FontSizeProperty, Convert.ToDouble(style.FontSize)));
             newStyle.Setters.Add(new Setter(FontFamilyProperty, new FontFamily(style.FontFamily)));
             newStyle.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(style.Color))));
 
@@ -515,6 +515,17 @@ namespace ResumeHandlerGUI
              _documentHandler.CurrentResume.SocialMediaLinks.Clear();
              flowDoc = new FlowDocument();
              UpdateResume();
+        }
+
+        private void ExportToDOCX_Click(object sender, RoutedEventArgs e)
+        {
+            _documentHandler.ExportResumeToDOCX();
+            MessageBox.Show("Resume exported to DOCX successfully!");
+        }
+
+        private void ExportToPDF_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

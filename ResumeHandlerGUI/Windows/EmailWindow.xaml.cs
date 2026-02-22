@@ -20,6 +20,20 @@ namespace ResumeHandlerGUI
         public EmailWindow()
         {
             InitializeComponent();
+            CurrentEmail.Text = MainWindow._documentHandler.CurrentResume.Email.Text;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._documentHandler.CurrentResume.Email.Text = NewEmailInputField.Text.Trim();
+            DialogResult = true;
+            Close();
         }
     }
 }

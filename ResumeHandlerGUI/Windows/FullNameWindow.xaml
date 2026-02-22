@@ -13,7 +13,7 @@
 
         <TextBlock x:Name="NewFullNameTitle" Text="New Full Name:" Margin="0,0,0,4"/>
         <TextBox x:Name="NewFullNameInputField" Width="220"/>
-        
+
         <StackPanel x:Name="ButtonsPanel"
             Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -26,11 +26,6 @@
         Width="70"
         Margin="5,5,0,0"
         Click="Update_Click"/>
-
         </StackPanel>
-
-
-
-
     </StackPanel>
 </Window>

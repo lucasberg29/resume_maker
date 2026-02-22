@@ -20,6 +20,8 @@ namespace DocumentHandler.Interfaces
 
         public bool SaveResume();
 
+        public bool ExportResumeToDOCX(string fileName);
+
         void AddTechnicalSkill(string skillName, string skillType);
         void AddExperience(Experience experience);
         void AddSocialMediaLink(SocialMediaLink socialMediaLink);

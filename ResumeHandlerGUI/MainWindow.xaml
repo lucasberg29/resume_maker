@@ -1,24 +1,34 @@
-﻿<Window x:Class="ResumeHandlerGUI.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Resume Helper"         
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="ResumeHandlerGUI.MainWindow"
+        xmlns:views="clr-namespace:ResumeHandlerGUI.Views"
+        Title="Resume Helper"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         Background="#E5E5E5">
-
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Menu VerticalContentAlignment="Stretch" Grid.Row="0"  FontFamily="Cooper Black" FontSize="16" FontWeight="Bold" Margin="0,0,0,0">
 
-        <Menu Grid.Row="0">
+            <MenuItem x:Name="Resume" Header="_Resume" Padding="15,0,15,0" BorderThickness="0,0,0,0" Margin="20,20,20,20">
+                <MenuItem Header="New Resume"/>
+                <MenuItem Header="Open Resume"/>
+                <Separator/>
+                <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
+                <MenuItem Header="Export to DOCX" Click="ExportToDOCX_Click"/>
+                <MenuItem Header="Export to PDF" Click="ExportToPDF_Click"/>
+            </MenuItem>
 
-            <MenuItem Header="_Header">
-                <MenuItem Name="MenuEditFullName" Header="Full Name"/>
-                <MenuItem Name="MenuEditEmail" Header="Email"/>
-                <MenuItem Name="MenuEditPhoneNumber" Header="Phone Number"/>
+            <MenuItem x:Name="Header" Header="_Header" Padding="30,0,30,0" Margin="20,20,20,20">
+                <MenuItem x:Name="MenuEditFullName" Header="Full Name"/>
+                <MenuItem x:Name="MenuEditEmail" Header="Email"/>
+                <MenuItem x:Name="MenuEditPhoneNumber" Header="Phone Number"/>
                 <MenuItem Header="Address"
               Click="EditAddress_Click"/>
                 <MenuItem Header="Introduction"
@@ -32,46 +42,43 @@
               Click="ClearSocialMediaLinks_Click"/>
             </MenuItem>
 
-            <MenuItem Header="_Technical Skills">
-                <MenuItem Name="MenuAddTechnicalSkill" Header="Add Technical Skill"/>
-                <MenuItem Name="MenuEditTechincalSkill" Header="Edit Technical Skill"/>
-                <MenuItem Name="MenuClearTechincalSkills" Header="Clear All Technical Skills"/>
+            <MenuItem x:Name="TechnicalSkills" Header="_Technical Skills" Padding="15,0,15,0" Margin="20,20,20,20">
+                <MenuItem x:Name="MenuAddTechnicalSkill" Header="Add Technical Skill"/>
+                <MenuItem x:Name="MenuEditTechincalSkill" Header="Edit Technical Skill"/>
+                <MenuItem x:Name="MenuClearTechincalSkills" Header="Clear All Technical Skills"/>
             </MenuItem>
 
-            <MenuItem Header="_Experience">
-                <MenuItem Name="MenuAddExperience" Header="Add Experience"/>
-                <MenuItem Name="MenuEditExperience" Header="Edit Experience"/>
-                <MenuItem Name="MenuClearExperience" Header="Clear All Experience"/>
+            <MenuItem x:Name="Experience" Header="_Experience" Padding="15,0,15,0" Margin="20,20,20,20" >
+                <MenuItem x:Name="MenuAddExperience" Header="Add Experience"/>
+                <MenuItem x:Name="MenuEditExperience" Header="Edit Experience"/>
+                <MenuItem x:Name="MenuClearExperience" Header="Clear All Experience"/>
             </MenuItem>
 
-            <MenuItem Header="_Education">
+            <MenuItem x:Name="Education" Header="_Education" Padding="15,0,15,0" Margin="20,20,20,20" >
                 <MenuItem Header="Add Education"/>
                 <MenuItem Header="Edit Education"/>
                 <MenuItem Header="Clear All Education"/>
             </MenuItem>
 
-            <MenuItem Header="_Skills">
+            <MenuItem x:Name="OtherExperience" Header="_Other Experience" Padding="15,0,15,0" Margin="20,20,20,20">
                 <MenuItem Header="Add Skill"/>
                 <MenuItem Header="Edit Skill"/>
                 <MenuItem Header="Clear All Skill"/>
             </MenuItem>
-
-            <MenuItem Header="_Resume">
-                <MenuItem Header="New Resume"/>
-                <MenuItem Header="Open Resume"/>
-                <Separator/>
-                <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
-                <MenuItem Header="Export to DOCX" Click="ExportToDOCX_Click"/>
-                <MenuItem Header="Export to PDF" Click="ExportToPDF_Click"/>
-            </MenuItem>
         </Menu>
-
-        <Image x:Name="ProfileImage"
-       Width="120"
-       Height="120"
-       Stretch="UniformToFill" />
-
-        <ScrollViewer Grid.Row="1"
+        <Border Background="Transparent"  Grid.Row="1">
+            <Border.Effect>
+                <DropShadowEffect 
+            Color="Black"
+            BlurRadius="10"
+            ShadowDepth="2"
+            Opacity="0.3"/>
+            </Border.Effect>
+            <ContentControl  x:Name="MenuSelected" Height="250">
+                <views:HeaderRibbon x:Name="HeaderRibbon" />
+            </ContentControl>
+        </Border>
+        <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto"
                       Background="#E5E5E5">
 
@@ -88,9 +95,8 @@
                                           VerticalScrollBarVisibility="Hidden"
                                           MinHeight="800"/>
             </Border>
-
         </ScrollViewer>
-        <Expander HorizontalAlignment="Left" Height="100" Header="Expander" Margin="-72,458,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100">
+        <Expander HorizontalAlignment="Left" Height="100" Header="Expander" Margin="-72,458,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100">
             <Grid Background="#FFE5E5E5"/>
         </Expander>
     </Grid>

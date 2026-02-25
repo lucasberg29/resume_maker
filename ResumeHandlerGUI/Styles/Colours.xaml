@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="Resume.PrimaryTextColor">#4c1130</Color>
-
+    <Color x:Key="Resume.MenuSelectedBackgroundColour">LightGray</Color>
     <SolidColorBrush x:Key="Resume.PrimaryTextBrush"
                  Color="{StaticResource Resume.PrimaryTextColor}"/>
+    <SolidColorBrush x:Key="Resume.MenuSelectedBackgroundColourBrush"
+                 Color="{StaticResource Resume.MenuSelectedBackgroundColour}"/>
 </ResourceDictionary>

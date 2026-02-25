@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="ResumeHandlerGUI.Views.HeaderRibbon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ResumeHandlerGUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="800">
+    <Border Background="{StaticResource Resume.MenuSelectedBackgroundColourBrush}"
+        CornerRadius="0,0,15,15" Margin="20,0,20,20">
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="10" Grid.Column="0">
+
+                <TextBlock x:Name="FullNameTitle" Text="Full Name:" Margin="0,10,0,4"/>
+                <TextBlock x:Name="FullName" Text="John Smith" Margin="0,0,0,4" TextAlignment="center" FontWeight="bold"/>
+
+                <TextBlock x:Name="NewFullNameTitle" Text="New Full Name:" Margin="0,0,0,4"/>
+                <TextBox x:Name="NewFullNameInputField" Width="220" TextChanged="NewFullNameInputField_TextChanged"/>
+                
+                <TextBlock x:Name="PhoneNumberTitle" Text="Phone Number:" Margin="0,10,0,4"/>
+                <TextBlock x:Name="PhoneNumber" Text="(123) 456-7890" FontWeight="bold" TextAlignment="center" Margin="0,0,0,4"/>
+
+                <TextBlock x:Name="NewPhoneNumberTitle" Text="New Phone Number:" Margin="0,0,0,4"/>
+                <TextBox x:Name="NewPhoneNumberInputField" Width="220" TextChanged="NewPhoneNumberInputField_TextChanged"/>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="1">
+                <TextBlock x:Name="EmailTitle" Text="Email:" Margin="0,10,0,4"/>
+                <TextBlock x:Name="Email" Text="jsmith@email.com" Margin="0,0,0,4" TextAlignment="center" FontWeight="bold"/>
+
+                <TextBlock x:Name="NewEmail" Text="New Email:" Margin="0,0,0,4"/>
+                <TextBox x:Name="NewEmailInputField" Width="220" TextChanged="NewEmailInputField_TextChanged"/>
+
+                <TextBlock x:Name="LocationTitle" Text="Location:" Margin="0,10,0,4"/>
+                <TextBlock x:Name="Location" Text="London, ON" FontWeight="bold" TextAlignment="center" Margin="0,0,0,4"/>
+
+                <TextBlock x:Name="NewLocationTitle" Text="New Location:" Margin="0,0,0,4"/>
+                <TextBox x:Name="NewLocationInputField" Width="220" TextChanged="NewLocationInputField_TextChanged"/>
+
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</UserControl>

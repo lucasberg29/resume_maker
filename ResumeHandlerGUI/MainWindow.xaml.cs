@@ -14,7 +14,7 @@ namespace ResumeHandlerGUI
     {
         private readonly WindowManager _windowManager;
 
-        public static DocumentHandler.DocumentHandler _documentHandler;
+        public static DocumentHandler.DocumentHandler _documentHandler = new();
         FlowDocument flowDoc = new FlowDocument();
 
         private static Style GetStyle(string key)
@@ -24,14 +24,14 @@ namespace ResumeHandlerGUI
 
         public MainWindow()
         {
-            InitializeComponent();
             _windowManager = new WindowManager(this);
 
-            _documentHandler = new DocumentHandler.DocumentHandler();
             _documentHandler.InitHandler();
-            ShowResume("", "");
+            _documentHandler.LoadResumeFromDocument("","");
 
-            SubscribeClicksToWindowManager();
+            InitializeComponent();
+            UpdateResume();
+
         }
 
         private void SubscribeClicksToWindowManager()
@@ -39,9 +39,7 @@ namespace ResumeHandlerGUI
             MenuEditFullName.Click += (_, __) => _windowManager.EditFullName();
             MenuEditEmail.Click += (_, __) => _windowManager.EditEmail();
             MenuEditPhoneNumber.Click += (_, __) => _windowManager.EditPhoneNumber();
-
             MenuAddExperience.Click += (_, __) => _windowManager.AddExperience();
-
             MenuAddTechnicalSkill.Click += (_, __) => _windowManager.AddTechnicalSkill();
         }
 
@@ -491,8 +489,6 @@ namespace ResumeHandlerGUI
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.UriSource = new Uri(path);
             bitmap.EndInit();
-
-            ProfileImage.Source = bitmap;
         }
 
         private void EditSocialMediaLink_Click(object sender, RoutedEventArgs e)

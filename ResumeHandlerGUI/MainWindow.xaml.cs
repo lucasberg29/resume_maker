@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -151,15 +152,16 @@ namespace ResumeHandlerGUI
 
         private void UpdateTechnicalSkills()
         {
-            var header = new Paragraph(new Run("Technical Skills"))
+            Style headerStyle = DtoStyleToWindowsStyle(_documentHandler.CurrentResume.TechnicalSkillsHeader.Style);
+
+            var technicalSkillsHeader = new Paragraph(new Run(_documentHandler.CurrentResume.TechnicalSkillsHeader.Text))
             {
-                Style = GetStyle("Resume.SectionHeader")
+                Style = headerStyle,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 0, 0, 1)
             };
 
-            header.BorderBrush = Brushes.Black;
-            header.BorderThickness = new Thickness(0, 0, 0, 1);
-
-            flowDoc.Blocks.Add(header);
+            flowDoc.Blocks.Add(technicalSkillsHeader);
 
             string technicalSkills = string.Join(" ◈ ", _documentHandler.CurrentResume.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
             AddParagraph(technicalSkills);
@@ -265,15 +267,14 @@ namespace ResumeHandlerGUI
 
         private void UpdateEducation()
         {
-            var educationHeader = new Paragraph(new Run("Education"))
-            {
-                FontSize = 12,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(0, 0, 0, 5)
-            };
+            Style headerStyle = DtoStyleToWindowsStyle(_documentHandler.CurrentResume.EducationHeader.Style);
 
-            educationHeader.BorderBrush = Brushes.Black;
-            educationHeader.BorderThickness = new Thickness(0, 0, 0, 1);
+            var educationHeader = new Paragraph(new Run(_documentHandler.CurrentResume.EducationHeader.Text))
+            {
+                Style = headerStyle,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 0, 0, 1)
+            };
 
             flowDoc.Blocks.Add(educationHeader);
 
@@ -346,25 +347,24 @@ namespace ResumeHandlerGUI
 
         private void UpdateSkills()
         {
-            var educationHeader = new Paragraph(new Run("Skills"))
-            {
-                FontSize = 12,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(0, 0, 0, 5)
-            };
+            Style headerStyle = DtoStyleToWindowsStyle(_documentHandler.CurrentResume.OtherExperienceHeader.Style);
 
-            educationHeader.BorderBrush = Brushes.Black;
-            educationHeader.BorderThickness = new Thickness(0, 0, 0, 1);
+            var educationHeader = new Paragraph(new Run(_documentHandler.CurrentResume.OtherExperienceHeader.Text))
+            {
+                Style = headerStyle,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 0, 0, 1)
+            };
 
             flowDoc.Blocks.Add(educationHeader);
 
-            var skills = _documentHandler.CurrentResume.Skills;
+            var skills = _documentHandler.CurrentResume.OtherExperience;
 
             foreach (var skill in skills)
             {
-                Style style = DtoStyleToWindowsStyle(skill.Style);
+                Style style = DtoStyleToWindowsStyle(skill.Element.Style);
 
-                var bulletParagraph = new Paragraph(new Run($"◇ {skill.Text}"))
+                var bulletParagraph = new Paragraph(new Run($"◇ {skill.Element.Text}"))
                 {
                     Style = style,
                 };
@@ -522,6 +522,20 @@ namespace ResumeHandlerGUI
         private void ExportToPDF_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.S)
+            {
+                _documentHandler.SaveResume();
+                MessageBox.Show("Resume saved!");
+            }
+
+            if (e.Key == Key.F5)
+            {
+                UpdateResume();
+            }
         }
     }
 }

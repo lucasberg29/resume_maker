@@ -71,5 +71,19 @@ namespace ResumeHandlerGUI.Views
 
             mainWindow.UpdateResume();
         }
+
+        private void SkillsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedSkills = SkillsListBox.SelectedItems
+                                 .Cast<ListBoxItem>()
+                                 .Select(i => i.Content.ToString())
+                                 .ToList();
+
+
+
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            mainWindow.UpdateResume();
+        }
     }
 }

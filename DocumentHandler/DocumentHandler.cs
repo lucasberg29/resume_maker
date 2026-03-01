@@ -95,16 +95,6 @@ namespace DocumentHandler
             CurrentResume.Experience.Add(experience);
         }
 
-        public void AddEducation()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddSkill()
-        {
-            throw new NotImplementedException();
-        }
-
         public void AddSocialMediaLink(SocialMediaLink socialMediaLink)
         {
             CurrentResume.SocialMediaLinks.Add(socialMediaLink);
@@ -354,6 +344,26 @@ namespace DocumentHandler
             }
 
             return paragraph;
+        }
+
+        public void AddEducation(Education education)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddExperience()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSkill()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddOtherExperience(OtherExperience otherExperience)
+        {
+            throw new NotImplementedException();
         }
     }
 }

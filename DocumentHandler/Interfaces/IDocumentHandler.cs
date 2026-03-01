@@ -12,8 +12,6 @@ namespace DocumentHandler.Interfaces
     {
         void InitHandler();
 
-        //string CreateSampleDocument(string fileName);
-
         void LoadResumeFromDocument(string docPath, string fileName);
 
         string GetResumeFileName();
@@ -25,7 +23,8 @@ namespace DocumentHandler.Interfaces
         void AddTechnicalSkill(string skillName, string skillType);
         void AddExperience(Experience experience);
         void AddSocialMediaLink(SocialMediaLink socialMediaLink);
-        void AddEducation();
+        void AddEducation(Education education);
         void AddSkill();
+        void AddOtherExperience(OtherExperience otherExperience);
     }
 }

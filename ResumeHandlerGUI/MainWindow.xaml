@@ -6,6 +6,7 @@
         Title="Resume Helper"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
         Background="#E5E5E5">
     <Grid>
         <Grid.RowDefinitions>

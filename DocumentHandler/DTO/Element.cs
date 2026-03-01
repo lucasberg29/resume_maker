@@ -16,9 +16,9 @@ namespace DocumentHandler.DTO
 
         [JsonPropertyName("text")]
         public string Text { get; set; } = string.Empty;
-
         [JsonPropertyName("style")]
         public Style Style { get; set; } = new();
-
+        [JsonPropertyName("active")]
+        public bool Active { get; set; } = true;
     }
 }

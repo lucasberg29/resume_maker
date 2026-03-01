@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
 {
-    public class Resume : IResume
+    public class Resume
     {
         [JsonPropertyName("fullName")]
         public Element FullName { get; set; } = new Element();
@@ -34,7 +34,9 @@ namespace DocumentHandler.DTO
         public List<Education> Education { get; set; } = new List<Education>();
         [JsonPropertyName("skillsHeader")]
         public Element SkillsHeader { get; set; } = new Element("Skills");
-        [JsonPropertyName("skills")]
-        public List<Skill> Skills { get; set; } = new List<Skill>();
+        [JsonPropertyName("otherExperienceHeader")]
+        public Element OtherExperienceHeader { get; set; } = new Element("Other Experience");
+        [JsonPropertyName("otherExperience")]
+        public List<OtherExperience> OtherExperience { get; set; } = new List<OtherExperience>();
     }
 }

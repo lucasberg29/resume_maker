@@ -5,13 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
 {
-    public class Skill
+    public class OtherExperience
     {
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
-        [JsonPropertyName("text")]
-        public string Text { get; set; } = "";
-        [JsonPropertyName("style")]
-        public Style Style { get; set; } = new Style();
+        [JsonPropertyName("element")]
+        public Element Element { get; set; } = new("Other Experience");
     }
 }

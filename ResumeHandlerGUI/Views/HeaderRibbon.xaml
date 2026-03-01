@@ -12,7 +12,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Margin="10" Grid.Column="0">
 
@@ -41,9 +41,18 @@
                 <TextBlock x:Name="NewLocationTitle" Text="New Location:" Margin="0,0,0,4"/>
                 <TextBox x:Name="NewLocationInputField" Width="220" TextChanged="NewLocationInputField_TextChanged"/>
 
-
             </StackPanel>
-
+            <StackPanel Margin="10" Grid.Column="2">
+                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,0,0,4"/>
+                <ListBox x:Name="SkillsListBox"
+         Width="200"
+         SelectionMode="Multiple"
+         SelectionChanged="SkillsListBox_SelectionChanged">
+                    <ListBoxItem Content="C#"/>
+                    <ListBoxItem Content="Unity"/>
+                    <ListBoxItem Content="Unreal Engine"/>
+                </ListBox>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

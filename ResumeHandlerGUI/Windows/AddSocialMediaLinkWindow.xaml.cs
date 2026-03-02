@@ -46,10 +46,7 @@ namespace ResumeHandlerGUI
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
-        {
-            // tester
-            string name = "Portfolio Website";
-
+        {   
             _socialMediaLink.FilePath = BrowseFileTextBox.Text;
             _socialMediaLink.FileName = System.IO.Path.GetFileName(BrowseFileTextBox.Text);
             _socialMediaLink.Name = NameTextBox.Text;

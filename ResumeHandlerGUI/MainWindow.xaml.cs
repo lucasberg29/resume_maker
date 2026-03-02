@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using DocumentFormat.OpenXml.Presentation;
+using Microsoft.Win32;
+using ResumeHandlerGUI.Views;
 using ResumeHandlerGUI.Windows;
 using System.IO;
 using System.Linq;
@@ -6,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -15,15 +18,15 @@ namespace ResumeHandlerGUI
     {
         private readonly WindowManager _windowManager;
 
-        //public static DocumentHandler.DocumentHandler _documentHandler = new();
-
         public static WPFDocumentHandler _wpfDocumentHandler = new();
-        FlowDocument flowDoc = new FlowDocument();
+        FlowDocument _flowDoc = new FlowDocument();
 
-        private static Style GetStyle(string key)
-        {
-            return (Style)Application.Current.FindResource(key);
-        }
+        private ResumeRibbon _resumeRibbon = new ResumeRibbon();
+        private HeaderRibbon _headerRibbon = new HeaderRibbon();
+        private TechnicalSkillsRibbon _technicalSkillsRibbon = new TechnicalSkillsRibbon();
+        private ExperienceRibbon _experienceRibbon = new ExperienceRibbon();
+        private EducationRibbon _educationRibbon = new EducationRibbon();
+        private OtherExperienceRibbon _otherExperienceRibbon = new OtherExperienceRibbon();
 
         public MainWindow()
         {
@@ -33,12 +36,66 @@ namespace ResumeHandlerGUI
 
             InitializeComponent();
             UpdateResume();
+
+            CreateHeaderRibbons();
+        }
+
+        private void CreateHeaderRibbons()
+        {
+            MenuRibbonSelected.Content = _headerRibbon;
         }
 
         private void SubscribeClicksToWindowManager()
         {
             // TODO: Add all click events to the window manager
 
+        }
+
+        private void MenuResume_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _resumeRibbon;
+        }
+
+        private void MenuHeader_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _headerRibbon;
+        }
+
+        private void MenuTechnicalSkills_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _technicalSkillsRibbon;
+        }
+
+        private void MenuExperience_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _experienceRibbon;
+        }
+
+        private void MenuEducation_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _educationRibbon;
+        }
+
+        private void MenuOtherExperience_Click(object sender, RoutedEventArgs e)
+        {
+            SelectMenu((MenuItem)sender);
+            MenuRibbonSelected.Content = _otherExperienceRibbon;
+        }
+
+        private void SelectMenu(MenuItem selectedItem)
+        {
+            foreach (var item in MainMenu.Items)
+            {
+                if (item is MenuItem menuItem)
+                    menuItem.IsChecked = false;
+            }
+
+            selectedItem.IsChecked = true;
         }
 
         public void UpdateResume()
@@ -62,7 +119,7 @@ namespace ResumeHandlerGUI
             if (dialog.ShowDialog() == true)
             {
                 _wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(dialog.SkillName, dialog.SkillType.ToLower());
-                flowDoc = new FlowDocument();
+                _flowDoc = new FlowDocument();
                 _wpfDocumentHandler.UpdateResume();
             }
         }
@@ -82,7 +139,7 @@ namespace ResumeHandlerGUI
 
             if (dialog.ShowDialog() == true)
             {
-                flowDoc = new FlowDocument();
+                _flowDoc = new FlowDocument();
                 _wpfDocumentHandler.UpdateResume();
             }
         }
@@ -96,7 +153,7 @@ namespace ResumeHandlerGUI
 
             if (dialog.ShowDialog() == true)
             {
-                flowDoc = new FlowDocument();
+                _flowDoc = new FlowDocument();
                 _wpfDocumentHandler.UpdateResume();
             }
         }
@@ -110,7 +167,7 @@ namespace ResumeHandlerGUI
 
             if (addSocialMediaDialog.ShowDialog() == true)
             {
-                flowDoc = new FlowDocument();
+                _flowDoc = new FlowDocument();
                 _wpfDocumentHandler.UpdateResume();
             }
         }
@@ -124,7 +181,7 @@ namespace ResumeHandlerGUI
 
             if (dialog.ShowDialog() == true)
             {
-                flowDoc = new FlowDocument();
+                _flowDoc = new FlowDocument();
                 _wpfDocumentHandler.UpdateResume();
             }
         }
@@ -133,7 +190,7 @@ namespace ResumeHandlerGUI
         {
             // TODO: Implement clear social media links functionality
             _wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks.Clear();
-             flowDoc = new FlowDocument();
+            _flowDoc = new FlowDocument();
             _wpfDocumentHandler.UpdateResume();
         }
 

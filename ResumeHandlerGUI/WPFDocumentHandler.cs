@@ -51,13 +51,12 @@ namespace ResumeHandlerGUI
             FlowDocument.Blocks.Add(fullNameParagraph);
 
             // Contact Info
-            string contatInfo = $"{DocumentHandler.CurrentResume.Email.Text} - {DocumentHandler.CurrentResume.PhoneNumber.Text} - {DocumentHandler.CurrentResume.Location.Text}";
-
             var emailRun = CreateRun(DocumentHandler.CurrentResume.Email.Text, DocumentHandler.CurrentResume.Email.Style);
             var phoneRun = CreateRun(DocumentHandler.CurrentResume.PhoneNumber.Text, DocumentHandler.CurrentResume.PhoneNumber.Style);
             var locationRun = CreateRun(DocumentHandler.CurrentResume.Location.Text, DocumentHandler.CurrentResume.Location.Style);
 
             var contatInfoParagraph = new System.Windows.Documents.Paragraph
+
             {
                 TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 0)

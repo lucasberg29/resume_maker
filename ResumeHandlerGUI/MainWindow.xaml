@@ -15,58 +15,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Menu VerticalContentAlignment="Stretch" Grid.Row="0"  FontFamily="Cooper Black" FontSize="16" FontWeight="Bold" Margin="0,0,0,0">
-
-            <MenuItem x:Name="Resume" Header="_Resume" Padding="15,0,15,0" BorderThickness="0,0,0,0" Margin="20,20,20,20">
-                <MenuItem Header="New Resume"/>
-                <MenuItem Header="Open Resume"/>
-                <Separator/>
-                <MenuItem Header="Save Resume" Click="SaveResume_Click"/>
-                <MenuItem Header="Export to DOCX" Click="ExportToDOCX_Click"/>
-                <MenuItem Header="Export to PDF" Click="ExportToPDF_Click"/>
-            </MenuItem>
-
-            <MenuItem x:Name="Header" Header="_Header" Padding="30,0,30,0" Margin="20,20,20,20">
-                <MenuItem x:Name="MenuEditFullName" Header="Full Name"/>
-                <MenuItem x:Name="MenuEditEmail" Header="Email"/>
-                <MenuItem x:Name="MenuEditPhoneNumber" Header="Phone Number"/>
-                <MenuItem Header="Address"
-              Click="EditAddress_Click"/>
-                <MenuItem Header="Introduction"
-              Click="EditIntroduction_Click"/>
-                <Separator/>
-                <MenuItem Header="Add Social Media Link"
-              Click="AddSocialMediaLink_Click"/>
-                <MenuItem Header="Edit Social Media Link"
-              Click="EditSocialMediaLink_Click"/>
-                <MenuItem Header="Remove Social Media Link"
-              Click="ClearSocialMediaLinks_Click"/>
-            </MenuItem>
-
-            <MenuItem x:Name="TechnicalSkills" Header="_Technical Skills" Padding="15,0,15,0" Margin="20,20,20,20">
-                <MenuItem x:Name="MenuAddTechnicalSkill" Header="Add Technical Skill"/>
-                <MenuItem x:Name="MenuEditTechincalSkill" Header="Edit Technical Skill"/>
-                <MenuItem x:Name="MenuClearTechincalSkills" Header="Clear All Technical Skills"/>
-            </MenuItem>
-
-            <MenuItem x:Name="Experience" Header="_Experience" Padding="15,0,15,0" Margin="20,20,20,20" >
-                <MenuItem x:Name="MenuAddExperience" Header="Add Experience"/>
-                <MenuItem x:Name="MenuEditExperience" Header="Edit Experience"/>
-                <MenuItem x:Name="MenuClearExperience" Header="Clear All Experience"/>
-            </MenuItem>
-
-            <MenuItem x:Name="Education" Header="_Education" Padding="15,0,15,0" Margin="20,20,20,20" >
-                <MenuItem Header="Add Education"/>
-                <MenuItem Header="Edit Education"/>
-                <MenuItem Header="Clear All Education"/>
-            </MenuItem>
-
-            <MenuItem x:Name="OtherExperience" Header="_Other Experience" Padding="15,0,15,0" Margin="20,20,20,20">
-                <MenuItem Header="Add Skill"/>
-                <MenuItem Header="Edit Skill"/>
-                <MenuItem Header="Clear All Skill"/>
-            </MenuItem>
+        <Menu x:Name="MainMenu" VerticalContentAlignment="Stretch" Grid.Row="0"  FontFamily="Cooper Black" FontSize="16" FontWeight="Bold" Margin="0,0,0,0">
+            <MenuItem IsCheckable="True" Click="MenuResume_Click" x:Name="Resume" Header="_Resume" Padding="15,0,15,0" BorderThickness="0,0,0,0" Margin="20,20,20,20"/>
+            <MenuItem IsCheckable="True" Click="MenuHeader_Click" x:Name="Header" Header="_Header" Padding="30,0,30,0" Margin="20,20,20,20"/>
+            <MenuItem IsCheckable="True" Click="MenuTechnicalSkills_Click" x:Name="TechnicalSkills" Header="_Technical Skills" Padding="15,0,15,0" Margin="20,20,20,20"/>
+            <MenuItem IsCheckable="True" Click="MenuExperience_Click" x:Name="Experience" Header="_Experience" Padding="15,0,15,0" Margin="20,20,20,20" />
+            <MenuItem IsCheckable="True" Click="MenuEducation_Click" x:Name="Education" Header="_Education" Padding="15,0,15,0" Margin="20,20,20,20" />
+            <MenuItem IsCheckable="True" Click="MenuOtherExperience_Click" x:Name="OtherExperience" Header="_Other Experience" Padding="15,0,15,0" Margin="20,20,20,20"/>
         </Menu>
+        
         <Border Background="Transparent"  Grid.Row="1">
             <Border.Effect>
                 <DropShadowEffect 
@@ -75,10 +32,9 @@
             ShadowDepth="2"
             Opacity="0.3"/>
             </Border.Effect>
-            <ContentControl  x:Name="MenuSelected" Height="250">
-                <views:HeaderRibbon x:Name="HeaderRibbon" />
-            </ContentControl>
+            <ContentControl  x:Name="MenuRibbonSelected" Height="250"/>
         </Border>
+        
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto"
                       Background="#E5E5E5">
@@ -95,7 +51,7 @@
                                           HorizontalContentAlignment="Stretch"
                                           VerticalScrollBarVisibility="Hidden"
                                           UseLayoutRounding="True"
-SnapsToDevicePixels="True"
+                                          SnapsToDevicePixels="True"
                                           MinHeight="800"/>
             </Border>
         </ScrollViewer>

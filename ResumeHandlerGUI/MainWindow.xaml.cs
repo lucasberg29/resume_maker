@@ -32,7 +32,6 @@ namespace ResumeHandlerGUI
 
             InitializeComponent();
             UpdateResume();
-
         }
 
         private void SubscribeClicksToWindowManager()
@@ -70,26 +69,41 @@ namespace ResumeHandlerGUI
 
         private void UpdateHeader()
         {
-            var text = new Run(_documentHandler.CurrentResume.FullName.Text)
-            {
-                Style = GetStyle("Resume.FullName")
-            };
+            // Full Name
+            var run = CreateRun(_documentHandler.CurrentResume.FullName.Text, _documentHandler.CurrentResume.FullName.Style);
 
-            var FullNameParagraph = new System.Windows.Documents.Paragraph(text)
+            var fullNameParagraph = new System.Windows.Documents.Paragraph(run)
             {
                 Style = GetStyle("Resume.FullNameParagraph")
             };
 
-            flowDoc.Blocks.Add(FullNameParagraph);
+            flowDoc.Blocks.Add(fullNameParagraph);
 
+            // Contact Info
             string contatInfo = $"{_documentHandler.CurrentResume.Email.Text} - {_documentHandler.CurrentResume.PhoneNumber.Text} - {_documentHandler.CurrentResume.Location.Text}";
-            AddParagraph(contatInfo);
+
+            var emailRun = CreateRun(_documentHandler.CurrentResume.Email.Text, _documentHandler.CurrentResume.Email.Style);
+            var phoneRun = CreateRun(_documentHandler.CurrentResume.PhoneNumber.Text, _documentHandler.CurrentResume.PhoneNumber.Style);
+            var locationRun = CreateRun(_documentHandler.CurrentResume.Location.Text, _documentHandler.CurrentResume.Location.Style);
+
+            var contatInfoParagraph = new System.Windows.Documents.Paragraph
+            {
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
+
+            contatInfoParagraph.Inlines.Add(emailRun);
+            contatInfoParagraph.Inlines.Add(new Run(" - "));
+            contatInfoParagraph.Inlines.Add(phoneRun);
+            contatInfoParagraph.Inlines.Add(new Run(" - "));
+            contatInfoParagraph.Inlines.Add(locationRun);
+
+            flowDoc.Blocks.Add(contatInfoParagraph);
 
             // SocialMediaLinks
-
             var socialParagraph = new Paragraph
             {
-                Margin = new Thickness(0, 5, 0, 10),
+                Margin = new Thickness(0, 0, 0, 0),
                 TextAlignment = TextAlignment.Center
             };
 
@@ -104,18 +118,26 @@ namespace ResumeHandlerGUI
 
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
-                bitmap.DecodePixelHeight = 24;
+                bitmap.UriSource = new Uri(imagePath);
+                bitmap.DecodePixelWidth = 128;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
+                bitmap.Freeze();
 
                 var image = new System.Windows.Controls.Image
                 {
                     Source = bitmap,
                     Width = 24,
                     Height = 24,
-                    Margin = new Thickness(0, 0, 0, 0),
+                    SnapsToDevicePixels = true,
+                    UseLayoutRounding = true,
+                    Margin = new Thickness(2, 2, 2, 2),
                 };
+
+                image.SnapsToDevicePixels = true;
+                image.UseLayoutRounding = true;
+
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
 
                 var imageContainer = new InlineUIContainer(image)
                 {
@@ -146,8 +168,26 @@ namespace ResumeHandlerGUI
             flowDoc.Blocks.Add(socialParagraph);
 
             // Introduction
-            string introduction = _documentHandler.CurrentResume.Introduction.Text;
-            AddParagraph(introduction);
+            var introductionRun = CreateRun(_documentHandler.CurrentResume.Introduction.Text, _documentHandler.CurrentResume.Introduction.Style);
+            var introductionParagraph = new Paragraph(introductionRun)
+            {
+                TextAlignment = TextAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 0),
+            };
+
+            flowDoc.Blocks.Add(introductionParagraph);
+        }
+
+        private Run CreateRun(string text, DocumentHandler.DTO.Style style)
+        {
+            var fullNameStyle = DtoStyleToWindowsStyle(style);
+
+            var run = new Run(text)
+            {
+                Style = fullNameStyle
+            };
+
+            return run;
         }
 
         private void UpdateTechnicalSkills()

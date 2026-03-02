@@ -19,7 +19,7 @@
     <Style x:Key="Resume.FullNameParagraph"
            TargetType="Paragraph" BasedOn="{StaticResource {x:Type Paragraph}}">
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="0,0,0,5"/>
+        <Setter Property="Margin" Value="0,0,0,0"/>
         <Setter Property="FontFamily"
                 Value="Roboto Serif, Arial, sans-serif"/>
     </Style>

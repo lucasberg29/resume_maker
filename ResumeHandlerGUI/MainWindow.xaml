@@ -94,6 +94,8 @@
                                           IsToolBarVisible="False"
                                           HorizontalContentAlignment="Stretch"
                                           VerticalScrollBarVisibility="Hidden"
+                                          UseLayoutRounding="True"
+SnapsToDevicePixels="True"
                                           MinHeight="800"/>
             </Border>
         </ScrollViewer>

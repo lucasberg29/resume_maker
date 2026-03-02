@@ -58,7 +58,7 @@ namespace ResumeHandlerGUI
                 experience.BulletPoints.Add(new Element(bullet));
             }
 
-            MainWindow._documentHandler.AddExperience(experience);
+            MainWindow._wpfDocumentHandler.DocumentHandler.AddExperience(experience);
 
             DialogResult = true;
             Close();

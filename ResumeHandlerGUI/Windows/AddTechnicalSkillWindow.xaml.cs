@@ -25,7 +25,7 @@ namespace ResumeHandlerGUI
                 return;
             }
 
-            MainWindow._documentHandler.AddTechnicalSkill(SkillName, SkillType.ToLower());
+            MainWindow._wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(SkillName, SkillType.ToLower());
             DialogResult = true;
         }
 

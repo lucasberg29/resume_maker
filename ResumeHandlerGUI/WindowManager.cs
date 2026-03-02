@@ -19,7 +19,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -29,7 +29,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -39,7 +39,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -49,7 +49,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -59,7 +59,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -69,7 +69,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -79,7 +79,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -88,7 +88,7 @@ namespace ResumeHandlerGUI
             var dialog = new AddExperienceWindow();
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 
@@ -97,7 +97,7 @@ namespace ResumeHandlerGUI
             var dialog = new AddTechnicalSkillWindow();
             if (ShowDialog(dialog))
             {
-                _owner.UpdateResume();
+                MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }
 

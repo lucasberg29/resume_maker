@@ -24,8 +24,8 @@ namespace ResumeHandlerGUI.Views
         {
             InitializeComponent();
 
-            FullName.Text = MainWindow._documentHandler.CurrentResume.FullName.Text;  
-            PhoneNumber.Text = MainWindow._documentHandler.CurrentResume.PhoneNumber.Text;
+            FullName.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text;  
+            PhoneNumber.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PhoneNumber.Text;
         }
 
         private void NewFullNameInputField_TextChanged(object sender, TextChangedEventArgs e)
@@ -33,7 +33,7 @@ namespace ResumeHandlerGUI.Views
             string newValue = NewFullNameInputField.Text;
             FullName.Text = newValue;
 
-            MainWindow._documentHandler.CurrentResume.FullName.Text = newValue;
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text = newValue;
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
             mainWindow.UpdateResume();
@@ -44,7 +44,7 @@ namespace ResumeHandlerGUI.Views
             string newValue = NewPhoneNumberInputField.Text;
             PhoneNumber.Text = newValue;
 
-            MainWindow._documentHandler.CurrentResume.PhoneNumber.Text = newValue;
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PhoneNumber.Text = newValue;
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
             mainWindow.UpdateResume();
@@ -55,7 +55,7 @@ namespace ResumeHandlerGUI.Views
             string newValue = NewEmailInputField.Text;
             Email.Text = newValue;
 
-            MainWindow._documentHandler.CurrentResume.Email.Text = newValue;
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Email.Text = newValue;
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
             mainWindow.UpdateResume();
@@ -66,7 +66,7 @@ namespace ResumeHandlerGUI.Views
             string newValue = NewLocationInputField.Text;
             Location.Text = newValue;
 
-            MainWindow._documentHandler.CurrentResume.Location.Text = newValue;
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Location.Text = newValue;
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
 
             mainWindow.UpdateResume();

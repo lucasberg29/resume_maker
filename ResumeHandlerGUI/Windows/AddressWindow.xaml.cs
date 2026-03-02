@@ -20,7 +20,7 @@ namespace ResumeHandlerGUI
         public AddressWindow()
         {
             InitializeComponent();
-            CurrentAddress.Text = MainWindow._documentHandler.CurrentResume.Location.Text;
+            CurrentAddress.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Location.Text;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -31,7 +31,7 @@ namespace ResumeHandlerGUI
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow._documentHandler.CurrentResume.Location.Text = NewAddressInputField.Text.Trim();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Location.Text = NewAddressInputField.Text.Trim();
             DialogResult = true;
             Close();
         }

@@ -18,13 +18,21 @@ namespace DocumentHandler.Interfaces
 
         public bool SaveResume();
 
+        public bool CreateNewResume(string resumeName);
+
         public bool ExportResumeToDOCX(string fileName);
 
         void AddTechnicalSkill(string skillName, string skillType);
         void AddExperience(Experience experience);
         void AddSocialMediaLink(SocialMediaLink socialMediaLink);
         void AddEducation(Education education);
-        void AddSkill();
         void AddOtherExperience(OtherExperience otherExperience);
+
+        void SetTechnicalSkillActive(string technicalSkillName, bool isActive);
+        void SetExperienceActive(string experienceName, bool isActive);
+        void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive);
+        void SetEducationActive(string educationName, bool isActive);
+        void SetOtherExperienceActive(string otherExperienceName, bool isActive);
+
     }
 }

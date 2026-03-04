@@ -9,25 +9,28 @@ namespace DocumentHandler
 {
     internal class JsonReaderWriter
     {
-        private static string JsonFilePath = Path.Combine(AppContext.BaseDirectory, "data.json");
-
-        public static void ReadResumeFromJson( ref Resume CurrentResume)
+        public static void ReadResumeFromJson( ref Resume CurrentResume, string jsonFileName)
         {
+            string jsonFilePath = Path.Combine(AppContext.BaseDirectory, jsonFileName);
+
             try
             {
-                string json = File.ReadAllText(JsonFilePath);
+                string json = File.ReadAllText(jsonFilePath);
                 CurrentResume = JsonSerializer.Deserialize<Resume>(json);
             }
             catch (Exception ex)
             {
+
             }
 
         }
 
-        internal static void WriteResumeToJson(Resume currentResume)
+        public static void WriteResumeToJson(Resume currentResume, string jsonFileName)
         {
+            string jsonFilePath = Path.Combine(AppContext.BaseDirectory, jsonFileName);
+
             var json = JsonSerializer.Serialize(currentResume);
-            File.WriteAllText(JsonFilePath, json);
+            File.WriteAllText(jsonFilePath, json);
         }
     }
 }

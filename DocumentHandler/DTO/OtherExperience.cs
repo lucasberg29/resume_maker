@@ -7,6 +7,8 @@ namespace DocumentHandler.DTO
 {
     public class OtherExperience
     {
+        [JsonPropertyName("active")]
+        public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
         [JsonPropertyName("element")]

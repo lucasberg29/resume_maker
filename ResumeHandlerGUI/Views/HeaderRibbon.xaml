@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ResumeHandlerGUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="1024">
     <Border Background="{StaticResource Resume.MenuSelectedBackgroundColourBrush}"
         CornerRadius="0,0,15,15" Margin="20,0,20,20">
         <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -43,15 +44,24 @@
 
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="2">
-                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,0,0,4"/>
-                <ListBox x:Name="SkillsListBox"
-         Width="200"
-         SelectionMode="Multiple"
-         SelectionChanged="SkillsListBox_SelectionChanged">
-                    <ListBoxItem Content="C#"/>
-                    <ListBoxItem Content="Unity"/>
-                    <ListBoxItem Content="Unreal Engine"/>
+                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,10,0,4"/>
+                <ListBox x:Name="SocialMediaLinksListBox" 
+                         Width="200" 
+                         SelectionMode="Multiple"
+                         SelectionChanged="SkillsListBox_SelectionChanged">
                 </ListBox>
+                <Button x:Name="AddLinkButton" Click="AddLinkButton_Click" Margin="10,10,10,10" Content="Add Link"></Button>
+                <Button x:Name="UpdateLinkButton" Click="UpdateLinkButton_Click" Margin="10,0,10,10" Content="Update Link"></Button>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="3">
+                <TextBlock x:Name="IntroductionTitle" Text="Introduction" Margin="0,10,0,4"/>
+                <TextBlock x:Name="Introduction"  FontWeight="bold" TextAlignment="center" Text="Introduction"  Margin="0,0,0,4"/>
+                <TextBox x:Name="NewIntroductionInputField" 
+                         TextWrapping="Wrap" 
+                         AcceptsReturn="True" 
+                         VerticalScrollBarVisibility="Auto"
+                         Height="50"
+                         TextChanged="NewIntroductionInputField_TextChanged"/>
             </StackPanel>
         </Grid>
     </Border>

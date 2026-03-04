@@ -4,6 +4,8 @@ namespace DocumentHandler.DTO
 {
     public class SocialMediaLink
     {
+        [JsonPropertyName("active")]
+        public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
         [JsonPropertyName("name")]

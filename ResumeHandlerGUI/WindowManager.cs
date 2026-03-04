@@ -1,4 +1,5 @@
-﻿using ResumeHandlerGUI.Windows;
+﻿using DocumentFormat.OpenXml.Presentation;
+using ResumeHandlerGUI.Windows;
 using System.Windows;
 using System.Windows.Documents;
 
@@ -97,6 +98,22 @@ namespace ResumeHandlerGUI
             var dialog = new AddTechnicalSkillWindow();
             if (ShowDialog(dialog))
             {
+                MainWindow._wpfDocumentHandler.UpdateResume();
+            }
+        }
+
+        public void CreateNewResumeWindow()
+        {
+            var dialog = new CreateNewResumeWindow();
+            if (ShowDialog(dialog))
+            {
+                MainWindow._wpfDocumentHandler.DocumentHandler.CreateNewResume(dialog.NewResumeNameInputField.Text);
+
+                string resumeFileName = string.Concat(dialog.NewResumeNameInputField.Text, ".json");
+
+                Properties.Settings.Default.LastResume = resumeFileName;
+                Properties.Settings.Default.Save();
+
                 MainWindow._wpfDocumentHandler.UpdateResume();
             }
         }

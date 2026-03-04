@@ -16,9 +16,9 @@ namespace ResumeHandlerGUI
 {
     public partial class MainWindow : Window
     {
-        private readonly WindowManager _windowManager;
+        public static WindowManager? _windowManager;
+        public static readonly WPFDocumentHandler _wpfDocumentHandler = new();
 
-        public static WPFDocumentHandler _wpfDocumentHandler = new();
         FlowDocument _flowDoc = new FlowDocument();
 
         private ResumeRibbon _resumeRibbon = new ResumeRibbon();
@@ -32,9 +32,8 @@ namespace ResumeHandlerGUI
         {
             _windowManager = new WindowManager(this);
 
-            _wpfDocumentHandler = new WPFDocumentHandler();
-
             InitializeComponent();
+
             UpdateResume();
 
             CreateHeaderRibbons();
@@ -48,43 +47,33 @@ namespace ResumeHandlerGUI
         private void SubscribeClicksToWindowManager()
         {
             // TODO: Add all click events to the window manager
-
         }
 
-        private void MenuResume_Click(object sender, RoutedEventArgs e)
+        private void MenuOption_Click(object sender, RoutedEventArgs e)
         {
             SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _resumeRibbon;
-        }
 
-        private void MenuHeader_Click(object sender, RoutedEventArgs e)
-        {
-            SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _headerRibbon;
-        }
-
-        private void MenuTechnicalSkills_Click(object sender, RoutedEventArgs e)
-        {
-            SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _technicalSkillsRibbon;
-        }
-
-        private void MenuExperience_Click(object sender, RoutedEventArgs e)
-        {
-            SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _experienceRibbon;
-        }
-
-        private void MenuEducation_Click(object sender, RoutedEventArgs e)
-        {
-            SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _educationRibbon;
-        }
-
-        private void MenuOtherExperience_Click(object sender, RoutedEventArgs e)
-        {
-            SelectMenu((MenuItem)sender);
-            MenuRibbonSelected.Content = _otherExperienceRibbon;
+            switch (sender)
+            {
+                case MenuItem menuItem when menuItem == Resume:
+                    MenuRibbonSelected.Content = _resumeRibbon;
+                    break;
+                case MenuItem menuItem when menuItem == Header:
+                    MenuRibbonSelected.Content = _headerRibbon;
+                    break;
+                case MenuItem menuItem when menuItem == TechnicalSkills:
+                    MenuRibbonSelected.Content = _technicalSkillsRibbon;
+                    break;
+                case MenuItem menuItem when menuItem == Experience:
+                    MenuRibbonSelected.Content = _experienceRibbon;
+                    break;
+                case MenuItem menuItem when menuItem == Education:
+                    MenuRibbonSelected.Content = _educationRibbon;
+                    break;
+                case MenuItem menuItem when menuItem == OtherExperience:
+                    MenuRibbonSelected.Content = _otherExperienceRibbon;
+                    break;
+            }
         }
 
         private void SelectMenu(MenuItem selectedItem)

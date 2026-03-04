@@ -15,6 +15,8 @@ using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using DocumentFormat.OpenXml.CustomProperties;
+
 namespace DocumentHandler
 {
     public class DocumentHandler : IDocumentHandler
@@ -27,6 +29,7 @@ namespace DocumentHandler
         public string ResumeFolderPath { get; } = Path.Combine(AppContext.BaseDirectory, "Data", "Resume");
 
         public string ResumeFileName = "Resume.docx";
+        public static string CurrentResumeDataName = "data.json";  
 
         private void CreateFolder()
         {
@@ -43,7 +46,7 @@ namespace DocumentHandler
 
         private void ParseResume()
         {
-            JsonReaderWriter.ReadResumeFromJson(ref CurrentResume);
+            JsonReaderWriter.ReadResumeFromJson(ref CurrentResume, CurrentResumeDataName);
         }
 
         public void InitHandler()
@@ -63,7 +66,7 @@ namespace DocumentHandler
                 }
             }
 
-            JsonReaderWriter.WriteResumeToJson(CurrentResume);
+            JsonReaderWriter.WriteResumeToJson(CurrentResume, CurrentResumeDataName);
 
             XmlParser.SaveResumeToDocx(CurrentResume, "Resume.docx");
             return true;
@@ -73,6 +76,9 @@ namespace DocumentHandler
         {
             DocumentPath = docPath;
             ResumeFileName = safeFileName;
+
+            CurrentResumeDataName = safeFileName;
+
             ParseResume();
         }
 
@@ -348,20 +354,62 @@ namespace DocumentHandler
 
         public void AddEducation(Education education)
         {
-            throw new NotImplementedException();
-        }
-
-        public void AddExperience()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddSkill()
-        {
-            throw new NotImplementedException();
+            CurrentResume.Education.Add(education);
         }
 
         public void AddOtherExperience(OtherExperience otherExperience)
+        {
+            CurrentResume.OtherExperience.Add(otherExperience);
+        }
+
+        public bool CreateNewResume(string resumeName)
+        {
+            CurrentResumeDataName = resumeName;
+            CurrentResumeDataName = string.Concat(resumeName, ".json");
+            ParseResume();
+            return true;
+        }
+
+        public void SetTechnicalSkillActive(string technicalSkillName, bool isActive)
+        {
+            foreach (var technicalSkill in CurrentResume.TechnicalSkills)
+            {
+                if (technicalSkill.Text == technicalSkillName)
+                {
+                    technicalSkill.Active = isActive;
+                    break;
+                }
+            }
+        }
+
+        public void SetExperienceActive(string experienceName, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive)
+        {
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
+                {
+                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    break;
+                }
+            }
+
+            foreach (var socialMediaLink in CurrentResume.SocialMediaLinks)
+            {
+
+            }
+        }
+
+        public void SetEducationActive(string educationName, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetOtherExperienceActive(string otherExperienceName, bool isActive)
         {
             throw new NotImplementedException();
         }

@@ -4,6 +4,8 @@ namespace DocumentHandler.DTO
 {
     public class TechnicalSkill
     {
+        [JsonPropertyName("active")]
+        public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
         [JsonPropertyName("text")]

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ResumeHandlerGUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1080">
+             d:DesignHeight="200" d:DesignWidth="1024">
     <Border Background="{StaticResource Resume.MenuSelectedBackgroundColourBrush}"
         CornerRadius="0,0,15,15" Margin="20,0,20,20">
         <Grid Background="Transparent">
@@ -15,9 +15,18 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <StackPanel Margin="10" Grid.Column="0" MinWidth="200">
+                <TextBlock x:Name="File" Text="File" TextAlignment="center" FontWeight="bold" Margin="10,0,10,20"/>
+                <Button x:Name="SaveResumeButton" Content="Save Resume" Margin="0,0,0,4" Click="SaveResumeButton_Click"/>
+                <Button x:Name="NewResumeButton" Content="New Resume" Margin="0,0,0,4" Click="NewResumeButton_Click"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Grid.Column="1">
+                <TextBlock x:Name="Layout" Text="Layout" TextAlignment="center" FontWeight="bold" Margin="0,0,0,4"/>
+            </StackPanel>
+
             <StackPanel Margin="10" Grid.Column="2">
-                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,0,0,4"/>
- 
+                <TextBlock x:Name="Options" Text="Options" TextAlignment="center" FontWeight="bold" Margin="0,0,0,4"/>
             </StackPanel>
         </Grid>
     </Border>

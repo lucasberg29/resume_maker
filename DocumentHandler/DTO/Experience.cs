@@ -5,6 +5,8 @@ namespace DocumentHandler.DTO
 {
     public class Experience
     {
+        [JsonPropertyName("active")]
+        public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
         [JsonPropertyName("jobTitle")]

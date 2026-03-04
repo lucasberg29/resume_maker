@@ -22,5 +22,23 @@ namespace ResumeHandlerGUI.Views
         {
             InitializeComponent();
         }
+
+        private void NewResumeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            MainWindow._windowManager.CreateNewResumeWindow();
+                
+            //MainWindow._wpfDocumentHandler.DocumentHandler.CreateNewResume("New Resume");
+            mainWindow.UpdateResume();
+        }
+
+        private void SaveResumeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            MainWindow._wpfDocumentHandler.DocumentHandler.SaveResume();
+            mainWindow.UpdateResume();
+        }
     }
 }

@@ -19,7 +19,12 @@ namespace ResumeHandlerGUI
         public WPFDocumentHandler()
         {
             DocumentHandler.InitHandler();
-            DocumentHandler.LoadResumeFromDocument("", "");
+
+            string lastResume = Properties.Settings.Default.LastResume;
+
+            string lastResumePath = Path.Combine(Directory.GetCurrentDirectory(), lastResume);
+
+            DocumentHandler.LoadResumeFromDocument(lastResumePath, lastResume);
         }
 
         private static Style GetStyle(string key)
@@ -36,6 +41,8 @@ namespace ResumeHandlerGUI
             UpdateExperience();
             UpdateEducation();
             UpdateSkills();
+
+
         }
 
         private void UpdateHeader()
@@ -56,7 +63,6 @@ namespace ResumeHandlerGUI
             var locationRun = CreateRun(DocumentHandler.CurrentResume.Location.Text, DocumentHandler.CurrentResume.Location.Style);
 
             var contatInfoParagraph = new System.Windows.Documents.Paragraph
-
             {
                 TextAlignment = TextAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 0)
@@ -79,6 +85,11 @@ namespace ResumeHandlerGUI
 
             foreach (var link in DocumentHandler.CurrentResume.SocialMediaLinks)
             {
+                if (!link.Active)
+                {
+                    continue;
+                }
+
                 string imagePath = link.FilePath;
 
                 if (!File.Exists(imagePath))

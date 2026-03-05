@@ -161,19 +161,19 @@ namespace ResumeHandlerGUI
             }
         }
 
-        private void EditSocialMediaLink_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new EditSocialMediaLinkWindow
-            {
-                Owner = this
-            };
+        //private void EditSocialMediaLink_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var dialog = new EditSocialMediaLinkWindow()
+        //    {
+        //        Owner = this
+        //    };
 
-            if (dialog.ShowDialog() == true)
-            {
-                _flowDoc = new FlowDocument();
-                _wpfDocumentHandler.UpdateResume();
-            }
-        }
+        //    if (dialog.ShowDialog() == true)
+        //    {
+        //        _flowDoc = new FlowDocument();
+        //        _wpfDocumentHandler.UpdateResume();
+        //    }
+        //}
 
         private void ClearSocialMediaLinks_Click(object sender, RoutedEventArgs e)
         {

@@ -40,12 +40,41 @@ namespace ResumeHandlerGUI.Views
 
             foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks)
             {
-                var item = new ListBoxItem
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var nameBlock = new TextBlock
                 {
-                    Content = socialMediaLink.Name
+                    Text = socialMediaLink.Name,
+                    VerticalAlignment = VerticalAlignment.Center
                 };
 
-                item.IsSelected = socialMediaLink.Active;
+                var button = new Button
+                {
+                    Content = "⚙",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                button.Click += (s, e) =>
+                {
+                    MainWindow._windowManager.EditSocialMediaLink(socialMediaLink.Name);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                };
+
+                Grid.SetColumn(nameBlock, 0);
+                Grid.SetColumn(button, 1);
+                grid.Children.Add(nameBlock);
+                grid.Children.Add(button);
+
+                var item = new ListBoxItem
+                {
+                    Content = grid,
+                    IsSelected = socialMediaLink.Active,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
 
                 SocialMediaLinksListBox.Items.Add(item);
             }
@@ -112,7 +141,10 @@ namespace ResumeHandlerGUI.Views
             foreach (var item in listBox.Items)
             {
                 var listBoxItem = item as ListBoxItem;
-                string socialMediaLink = listBoxItem.Content.ToString();
+                var grid = listBoxItem.Content as Grid;
+
+                var linkNameBlock = grid.Children[0] as TextBlock;
+                string socialMediaLink = linkNameBlock.Text.ToString();
                 var isActive = listBoxItem.IsSelected;
                 MainWindow._wpfDocumentHandler.DocumentHandler.SetSocialMediaLinkActive(socialMediaLink, isActive);
             }
@@ -123,28 +155,6 @@ namespace ResumeHandlerGUI.Views
             {
                 mainWindow.UpdateResume();
             }
-
-            //for (int i = 0; i < SocialMediaLinksListBox.Items.Count; i++)
-            //{
-            //    var item = (ListBoxItem)SocialMediaLinksListBox.Items[i];
-            //    if (item.IsSelected)
-            //    {
-            //        MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks[i].Active = true;
-            //    }
-            //}
-
-            //SocialMediaLinksListBox.Items.Clear();
-
-            //foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks)
-            //{
-            //    var item = new ListBoxItem
-            //    {
-            //        Content = socialMediaLink.Name
-            //    };
-
-            //    item.IsSelected = socialMediaLink.Active;
-            //    SocialMediaLinksListBox.Items.Add(item);
-            //}
         }
 
         private void AddLinkButton_Click(object sender, RoutedEventArgs e)

@@ -397,21 +397,165 @@ namespace DocumentHandler
                     break;
                 }
             }
-
-            foreach (var socialMediaLink in CurrentResume.SocialMediaLinks)
-            {
-
-            }
         }
 
         public void SetEducationActive(string educationName, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == educationName)
+                {
+                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public void SetOtherExperienceActive(string otherExperienceName, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == otherExperienceName)
+                {
+                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    break;
+                }
+            }
+        }
+
+        public TechnicalSkill GetTechnicalSkillByName(string technicalSkillName)
+        {
+            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
+            {
+                if (CurrentResume.TechnicalSkills[i].Text == technicalSkillName)
+                {
+                    return CurrentResume.TechnicalSkills[i];
+                }
+            }
+
+            return new TechnicalSkill();    
+        }
+
+        public SocialMediaLink GetSocialMediaLinkByName(string socialMediaLinkName)
+        {
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
+                {
+                    return CurrentResume.SocialMediaLinks[i];
+                }
+            }
+
+            return new SocialMediaLink();
+        }
+
+        public Experience GetExperienceByName(string experienceName)
+        {
+            for (var i = 0; i < CurrentResume.Experience.Count; i++)
+            {
+                if (CurrentResume.Experience[i].CompanyName.Text == experienceName)
+                {
+                    return CurrentResume.Experience[i];
+                }
+            }
+
+            return new Experience();
+        }
+
+        public Education GetEducationByName(string educationName)
+        {
+            for (var i = 0; i < CurrentResume.Education.Count; i++)
+            {
+                if (CurrentResume.Education[i].CollegeName == educationName)
+                {
+                    return CurrentResume.Education[i];
+                }
+            }
+
+            return new Education();
+        }
+
+        public OtherExperience GetOtherExperienceByName(string otherExperienceName)
+        {
+            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
+            {
+                if (CurrentResume.OtherExperience[i].Name == otherExperienceName)
+                {
+                    return CurrentResume.OtherExperience[i];
+                }
+            }
+
+            return new OtherExperience();
+        }
+
+        public bool UpdateTechnicalSkill(TechnicalSkill technicalSkill)
+        {
+            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
+            {
+                if (CurrentResume.TechnicalSkills[i].Text == technicalSkill.Text)
+                {
+                    CurrentResume.TechnicalSkills[i] = technicalSkill;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateExperience(Experience experience)
+        {
+            for (var i = 0; i < CurrentResume.Experience.Count; i++)
+            {
+                if (CurrentResume.Experience[i].CompanyName == experience.CompanyName)
+                {
+                    CurrentResume.Experience[i] = experience;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateSocialMediaLink(SocialMediaLink socialMediaLink)
+        {
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLink.Name)
+                {
+                    CurrentResume.SocialMediaLinks[i] = socialMediaLink;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateEducation(Education education)
+        {
+            for (var i = 0; i < CurrentResume.Education.Count; i++)
+            {
+                if (CurrentResume.Education[i].CollegeName == education.CollegeName)
+                {
+                    CurrentResume.Education[i] = education;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool UpdateOtherExperience(OtherExperience otherExperience)
+        {
+            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
+            {
+                if (CurrentResume.OtherExperience[i].Name == otherExperience.Name)
+                {
+                    CurrentResume.OtherExperience[i] = otherExperience;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

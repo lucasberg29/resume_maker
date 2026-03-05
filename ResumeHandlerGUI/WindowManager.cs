@@ -74,13 +74,13 @@ namespace ResumeHandlerGUI
             }
         }
 
-        public void EditSocialMediaLink()
+        public void EditSocialMediaLink(string socialMediaLinkName)
         {
-            var dialog = new EditSocialMediaLinkWindow();
+            var dialog = new EditSocialMediaLinkWindow(socialMediaLinkName);
 
             if (ShowDialog(dialog))
             {
-                MainWindow._wpfDocumentHandler.UpdateResume();
+                _owner.UpdateResume();
             }
         }
 

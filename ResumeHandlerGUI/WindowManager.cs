@@ -70,7 +70,8 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
-                MainWindow._wpfDocumentHandler.UpdateResume();
+                _owner.UpdateUI();
+                _owner.UpdateResume();
             }
         }
 
@@ -80,6 +81,7 @@ namespace ResumeHandlerGUI
 
             if (ShowDialog(dialog))
             {
+                _owner.UpdateUI();
                 _owner.UpdateResume();
             }
         }
@@ -93,12 +95,13 @@ namespace ResumeHandlerGUI
             }
         }
 
-        public void AddTechnicalSkill()
+        public void AddTechnicalSkill(string skillType)
         {
-            var dialog = new AddTechnicalSkillWindow();
+            var dialog = new AddTechnicalSkillWindow(skillType);
             if (ShowDialog(dialog))
             {
-                MainWindow._wpfDocumentHandler.UpdateResume();
+                _owner.UpdateUI();
+                _owner.UpdateResume();
             }
         }
 

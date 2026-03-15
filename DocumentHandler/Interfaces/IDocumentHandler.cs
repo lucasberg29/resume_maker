@@ -45,5 +45,11 @@ namespace DocumentHandler.Interfaces
         bool UpdateSocialMediaLink(SocialMediaLink socialMediaLink);
         bool UpdateEducation(Education education);
         bool UpdateOtherExperience(OtherExperience otherExperience);
+
+        bool DeleteTechnicalSkill(string technicalSkillName);
+        bool DeleteExperience(string experienceName);
+        bool DeleteSocialMediaLink(string socialMediaLinkName);
+        bool DeleteEducation(string educationName);
+        bool DeleteOtherExperience(string otherExperienceName);
     }
 }

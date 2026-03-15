@@ -18,6 +18,8 @@ namespace ResumeHandlerGUI
 
         public WPFDocumentHandler()
         {
+            FlowDocument = new FlowDocument();
+
             DocumentHandler.InitHandler();
 
             string lastResume = Properties.Settings.Default.LastResume;
@@ -41,8 +43,6 @@ namespace ResumeHandlerGUI
             UpdateExperience();
             UpdateEducation();
             UpdateSkills();
-
-
         }
 
         private void UpdateHeader()

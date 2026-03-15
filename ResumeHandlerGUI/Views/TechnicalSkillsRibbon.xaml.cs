@@ -21,6 +21,248 @@ namespace ResumeHandlerGUI.Views
         public TechnicalSkillsRibbon()
         {
             InitializeComponent();
+            UpdateFields();
+        }
+
+        public void UpdateFields()
+        {
+            UpdateLanguages();
+            UpdateFrameworks();
+            UpdateTools();
+        }
+
+        private void UpdateLanguages()
+        {
+            LanguagesListBox.Items.Clear();
+            var languages = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
+                TechnicalSkills.Where(t => t.Type == "language");
+
+            foreach (var language in languages)
+            {
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var nameBlock = new TextBlock
+                {
+                    Text = language.Text,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var button = new Button
+                {
+                    Content = "⚙",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                button.Click += (s, e) =>
+                {
+                    MainWindow._windowManager.EditSocialMediaLink(language.Text);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                };
+
+                Grid.SetColumn(nameBlock, 0);
+                Grid.SetColumn(button, 1);
+                grid.Children.Add(nameBlock);
+                grid.Children.Add(button);
+
+                var item = new ListBoxItem
+                {
+                    Content = grid,
+                    IsSelected = language.Active,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
+
+                LanguagesListBox.Items.Add(item);
+            }
+
+        }
+        private void UpdateFrameworks()
+        {
+            FrameworksListBox.Items.Clear();
+            var frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
+                TechnicalSkills.Where(t => t.Type == "framework");
+
+            foreach (var framework in frameworks)
+            {
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var nameBlock = new TextBlock
+                {
+                    Text = framework.Text,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var button = new Button
+                {
+                    Content = "⚙",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                button.Click += (s, e) =>
+                {
+                    MainWindow._windowManager.EditSocialMediaLink(framework.Text);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                };
+
+                Grid.SetColumn(nameBlock, 0);
+                Grid.SetColumn(button, 1);
+                grid.Children.Add(nameBlock);
+                grid.Children.Add(button);
+
+                var item = new ListBoxItem
+                {
+                    Content = grid,
+                    IsSelected = framework.Active,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
+
+                FrameworksListBox.Items.Add(item);
+            }
+
+        }
+
+        private void UpdateTools()
+        {
+            ToolsListBox.Items.Clear();
+            var tools = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
+                TechnicalSkills.Where(t => t.Type == "tool");
+
+            foreach (var tool in tools)
+            {
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var nameBlock = new TextBlock
+                {
+                    Text = tool.Text,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var button = new Button
+                {
+                    Content = "⚙",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                button.Click += (s, e) =>
+                {
+                    MainWindow._windowManager.EditSocialMediaLink(tool.Text);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                };
+
+                Grid.SetColumn(nameBlock, 0);
+                Grid.SetColumn(button, 1);
+                grid.Children.Add(nameBlock);
+                grid.Children.Add(button);
+
+                var item = new ListBoxItem
+                {
+                    Content = grid,
+                    IsSelected = tool.Active,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
+
+                ToolsListBox.Items.Add(item);
+            }
+        }
+
+
+
+        private void LanguagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+
+            foreach (var item in listBox.Items)
+            {
+                var listBoxItem = item as ListBoxItem;
+                var grid = listBoxItem.Content as Grid;
+
+                var linkNameBlock = grid.Children[0] as TextBlock;
+                string socialMediaLink = linkNameBlock.Text.ToString();
+                var isActive = listBoxItem.IsSelected;
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+            }
+
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                mainWindow.UpdateResume();
+            }
+        }
+
+        private void FrameworksListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+
+            foreach (var item in listBox.Items)
+            {
+                var listBoxItem = item as ListBoxItem;
+                var grid = listBoxItem.Content as Grid;
+
+                var linkNameBlock = grid.Children[0] as TextBlock;
+                string socialMediaLink = linkNameBlock.Text.ToString();
+                var isActive = listBoxItem.IsSelected;
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+            }
+
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                mainWindow.UpdateResume();
+            }
+        }
+
+        private void ToolsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = sender as ListBox;
+
+            foreach (var item in listBox.Items)
+            {
+                var listBoxItem = item as ListBoxItem;
+                var grid = listBoxItem.Content as Grid;
+
+                var linkNameBlock = grid.Children[0] as TextBlock;
+                string socialMediaLink = linkNameBlock.Text.ToString();
+                var isActive = listBoxItem.IsSelected;
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+            }
+
+            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
+
+            if (mainWindow != null)
+            {
+                mainWindow.UpdateResume();
+            }
+        }
+
+        private void AddFrameworkButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager.AddTechnicalSkill("framework");
+            MainWindow._wpfDocumentHandler.UpdateResume();
+        }
+
+        private void AddToolButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager.AddTechnicalSkill("tool");
+            MainWindow._wpfDocumentHandler.UpdateResume();
+        }
+
+        private void AddLanguageButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager.AddTechnicalSkill("language");
+            MainWindow._wpfDocumentHandler.UpdateResume();
         }
     }
 }

@@ -93,30 +93,32 @@ namespace ResumeHandlerGUI
             DocViewer.Document = _wpfDocumentHandler.FlowDocument;
         }
 
+        public void UpdateUI()
+        {
+            _headerRibbon.UpdateFields();
+            _technicalSkillsRibbon.UpdateFields();
+            //_experienceRibbon.UpdateFields();
+            //_educationRibbon.UpdateFields();
+            //_otherExperienceRibbon.UpdateFields();
+        }
+
         private void Click_OpenResume(object sender, RoutedEventArgs e)
         {
             //ShowResume("selectedPath", "openFileDialog.SafeFileName");
         }
 
-        private void AddTechnicalSkill_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new AddTechnicalSkillWindow
-            {
-                Owner = this
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                _wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(dialog.SkillName, dialog.SkillType.ToLower());
-                _flowDoc = new FlowDocument();
-                _wpfDocumentHandler.UpdateResume();
-            }
-        }
-
         private void SaveResume_Click(object sender, RoutedEventArgs e)
         {
-            _wpfDocumentHandler.DocumentHandler.SaveResume();
-            MessageBox.Show("Resume saved successfully!");
+            bool savedSuccesfully = _wpfDocumentHandler.DocumentHandler.SaveResume();
+
+            if (savedSuccesfully)
+            {
+                MessageBox.Show("Resume saved successfully!");
+            }
+            else
+            {
+                MessageBox.Show("Failed to save the resume.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void EditAddress_Click(object sender, RoutedEventArgs e)
@@ -160,20 +162,6 @@ namespace ResumeHandlerGUI
                 _wpfDocumentHandler.UpdateResume();
             }
         }
-
-        //private void EditSocialMediaLink_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var dialog = new EditSocialMediaLinkWindow()
-        //    {
-        //        Owner = this
-        //    };
-
-        //    if (dialog.ShowDialog() == true)
-        //    {
-        //        _flowDoc = new FlowDocument();
-        //        _wpfDocumentHandler.UpdateResume();
-        //    }
-        //}
 
         private void ClearSocialMediaLinks_Click(object sender, RoutedEventArgs e)
         {

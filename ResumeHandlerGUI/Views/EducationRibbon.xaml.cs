@@ -22,5 +22,50 @@ namespace ResumeHandlerGUI.Views
         {
             InitializeComponent();
         }
+
+        public void UpdateFields()
+        {
+
+        }
+
+        private void EducationListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void StartDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void EndDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ProgramTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void BulletPointsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void LocationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void AddBulletPointButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddEducationButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

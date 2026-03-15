@@ -37,6 +37,7 @@ namespace ResumeHandlerGUI.Windows
 
             if (socialMediaLink != null)
             {
+                LinkSelected.Text = socialMediaLink.Name;   
                 FileText.Text = socialMediaLink.FileName;
                 NameTextBox.Text = socialMediaLink.Name;
                 HyperlinkTextBox.Text = socialMediaLink.Hyperlink;
@@ -71,5 +72,20 @@ namespace ResumeHandlerGUI.Windows
             Close();
         }
 
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetSocialMediaLinkByName(_socialMediaLinkName);
+            bool deletedSuccesfully = MainWindow._wpfDocumentHandler.DocumentHandler.DeleteSocialMediaLink(socialMediaLink.Name);
+
+            if (deletedSuccesfully)
+            {
+                DialogResult = true;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Failed to delete the social media link.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);    
+            }
+        }
     }
 }

@@ -22,5 +22,20 @@ namespace ResumeHandlerGUI.Views
         {
             InitializeComponent();
         }
+
+        public void UpdateFields()
+        {
+
+        }
+
+        private void AddExperienceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OtherExperienceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace ResumeHandlerGUI.Views
             UpdateFields();
         }
 
-        private void UpdateFields()
+        public void UpdateFields()
         {
             FullName.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text;
             PhoneNumber.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PhoneNumber.Text;
@@ -153,6 +153,7 @@ namespace ResumeHandlerGUI.Views
 
             if (mainWindow != null)
             {
+                //MainWindow._wpfDocumentHandler.UpdateResume();
                 mainWindow.UpdateResume();
             }
         }

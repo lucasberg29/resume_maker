@@ -38,11 +38,15 @@
                     HorizontalAlignment="Right"
                     Margin="0,15,0,0">
             <Button x:Name="CancelButton" Content="Cancel"
-                    Width="70"
+                    Width="40"
                     Margin="5,5,0,0"
                     Click="CancelButton_Click"></Button>
+            <Button x:Name="DeleteButton" Content="Delete"
+                    Width="40"
+                    Margin="5,5,0,0"
+                    Click="DeleteButton_Click"></Button>
             <Button x:Name="UpdateLink" Content="Update"
-                    Width="100"
+                    Width="70"
                     Margin="5,5,0,0"
                     Click="UpdateSocialMediaLinkButton_Click"/>
         </StackPanel>

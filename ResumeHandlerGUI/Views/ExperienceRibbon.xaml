@@ -5,8 +5,58 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ResumeHandlerGUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="200" d:DesignWidth="1024">
+    <Border Background="{StaticResource Resume.MenuSelectedBackgroundColourBrush}"
+        CornerRadius="0,0,15,15" Margin="20,0,20,20">
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="10" Grid.Column="0">
+                <TextBlock x:Name="ExperienceTitle" Text="Experience:" Margin="0,10,0,4"/>
+                <ListBox x:Name="ExperincesListBox" 
+                         Width="200" 
+                         SelectionMode="Multiple"
+                         SelectionChanged="ExperiencesListBox_SelectionChanged">
+                    <ListBoxItem>
+                        Hello
+                    </ListBoxItem>
+                </ListBox>
+                <Button x:Name="AddLanguageButton" 
+                        Click="AddLanguageButton_Click" 
+                        Margin="10,10,10,10" 
+                        Content="Add Experience"></Button>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="1" MinWidth="200">
+                <TextBlock x:Name="GeneralTitle" Text="General:" Margin="0,10,0,4"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                    <DatePicker x:Name="StartDatePicker" Margin="10,0,0,4" SelectedDateChanged="StartDatePicker_SelectedDateChanged"/>
+                    <DatePicker x:Name="EndDatePicker" Margin="10,0,0,4" SelectedDateChanged="EndDatePicker_SelectedDateChanged"/>
+                </StackPanel>
+                
+                <TextBlock x:Name="JobTitle" Text="Job Title:" Margin="0,10,0,4"/>
+                <TextBox x:Name="JobTitleTextBox" Margin="0,0,0,4" TextChanged="JobTitleTextBox_TextChanged"/>
+
+                <TextBlock x:Name="Location" Text="Location:" Margin="0,10,0,4"/>
+                <TextBox x:Name="LocationTextBox" Margin="0,0,0,4" TextChanged="LocationTextBox_TextChanged"/>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="2">
+                <TextBlock x:Name="BulletPointsTitle" Text="Bullet Points:" Margin="0,10,0,4"/>
+                <ListBox x:Name="BulletPointsListBox" 
+                         Width="200" 
+                         SelectionMode="Multiple"
+                         SelectionChanged="BulletPointsListBox_SelectionChanged">
+                    <ListBoxItem>
+                        Hello
+                    </ListBoxItem>
+                </ListBox>
+                <Button x:Name="AddBulletPointButton" 
+                        Click="AddBulletPointButton_Click" 
+                        Margin="10,10,10,10" 
+                        Content="Add Bullet Point"></Button>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

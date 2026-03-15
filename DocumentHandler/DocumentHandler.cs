@@ -372,11 +372,11 @@ namespace DocumentHandler
 
         public void SetTechnicalSkillActive(string technicalSkillName, bool isActive)
         {
-            foreach (var technicalSkill in CurrentResume.TechnicalSkills)
+            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
             {
-                if (technicalSkill.Text == technicalSkillName)
+                if (CurrentResume.TechnicalSkills[i].Text == technicalSkillName)
                 {
-                    technicalSkill.Active = isActive;
+                    CurrentResume.TechnicalSkills[i].Active = isActive;
                     break;
                 }
             }
@@ -384,7 +384,14 @@ namespace DocumentHandler
 
         public void SetExperienceActive(string experienceName, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.Experience.Count; i++)
+            {
+                if (CurrentResume.Experience[i].CompanyName.Text == experienceName)
+                {
+                    CurrentResume.Experience[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive)
@@ -401,11 +408,11 @@ namespace DocumentHandler
 
         public void SetEducationActive(string educationName, bool isActive)
         {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            for (var i = 0; i < CurrentResume.Education.Count; i++)
             {
-                if (CurrentResume.SocialMediaLinks[i].Name == educationName)
+                if (CurrentResume.Education[i].CollegeName == educationName)
                 {
-                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    CurrentResume.Education[i].Active = isActive;
                     break;
                 }
             }
@@ -413,11 +420,11 @@ namespace DocumentHandler
 
         public void SetOtherExperienceActive(string otherExperienceName, bool isActive)
         {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
             {
-                if (CurrentResume.SocialMediaLinks[i].Name == otherExperienceName)
+                if (CurrentResume.OtherExperience[i].Name == otherExperienceName)
                 {
-                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    CurrentResume.OtherExperience[i].Active = isActive;
                     break;
                 }
             }
@@ -556,6 +563,43 @@ namespace DocumentHandler
             }
 
             return false;
+        }
+
+        public bool DeleteTechnicalSkill(string technicalSkillName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteExperience(string experienceName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteSocialMediaLink(string socialMediaLinkName)
+        {
+            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
+                {
+                    File.Delete(Path.Combine(ResumeFolderPath, CurrentResume.SocialMediaLinks[i].FilePath));
+
+                    CurrentResume.SocialMediaLinks.RemoveAt(i);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool DeleteEducation(string educationName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteOtherExperience(string otherExperienceName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

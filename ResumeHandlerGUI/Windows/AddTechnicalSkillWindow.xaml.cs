@@ -8,9 +8,21 @@ namespace ResumeHandlerGUI
         public string SkillName { get; private set; } = "";
         public string SkillType { get; private set; } = "";
 
-        public AddTechnicalSkillWindow()
+        public AddTechnicalSkillWindow(string technicalSkill)
         {
             InitializeComponent();
+
+            SkillType = technicalSkill;
+
+            TypeComboBox.SelectedIndex = technicalSkill switch
+            {
+                "language" => 0,
+                "framework" => 1,
+                "tool" => 2,
+                _ => -1
+            };
+
+
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -27,11 +39,13 @@ namespace ResumeHandlerGUI
 
             MainWindow._wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(SkillName, SkillType.ToLower());
             DialogResult = true;
+            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
+
     }
 }

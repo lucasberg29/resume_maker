@@ -15,13 +15,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Menu x:Name="MainMenu" VerticalContentAlignment="Stretch" Grid.Row="0"  FontFamily="Cooper Black" FontSize="16" FontWeight="Bold" Margin="0,0,0,0">
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Resume" Header="_Resume" Padding="15,0,15,0" BorderThickness="0,0,0,0" Margin="20,20,20,20"/>
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Header" Header="_Header" Padding="30,0,30,0" Margin="20,20,20,20"/>
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="TechnicalSkills" Header="_Technical Skills" Padding="15,0,15,0" Margin="20,20,20,20"/>
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Experience" Header="_Experience" Padding="15,0,15,0" Margin="20,20,20,20" />
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Education" Header="_Education" Padding="15,0,15,0" Margin="20,20,20,20" />
-            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="OtherExperience" Header="_Other Experience" Padding="15,0,15,0" Margin="20,20,20,20"/>
+        <Menu x:Name="MainMenu" VerticalContentAlignment="Stretch" Grid.Row="0"  FontFamily="Cooper Black" FontSize="16"  FontWeight="Bold" Margin="20,20,0,0">
+            <MenuItem Style="{StaticResource FirstMenuItemStyle}" IsCheckable="True" Click="MenuOption_Click" x:Name="Resume" Header="_Resume"/>
+            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Header" Header="_Header" />
+            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="TechnicalSkills" Header="_Technical Skills"/>
+            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Experience" Header="_Experience" />
+            <MenuItem IsCheckable="True" Click="MenuOption_Click" x:Name="Education" Header="_Education" />
+            <MenuItem Style="{StaticResource LastMenuItemStyle}" IsCheckable="True" Click="MenuOption_Click" x:Name="OtherExperience" Header="_Other Experience" />
         </Menu>
         
         <Border Background="Transparent"  Grid.Row="1">

@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Presentation;
 using Microsoft.Win32;
 using ResumeHandlerGUI.Views;
 using ResumeHandlerGUI.Windows;
@@ -18,6 +19,7 @@ namespace ResumeHandlerGUI
     {
         public static WindowManager? _windowManager;
         public static readonly WPFDocumentHandler _wpfDocumentHandler = new();
+        public static UiManager? _uiManager;
 
         FlowDocument _flowDoc = new FlowDocument();
 
@@ -42,11 +44,6 @@ namespace ResumeHandlerGUI
         private void CreateHeaderRibbons()
         {
             MenuRibbonSelected.Content = _headerRibbon;
-        }
-
-        private void SubscribeClicksToWindowManager()
-        {
-            // TODO: Add all click events to the window manager
         }
 
         private void MenuOption_Click(object sender, RoutedEventArgs e)

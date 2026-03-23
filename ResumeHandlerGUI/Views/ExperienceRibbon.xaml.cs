@@ -24,6 +24,11 @@ namespace ResumeHandlerGUI.Views
             InitializeComponent();
         }
 
+        public void OnSelected()
+        {
+            UpdateFields();
+        }
+
         public void UpdateFields()
         {
 
@@ -59,9 +64,10 @@ namespace ResumeHandlerGUI.Views
 
         }
 
-        private void AddLanguageButton_Click(object sender, RoutedEventArgs e)
+        private void AddExperienceButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow._windowManager.AddExperience();
+            MainWindow._wpfDocumentHandler.UpdateResume();
         }
 
         private void AddBulletPointButton_Click(object sender, RoutedEventArgs e)

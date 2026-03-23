@@ -12,7 +12,6 @@ namespace ResumeHandlerGUI
 {
     internal class ImageHandler
     {
-
         public void ExtractImages(DocumentFormat.OpenXml.Drawing.Paragraph paragraph, string docPath)
         {
             using var wordDoc = WordprocessingDocument.Open(docPath, false);

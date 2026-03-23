@@ -130,7 +130,6 @@ namespace DocumentHandler
 
         public bool ExportResumeToDOCX(string fileName = "Resume.docx")
         {
-            // Open docx file
             string path = Path.Combine(ResumeFolderPath, fileName);
             using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
             var mainPart = doc.AddMainDocumentPart();

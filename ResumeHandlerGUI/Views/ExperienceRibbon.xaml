@@ -24,8 +24,8 @@
                         Hello
                     </ListBoxItem>
                 </ListBox>
-                <Button x:Name="AddLanguageButton" 
-                        Click="AddLanguageButton_Click" 
+                <Button x:Name="AddExperienceButton" 
+                        Click="AddExperienceButton_Click" 
                         Margin="10,10,10,10" 
                         Content="Add Experience"></Button>
             </StackPanel>

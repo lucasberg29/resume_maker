@@ -16,9 +16,10 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Margin="10" Grid.Column="0" MinWidth="200">
-                <TextBlock x:Name="File" Text="File" TextAlignment="center" FontWeight="bold" Margin="10,0,10,20"/>
+                <TextBlock x:Name="File" Text="File" TextAlignment="left" FontWeight="bold" Margin="10,0,10,20"/>
                 <Button x:Name="SaveResumeButton" Content="Save Resume" Margin="0,0,0,4" Click="SaveResumeButton_Click"/>
                 <Button x:Name="NewResumeButton" Content="New Resume" Margin="0,0,0,4" Click="NewResumeButton_Click"/>
+                <Button x:Name="ExportToDocxButton" Content="Export to DOCX" Margin="0,0,0,4" Click="ExportToDocxButton_Click"/>
             </StackPanel>
 
             <StackPanel Margin="10" Grid.Column="1">

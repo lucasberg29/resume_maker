@@ -34,14 +34,12 @@
         <Setter Property="Foreground" Value="#4c1130"/>
     </Style>
 
-    <!-- Normal body text -->
     <Style x:Key="Resume.Body"
            TargetType="Paragraph">
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="Margin" Value="0,0,0,3"/>
     </Style>
 
-    <!-- Bullet -->
     <Style x:Key="Resume.Bullet"
            TargetType="Paragraph">
         <Setter Property="FontSize" Value="11"/>

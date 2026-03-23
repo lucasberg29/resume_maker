@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using Microsoft.Win32;
 using ResumeHandlerGUI.Windows;
 using System.Windows;
 using System.Windows.Documents;
@@ -118,6 +119,26 @@ namespace ResumeHandlerGUI
                 Properties.Settings.Default.Save();
 
                 MainWindow._wpfDocumentHandler.UpdateResume();
+            }
+        }
+
+        public void ExportToDocx()
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Word Documents (*.docx)|*.docx|All Files (*.*)|*.*",
+                Title = "Export Resume to Docx",
+                DefaultExt = "docx"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                bool savedSuccessfully = MainWindow._wpfDocumentHandler.DocumentHandler.ExportResumeToDOCX(dialog.FileName);
+
+                if (savedSuccessfully)
+                {
+                    MessageBox.Show("Saved Successfully!");
+                }
             }
         }
 

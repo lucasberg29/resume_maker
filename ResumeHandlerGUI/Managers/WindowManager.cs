@@ -4,7 +4,7 @@ using ResumeHandlerGUI.Windows;
 using System.Windows;
 using System.Windows.Documents;
 
-namespace ResumeHandlerGUI
+namespace ResumeHandlerGUI.Managers
 {
     public class WindowManager
     {

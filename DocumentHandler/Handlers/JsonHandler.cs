@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace DocumentHandler
+namespace DocumentHandler.Handlers
 {
-    internal class JsonReaderWriter
+    internal class JsonHandler
     {
         public static void ReadResumeFromJson( ref Resume CurrentResume, string jsonFileName)
         {
@@ -20,9 +20,9 @@ namespace DocumentHandler
             }
             catch (Exception ex)
             {
+                //TODO: Handle exceptions (e.g., file not found, invalid JSON format)
 
             }
-
         }
 
         public static void WriteResumeToJson(Resume currentResume, string jsonFileName)

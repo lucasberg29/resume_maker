@@ -1,4 +1,5 @@
-﻿using DocumentHandler.DTO;
+﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentHandler.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,11 +34,14 @@ namespace ResumeHandlerGUI.Views
         public void UpdateFields()
         {
             FullName.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text;
-            PhoneNumber.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PhoneNumber.Text;
+
+            PhoneNumber.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.PhoneNumber.Text;
+            Email.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text;
+            Location.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Location.Text;
+
             Introduction.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Introduction.Text;
 
             SocialMediaLinksListBox.Items.Clear();
-
             foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks)
             {
                 var grid = new Grid();
@@ -80,58 +84,53 @@ namespace ResumeHandlerGUI.Views
             }
         }
 
+        public void UpdateMainWindow()
+        {
+            MainWindow? mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.UpdateResume();
+            }
+        }
+
         private void NewFullNameInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string newValue = NewFullNameInputField.Text;
-            FullName.Text = newValue;
+            FullName.Text = NewFullNameInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text = newValue;
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-
-            mainWindow.UpdateResume();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text = FullName.Text;
+            UpdateMainWindow();
         }
 
         private void NewPhoneNumberInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string newValue = NewPhoneNumberInputField.Text;
-            PhoneNumber.Text = newValue;
+            PhoneNumber.Text = NewPhoneNumberInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PhoneNumber.Text = newValue;
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-
-            mainWindow.UpdateResume();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.PhoneNumber.Text = PhoneNumber.Text;
+            UpdateMainWindow();
         }
 
         private void NewEmailInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string newValue = NewEmailInputField.Text;
-            Email.Text = newValue;
+            Email.Text = NewEmailInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Email.Text = newValue;
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-
-            mainWindow.UpdateResume();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text = Email.Text;
+            UpdateMainWindow();
         }
 
         private void NewLocationInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string newValue = NewLocationInputField.Text;
-            Location.Text = newValue;
+            Location.Text = NewLocationInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Location.Text = newValue;
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-
-            mainWindow.UpdateResume();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Location.Text = Location.Text;
+            UpdateMainWindow();
         }
 
         private void NewIntroductionInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string newValue = NewIntroductionInputField.Text;
-            Introduction.Text = newValue;
+            Introduction.Text = NewIntroductionInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Introduction.Text = newValue;
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-            mainWindow.UpdateResume();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Introduction.Text = Introduction.Text;
+            UpdateMainWindow();
         }
 
         private void SkillsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -149,13 +148,7 @@ namespace ResumeHandlerGUI.Views
                 MainWindow._wpfDocumentHandler.DocumentHandler.SetSocialMediaLinkActive(socialMediaLink, isActive);
             }
 
-            MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
-
-            if (mainWindow != null)
-            {
-                //MainWindow._wpfDocumentHandler.UpdateResume();
-                mainWindow.UpdateResume();
-            }
+            UpdateMainWindow();
         }
 
         private void AddLinkButton_Click(object sender, RoutedEventArgs e)

@@ -10,12 +10,8 @@ namespace DocumentHandler.DTO
     {
         [JsonPropertyName("fullName")]
         public Element FullName { get; set; } = new Element();
-        [JsonPropertyName("phoneNumber")]
-        public Element PhoneNumber { get; set; } = new Element();
-        [JsonPropertyName("email")]
-        public Element Email { get; set; } = new Element();
-        [JsonPropertyName("location")]
-        public Element Location { get; set; } = new Element();
+        [JsonPropertyName("contact")]
+        public Contact Contact { get; set; } = new Contact();   
         [JsonPropertyName("introduction")]
         public Element Introduction { get; set; } = new Element();
         [JsonPropertyName("socialMediaLinks")]

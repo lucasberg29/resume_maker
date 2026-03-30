@@ -1,37 +1,24 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using DocumentFormat.OpenXml.Presentation;
-using Microsoft.Win32;
-using ResumeHandlerGUI.Views;
-using ResumeHandlerGUI.Windows;
-using System.IO;
-using System.Linq;
+﻿using ResumeHandlerGUI.Handlers;
+using ResumeHandlerGUI.Managers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace ResumeHandlerGUI
 {
     public partial class MainWindow : Window
     {
+
         public static WindowManager? _windowManager;
         public static readonly WPFDocumentHandler _wpfDocumentHandler = new();
-        public static UiManager? _uiManager;
+        public static UiManager _uiManager = new();
 
-        FlowDocument _flowDoc = new FlowDocument();
-
-        private ResumeRibbon _resumeRibbon = new ResumeRibbon();
-        private HeaderRibbon _headerRibbon = new HeaderRibbon();
-        private TechnicalSkillsRibbon _technicalSkillsRibbon = new TechnicalSkillsRibbon();
-        private ExperienceRibbon _experienceRibbon = new ExperienceRibbon();
-        private EducationRibbon _educationRibbon = new EducationRibbon();
-        private OtherExperienceRibbon _otherExperienceRibbon = new OtherExperienceRibbon();
+        FlowDocument _flowDoc = new();
 
         public MainWindow()
         {
+
             _windowManager = new WindowManager(this);
 
             InitializeComponent();
@@ -41,9 +28,15 @@ namespace ResumeHandlerGUI
             CreateHeaderRibbons();
         }
 
+        public void Update()
+        {
+            _wpfDocumentHandler.UpdateResume();
+            DocViewer.Document = _wpfDocumentHandler.FlowDocument;
+        }
+
         private void CreateHeaderRibbons()
         {
-            MenuRibbonSelected.Content = _headerRibbon;
+            MenuRibbonSelected.Content = _uiManager._headerRibbon;
         }
 
         private void MenuOption_Click(object sender, RoutedEventArgs e)
@@ -53,22 +46,22 @@ namespace ResumeHandlerGUI
             switch (sender)
             {
                 case MenuItem menuItem when menuItem == Resume:
-                    MenuRibbonSelected.Content = _resumeRibbon;
+                    MenuRibbonSelected.Content = _uiManager._resumeRibbon;
                     break;
                 case MenuItem menuItem when menuItem == Header:
-                    MenuRibbonSelected.Content = _headerRibbon;
+                    MenuRibbonSelected.Content = _uiManager._headerRibbon;
                     break;
                 case MenuItem menuItem when menuItem == TechnicalSkills:
-                    MenuRibbonSelected.Content = _technicalSkillsRibbon;
+                    MenuRibbonSelected.Content = _uiManager._technicalSkillsRibbon;
                     break;
                 case MenuItem menuItem when menuItem == Experience:
-                    MenuRibbonSelected.Content = _experienceRibbon;
+                    MenuRibbonSelected.Content = _uiManager._experienceRibbon;
                     break;
                 case MenuItem menuItem when menuItem == Education:
-                    MenuRibbonSelected.Content = _educationRibbon;
+                    MenuRibbonSelected.Content = _uiManager._educationRibbon;
                     break;
                 case MenuItem menuItem when menuItem == OtherExperience:
-                    MenuRibbonSelected.Content = _otherExperienceRibbon;
+                    MenuRibbonSelected.Content = _uiManager._otherExperienceRibbon;
                     break;
             }
         }
@@ -92,30 +85,11 @@ namespace ResumeHandlerGUI
 
         public void UpdateUI()
         {
-            _headerRibbon.UpdateFields();
-            _technicalSkillsRibbon.UpdateFields();
-            //_experienceRibbon.UpdateFields();
-            //_educationRibbon.UpdateFields();
-            //_otherExperienceRibbon.UpdateFields();
-        }
-
-        private void Click_OpenResume(object sender, RoutedEventArgs e)
-        {
-            //ShowResume("selectedPath", "openFileDialog.SafeFileName");
-        }
-
-        private void SaveResume_Click(object sender, RoutedEventArgs e)
-        {
-            bool savedSuccesfully = _wpfDocumentHandler.DocumentHandler.SaveResume();
-
-            if (savedSuccesfully)
-            {
-                MessageBox.Show("Resume saved successfully!");
-            }
-            else
-            {
-                MessageBox.Show("Failed to save the resume.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            _uiManager._headerRibbon.UpdateFields();
+            _uiManager._technicalSkillsRibbon.UpdateFields();
+            _uiManager._experienceRibbon.UpdateFields();
+            _uiManager._educationRibbon.UpdateFields();
+            _uiManager._otherExperienceRibbon.UpdateFields();
         }
 
         private void EditAddress_Click(object sender, RoutedEventArgs e)
@@ -172,11 +146,6 @@ namespace ResumeHandlerGUI
         {
             _wpfDocumentHandler.DocumentHandler.ExportResumeToDOCX();
             MessageBox.Show("Resume exported to DOCX successfully!");
-        }
-
-        private void ExportToPDF_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

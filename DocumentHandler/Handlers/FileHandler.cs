@@ -1,13 +1,10 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace DocumentHandler
+namespace DocumentHandler.Handlers
 {
-    public class DocumentReaderWriter
+    public class FileHandler
     {
 
         public static void ReadFile(string filePath)

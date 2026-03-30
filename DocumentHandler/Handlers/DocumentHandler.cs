@@ -1,23 +1,15 @@
 ﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
 using DocumentHandler.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Xml.Linq;
+
 using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-using DocumentFormat.OpenXml.CustomProperties;
 
-namespace DocumentHandler
+namespace DocumentHandler.Handlers
 {
     public class DocumentHandler : IDocumentHandler
     {
@@ -46,7 +38,7 @@ namespace DocumentHandler
 
         private void ParseResume()
         {
-            JsonReaderWriter.ReadResumeFromJson(ref CurrentResume, CurrentResumeDataName);
+            JsonHandler.ReadResumeFromJson(ref CurrentResume, CurrentResumeDataName);
         }
 
         public void InitHandler()
@@ -66,9 +58,9 @@ namespace DocumentHandler
                 }
             }
 
-            JsonReaderWriter.WriteResumeToJson(CurrentResume, CurrentResumeDataName);
+            JsonHandler.WriteResumeToJson(CurrentResume, CurrentResumeDataName);
 
-            XmlParser.SaveResumeToDocx(CurrentResume, "Resume.docx");
+            XmlHandler.SaveResumeToDocx(CurrentResume, "Resume.docx");
             return true;
         }
 
@@ -143,7 +135,7 @@ namespace DocumentHandler
 
             // Contact Info
             var paragraphProperties = new ParagraphProperties();
-            switch (CurrentResume.Email.Style.TextAlignment?.ToLower())
+            switch (CurrentResume.Contact.Email.Style.TextAlignment?.ToLower())
             {
                 case "center":
                     paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
@@ -161,23 +153,23 @@ namespace DocumentHandler
             var contactParagraph = new Paragraph(paragraphProperties);
 
             contactParagraph.Append(
-                CreateRunText(CurrentResume.Email.Style, CurrentResume.Email.Text)
+                CreateRunText(CurrentResume.Contact.Email.Style, CurrentResume.Contact.Email.Text)
             );
 
             contactParagraph.Append(
-                CreateRunText(CurrentResume.Email.Style, " - ")
+                CreateRunText(CurrentResume.Contact.Email.Style, " - ")
             );
 
             contactParagraph.Append(
-                CreateRunText(CurrentResume.PhoneNumber.Style, CurrentResume.PhoneNumber.Text)
+                CreateRunText(CurrentResume.Contact.PhoneNumber.Style, CurrentResume.Contact.PhoneNumber.Text)
             );
 
             contactParagraph.Append(
-                CreateRunText(CurrentResume.PhoneNumber.Style, " - ")
+                CreateRunText(CurrentResume.Contact.PhoneNumber.Style, " - ")
             );
 
             contactParagraph.Append(
-                CreateRunText(CurrentResume.Location.Style, CurrentResume.Location.Text)
+                CreateRunText(CurrentResume.Contact.Location.Style, CurrentResume.Contact.Location.Text)
             );
 
             mainPart.Document.Body.AppendChild(contactParagraph);

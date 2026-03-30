@@ -20,7 +20,7 @@ namespace ResumeHandlerGUI
         public EmailWindow()
         {
             InitializeComponent();
-            CurrentEmail.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Email.Text;
+            CurrentEmail.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text;
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
@@ -31,7 +31,7 @@ namespace ResumeHandlerGUI
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Email.Text = NewEmailInputField.Text.Trim();
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text = NewEmailInputField.Text.Trim();
             DialogResult = true;
             Close();
         }

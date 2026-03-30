@@ -9,12 +9,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace ResumeHandlerGUI
+namespace ResumeHandlerGUI.Handlers
 {
     public class WPFDocumentHandler : Control
     {
         public FlowDocument FlowDocument = new();
-        public DocumentHandler.DocumentHandler DocumentHandler = new();
+        public DocumentHandler.Handlers.DocumentHandler DocumentHandler = new();
 
         public WPFDocumentHandler()
         {
@@ -58,14 +58,13 @@ namespace ResumeHandlerGUI
             FlowDocument.Blocks.Add(fullNameParagraph);
 
             // Contact Info
-            var emailRun = CreateRun(DocumentHandler.CurrentResume.Email.Text, DocumentHandler.CurrentResume.Email.Style);
-            var phoneRun = CreateRun(DocumentHandler.CurrentResume.PhoneNumber.Text, DocumentHandler.CurrentResume.PhoneNumber.Style);
-            var locationRun = CreateRun(DocumentHandler.CurrentResume.Location.Text, DocumentHandler.CurrentResume.Location.Style);
+            var emailRun = CreateRun(DocumentHandler.CurrentResume.Contact.Email.Text, DocumentHandler.CurrentResume.Contact.Email.Style);
+            var phoneRun = CreateRun(DocumentHandler.CurrentResume.Contact.PhoneNumber.Text, DocumentHandler.CurrentResume.Contact.PhoneNumber.Style);
+            var locationRun = CreateRun(DocumentHandler.CurrentResume.Contact.Location.Text, DocumentHandler.CurrentResume.Contact.Location.Style);
 
             var contatInfoParagraph = new System.Windows.Documents.Paragraph
             {
-                TextAlignment = TextAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 0)
+                Style = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.Contact.Style)
             };
 
             contatInfoParagraph.Inlines.Add(emailRun);

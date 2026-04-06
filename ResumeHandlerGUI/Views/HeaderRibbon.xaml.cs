@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Section;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,16 +34,20 @@ namespace ResumeHandlerGUI.Views
 
         public void UpdateFields()
         {
-            FullName.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text;
+            var personalInfo = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo;
 
-            PhoneNumber.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.PhoneNumber.Text;
-            Email.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text;
-            Location.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Location.Text;
+            FullName.Text = personalInfo.FullName.Elements.First().Text;
 
-            Introduction.Text = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Introduction.Text;
+            Email.Text = personalInfo.Contact.Elements[0].Text;
+            PhoneNumber.Text = personalInfo.Contact.Elements[1].Text;
+            Location.Text = personalInfo.Contact.Elements[2].Text;
+
+
+            Introduction.Text = MainWindow._wpfDocumentHandler.DocumentHandler.GetIntroduction().Text;
 
             SocialMediaLinksListBox.Items.Clear();
-            foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks)
+
+            foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks)
             {
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -64,7 +69,7 @@ namespace ResumeHandlerGUI.Views
 
                 button.Click += (s, e) =>
                 {
-                    MainWindow._windowManager.EditSocialMediaLink(socialMediaLink.Name);
+                    MainWindow._windowManager.EditSocialMediaLink(socialMediaLink.Id);
                     MainWindow._wpfDocumentHandler.UpdateResume();
                 };
 
@@ -97,7 +102,7 @@ namespace ResumeHandlerGUI.Views
         {
             FullName.Text = NewFullNameInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.FullName.Text = FullName.Text;
+            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SetFullNameText(FullName.Text);
             UpdateMainWindow();
         }
 
@@ -105,7 +110,7 @@ namespace ResumeHandlerGUI.Views
         {
             PhoneNumber.Text = NewPhoneNumberInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.PhoneNumber.Text = PhoneNumber.Text;
+            MainWindow._wpfDocumentHandler.DocumentHandler.SetPhoneNumber(PhoneNumber.Text);
             UpdateMainWindow();
         }
 
@@ -113,7 +118,7 @@ namespace ResumeHandlerGUI.Views
         {
             Email.Text = NewEmailInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Email.Text = Email.Text;
+            MainWindow._wpfDocumentHandler.DocumentHandler.SetEmail(Email.Text);
             UpdateMainWindow();
         }
 
@@ -121,7 +126,7 @@ namespace ResumeHandlerGUI.Views
         {
             Location.Text = NewLocationInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Contact.Location.Text = Location.Text;
+            MainWindow._wpfDocumentHandler.DocumentHandler.SetLocation(Location.Text);
             UpdateMainWindow();
         }
 
@@ -129,7 +134,7 @@ namespace ResumeHandlerGUI.Views
         {
             Introduction.Text = NewIntroductionInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.Introduction.Text = Introduction.Text;
+            MainWindow._wpfDocumentHandler.DocumentHandler.SetIntroduction(Introduction.Text);
             UpdateMainWindow();
         }
 
@@ -160,6 +165,16 @@ namespace ResumeHandlerGUI.Views
         private void UpdateLinkButton_Click(object sender, RoutedEventArgs e)
         {
 
-        }   
+        }
+
+        private void FirtParagraphButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SecondParagraphButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

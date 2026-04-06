@@ -50,7 +50,7 @@ namespace ResumeHandlerGUI
             _socialMediaLink.FilePath = BrowseFileTextBox.Text;
             _socialMediaLink.FileName = System.IO.Path.GetFileName(BrowseFileTextBox.Text);
             _socialMediaLink.Name = NameTextBox.Text;
-            _socialMediaLink.Hyperlink = HyperlinkTextBox.Text.Trim();
+            _socialMediaLink.ElementStyle.Hyperlink = HyperlinkTextBox.Text.Trim();
             _socialMediaLink.Alt = AltTextBox.Text.Trim();
 
             MainWindow._wpfDocumentHandler.DocumentHandler.AddSocialMediaLink(_socialMediaLink);

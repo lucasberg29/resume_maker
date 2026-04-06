@@ -11,17 +11,15 @@ namespace DocumentHandler.Handlers
     {
         public static void ReadResumeFromJson( ref Resume CurrentResume, string jsonFileName)
         {
-            string jsonFilePath = Path.Combine(AppContext.BaseDirectory, jsonFileName);
-
             try
             {
+                string jsonFilePath = Path.Combine(AppContext.BaseDirectory, jsonFileName);
                 string json = File.ReadAllText(jsonFilePath);
                 CurrentResume = JsonSerializer.Deserialize<Resume>(json);
             }
             catch (Exception ex)
             {
-                //TODO: Handle exceptions (e.g., file not found, invalid JSON format)
-
+                DocumentHandler.ErrorHandler.AddError(ex);
             }
         }
 

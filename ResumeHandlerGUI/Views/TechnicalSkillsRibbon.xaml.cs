@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentHandler.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,6 +19,10 @@ namespace ResumeHandlerGUI.Views
     /// </summary>
     public partial class TechnicalSkillsRibbon : UserControl
     {
+        private List<TechnicalSkill> languages = new();
+        private List<TechnicalSkill> frameworks = new();
+        private List<TechnicalSkill> tools = new();
+
         public TechnicalSkillsRibbon()
         {
             InitializeComponent();
@@ -34,8 +39,8 @@ namespace ResumeHandlerGUI.Views
         private void UpdateLanguages()
         {
             LanguagesListBox.Items.Clear();
-            var languages = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
-                TechnicalSkills.Where(t => t.Type == "language");
+            languages = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+                TechnicalSkills.Where(t => t.Type == "language").ToList();
 
             foreach (var language in languages)
             {
@@ -59,7 +64,7 @@ namespace ResumeHandlerGUI.Views
 
                 button.Click += (s, e) =>
                 {
-                    MainWindow._windowManager.EditSocialMediaLink(language.Text);
+                    MainWindow._windowManager.EditSocialMediaLink(language.Id);
                     MainWindow._wpfDocumentHandler.UpdateResume();
                 };
 
@@ -82,8 +87,8 @@ namespace ResumeHandlerGUI.Views
         private void UpdateFrameworks()
         {
             FrameworksListBox.Items.Clear();
-            var frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
-                TechnicalSkills.Where(t => t.Type == "framework");
+            frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+                TechnicalSkills.Where(t => t.Type == "framework").ToList();
 
             foreach (var framework in frameworks)
             {
@@ -107,7 +112,7 @@ namespace ResumeHandlerGUI.Views
 
                 button.Click += (s, e) =>
                 {
-                    MainWindow._windowManager.EditSocialMediaLink(framework.Text);
+                    MainWindow._windowManager.EditSocialMediaLink(framework.Id);
                     MainWindow._wpfDocumentHandler.UpdateResume();
                 };
 
@@ -131,8 +136,8 @@ namespace ResumeHandlerGUI.Views
         private void UpdateTools()
         {
             ToolsListBox.Items.Clear();
-            var tools = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.
-                TechnicalSkills.Where(t => t.Type == "tool");
+            tools = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+                TechnicalSkills.Where(t => t.Type == "tool").ToList();
 
             foreach (var tool in tools)
             {
@@ -156,7 +161,7 @@ namespace ResumeHandlerGUI.Views
 
                 button.Click += (s, e) =>
                 {
-                    MainWindow._windowManager.EditSocialMediaLink(tool.Text);
+                    MainWindow._windowManager.EditSocialMediaLink(tool.Id);
                     MainWindow._wpfDocumentHandler.UpdateResume();
                 };
 
@@ -182,15 +187,15 @@ namespace ResumeHandlerGUI.Views
         {
             var listBox = sender as ListBox;
 
-            foreach (var item in listBox.Items)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                var listBoxItem = item as ListBoxItem;
+                var listBoxItem = listBox.Items[i] as ListBoxItem;
                 var grid = listBoxItem.Content as Grid;
 
                 var linkNameBlock = grid.Children[0] as TextBlock;
                 string socialMediaLink = linkNameBlock.Text.ToString();
                 var isActive = listBoxItem.IsSelected;
-                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(languages[i].Id, isActive);
             }
 
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
@@ -205,15 +210,15 @@ namespace ResumeHandlerGUI.Views
         {
             var listBox = sender as ListBox;
 
-            foreach (var item in listBox.Items)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                var listBoxItem = item as ListBoxItem;
+                var listBoxItem = listBox.Items[i] as ListBoxItem;
                 var grid = listBoxItem.Content as Grid;
 
                 var linkNameBlock = grid.Children[0] as TextBlock;
                 string socialMediaLink = linkNameBlock.Text.ToString();
                 var isActive = listBoxItem.IsSelected;
-                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(frameworks[i].Id, isActive);
             }
 
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;
@@ -228,15 +233,15 @@ namespace ResumeHandlerGUI.Views
         {
             var listBox = sender as ListBox;
 
-            foreach (var item in listBox.Items)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                var listBoxItem = item as ListBoxItem;
+                var listBoxItem = listBox.Items[i] as ListBoxItem;
                 var grid = listBoxItem.Content as Grid;
 
                 var linkNameBlock = grid.Children[0] as TextBlock;
                 string socialMediaLink = linkNameBlock.Text.ToString();
                 var isActive = listBoxItem.IsSelected;
-                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(socialMediaLink, isActive);
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillActive(tools[i].Id, isActive);
             }
 
             MainWindow mainWindow = Window.GetWindow(this) as MainWindow;

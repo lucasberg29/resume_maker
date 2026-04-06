@@ -9,16 +9,12 @@ namespace ResumeHandlerGUI
 {
     public partial class MainWindow : Window
     {
-
         public static WindowManager? _windowManager;
         public static readonly WPFDocumentHandler _wpfDocumentHandler = new();
         public static UiManager _uiManager = new();
 
-        FlowDocument _flowDoc = new();
-
         public MainWindow()
         {
-
             _windowManager = new WindowManager(this);
 
             InitializeComponent();
@@ -90,62 +86,6 @@ namespace ResumeHandlerGUI
             _uiManager._experienceRibbon.UpdateFields();
             _uiManager._educationRibbon.UpdateFields();
             _uiManager._otherExperienceRibbon.UpdateFields();
-        }
-
-        private void EditAddress_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new AddressWindow
-            {
-                Owner = this
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                _flowDoc = new FlowDocument();
-                _wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        private void EditIntroduction_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new IntroductionWindow
-            {
-                Owner = this
-            };
-
-            if (dialog.ShowDialog() == true)
-            {
-                _flowDoc = new FlowDocument();
-                _wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        private void AddSocialMediaLink_Click(object sender, RoutedEventArgs e)
-        {
-            var addSocialMediaDialog = new AddSocialMediaLinkWindow
-            {
-                Owner = this
-            };
-
-            if (addSocialMediaDialog.ShowDialog() == true)
-            {
-                _flowDoc = new FlowDocument();
-                _wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        private void ClearSocialMediaLinks_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Implement clear social media links functionality
-            _wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks.Clear();
-            _flowDoc = new FlowDocument();
-            _wpfDocumentHandler.UpdateResume();
-        }
-
-        private void ExportToDOCX_Click(object sender, RoutedEventArgs e)
-        {
-            _wpfDocumentHandler.DocumentHandler.ExportResumeToDOCX();
-            MessageBox.Show("Resume exported to DOCX successfully!");
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

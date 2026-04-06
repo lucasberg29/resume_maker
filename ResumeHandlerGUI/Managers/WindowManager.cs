@@ -15,26 +15,6 @@ namespace ResumeHandlerGUI.Managers
             _owner = owner;
         }
 
-        public void EditFullName()
-        {
-            var dialog = new FullNameWindow();
-
-            if (ShowDialog(dialog))
-            {
-                MainWindow._wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        public void EditEmail()
-        {
-            var dialog = new EmailWindow();
-
-            if (ShowDialog(dialog))
-            {
-                MainWindow._wpfDocumentHandler.UpdateResume();
-            }
-        }
-
         public void EditPhoneNumber()
         {
             var dialog = new PhoneNumberWindow();
@@ -76,9 +56,9 @@ namespace ResumeHandlerGUI.Managers
             }
         }
 
-        public void EditSocialMediaLink(string socialMediaLinkName)
+        public void EditSocialMediaLink(int id)
         {
-            var dialog = new EditSocialMediaLinkWindow(socialMediaLinkName);
+            var dialog = new EditSocialMediaLinkWindow(id);
 
             if (ShowDialog(dialog))
             {

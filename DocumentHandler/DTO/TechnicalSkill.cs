@@ -1,9 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentHandler.DTO.Attribute;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
 {
     public class TechnicalSkill
     {
+        public static int TechnicalSkillIdCounter { get; set; } = 0;
+
+        public TechnicalSkill() 
+        {
+            TechnicalSkillIdCounter = TechnicalSkillIdCounter + 1;
+            Id = TechnicalSkillIdCounter;
+        }
+
         [JsonPropertyName("active")]
         public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
@@ -13,6 +22,8 @@ namespace DocumentHandler.DTO
         [JsonPropertyName("type")]
         public string Type { get; set; } = "";
         [JsonPropertyName("style")]
-        public Style Style { get; set; } = new Style();
+        public ElementStyle Style { get; set; } = new ElementStyle();
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ResumeHandlerGUI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="1024">
+             d:DesignHeight="250" d:DesignWidth="1024">
     <Border Background="{StaticResource Resume.MenuSelectedBackgroundColourBrush}"
         CornerRadius="0,0,15,15" Margin="20,0,20,20">
         <Grid Background="Transparent">
@@ -16,40 +16,68 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Margin="10" Grid.Column="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="FirstParagraphTitle" Text="First Paragraph" FontSize="14" FontWeight="bold" Margin="0,10,0,4"/>
+                    <Button Grid.Column="1" Click="FirtParagraphButton_Click" x:Name="FirtParagraphButton" Style="{StaticResource ImageButton}" Margin="0,3,0,4" Width="24" HorizontalAlignment="Right">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="Transparent" IsHitTestVisible="True">
+                                    <Image Source="/Art/StylingIcon.png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
 
                 <TextBlock x:Name="FullNameTitle" Text="Full Name:" Margin="0,10,0,4"/>
                 <TextBlock x:Name="FullName" Text="John Smith" Margin="0,0,0,4" TextAlignment="center" FontWeight="bold"/>
 
-                <TextBlock x:Name="NewFullNameTitle" Text="New Full Name:" Margin="0,0,0,4"/>
                 <TextBox x:Name="NewFullNameInputField" Width="220" TextChanged="NewFullNameInputField_TextChanged"/>
-                
+
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" x:Name="SecondParagraphTitle" Text="Second Paragraph" FontSize="14" FontWeight="bold" Margin="0,10,0,4"/>
+                    <Button Grid.Column="1" Style="{StaticResource ImageButton}"  >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Image Source="/Art/StylingIcon.png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+
                 <TextBlock x:Name="PhoneNumberTitle" Text="Phone Number:" Margin="0,10,0,4"/>
                 <TextBlock x:Name="PhoneNumber" Text="(123) 456-7890" FontWeight="bold" TextAlignment="center" Margin="0,0,0,4"/>
 
-                <TextBlock x:Name="NewPhoneNumberTitle" Text="New Phone Number:" Margin="0,0,0,4"/>
                 <TextBox x:Name="NewPhoneNumberInputField" Width="220" TextChanged="NewPhoneNumberInputField_TextChanged"/>
-            </StackPanel>
-            <StackPanel Margin="10" Grid.Column="1">
+
                 <TextBlock x:Name="EmailTitle" Text="Email:" Margin="0,10,0,4"/>
                 <TextBlock x:Name="Email" Text="jsmith@email.com" Margin="0,0,0,4" TextAlignment="center" FontWeight="bold"/>
 
-                <TextBlock x:Name="NewEmail" Text="New Email:" Margin="0,0,0,4"/>
                 <TextBox x:Name="NewEmailInputField" Width="220" TextChanged="NewEmailInputField_TextChanged"/>
 
                 <TextBlock x:Name="LocationTitle" Text="Location:" Margin="0,10,0,4"/>
                 <TextBlock x:Name="Location" Text="London, ON" FontWeight="bold" TextAlignment="center" Margin="0,0,0,4"/>
 
-                <TextBlock x:Name="NewLocationTitle" Text="New Location:" Margin="0,0,0,4"/>
                 <TextBox x:Name="NewLocationInputField" Width="220" TextChanged="NewLocationInputField_TextChanged"/>
 
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="2">
                 <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,10,0,4"/>
-                    <ListBox x:Name="SocialMediaLinksListBox" 
+                <ListBox x:Name="SocialMediaLinksListBox" 
                          Width="200" 
                          SelectionMode="Multiple"
                          SelectionChanged="SkillsListBox_SelectionChanged">
-                    </ListBox>
+                </ListBox>
                 <Button x:Name="AddLinkButton" Click="AddLinkButton_Click" Margin="10,10,10,10" Content="Add Social Media Link"></Button>
             </StackPanel>
             <StackPanel Margin="10" Grid.Column="3">

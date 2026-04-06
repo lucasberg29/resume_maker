@@ -1,9 +1,18 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentHandler.DTO.Attribute;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
 {
     public class SocialMediaLink
     {
+        public static int SocialMediaLinkIdCounter { get; set; } = 0;
+
+        public SocialMediaLink()
+        {
+            SocialMediaLinkIdCounter = SocialMediaLinkIdCounter + 1;
+            Id = SocialMediaLinkIdCounter++;
+        }
+
         [JsonPropertyName("active")]
         public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
@@ -16,9 +25,9 @@ namespace DocumentHandler.DTO
         public string FilePath { get; set; } = string.Empty;
         [JsonPropertyName("alt")]
         public string Alt { get; set; } = string.Empty;
-        [JsonPropertyName("hyperlink")]
-        public string Hyperlink { get; set; } = string.Empty;
-        [JsonPropertyName("style")]
-        public Style Style { get; set; } = new Style();
+        [JsonPropertyName("elementStyle")]
+        public ElementStyle ElementStyle { get; set; } = new ElementStyle();
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
     }
 }

@@ -22,23 +22,35 @@ namespace DocumentHandler.Interfaces
 
         public bool ExportResumeToDOCX(string fileName);
 
-        void AddTechnicalSkill(string skillName, string skillType);
+        void AddTechnicalSkill(TechnicalSkill technicalSkill);  
         void AddExperience(Experience experience);
         void AddSocialMediaLink(SocialMediaLink socialMediaLink);
         void AddEducation(Education education);
         void AddOtherExperience(OtherExperience otherExperience);
 
-        TechnicalSkill GetTechnicalSkillByName(string technicalSkillName);
-        SocialMediaLink GetSocialMediaLinkByName(string socialMediaLinkName);
-        Experience GetExperienceByName(string experienceName);
-        Education GetEducationByName(string educationName);
-        OtherExperience GetOtherExperienceByName(string otherExperienceName);
+        TechnicalSkill GetTechnicalSkillById(int id );
+        SocialMediaLink GetSocialMediaLinkById(int id);
+        Experience GetExperienceById(int id);
+        Education GetEducationById(int id);
+        OtherExperience GetOtherExperienceById(int id);
 
-        void SetTechnicalSkillActive(string technicalSkillName, bool isActive);
-        void SetExperienceActive(string experienceName, bool isActive);
-        void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive);
-        void SetEducationActive(string educationName, bool isActive);
-        void SetOtherExperienceActive(string otherExperienceName, bool isActive);
+        void SetFullName(string fullName);
+        void SetPhoneNumber(string phoneNumber);    
+        void SetEmail(string email);
+        void SetLocation(string location);
+        void SetIntroduction(string introduction);
+
+        Element GetFullName();
+        Element GetPhoneNumber();
+        Element GetEmail();  
+        Element GetLocation();
+        Element GetIntroduction();
+
+        void SetTechnicalSkillActive(int id, bool isActive);
+        void SetExperienceActive(int id, bool isActive);
+        void SetSocialMediaLinkActive(int id, bool isActive);
+        void SetEducationActive(int id, bool isActive);
+        void SetOtherExperienceActive(int id, bool isActive);
 
         bool UpdateTechnicalSkill(TechnicalSkill technicalSkill);
         bool UpdateExperience(Experience experience);
@@ -46,10 +58,10 @@ namespace DocumentHandler.Interfaces
         bool UpdateEducation(Education education);
         bool UpdateOtherExperience(OtherExperience otherExperience);
 
-        bool DeleteTechnicalSkill(string technicalSkillName);
-        bool DeleteExperience(string experienceName);
-        bool DeleteSocialMediaLink(string socialMediaLinkName);
-        bool DeleteEducation(string educationName);
-        bool DeleteOtherExperience(string otherExperienceName);
+        bool DeleteTechnicalSkill(int id);
+        bool DeleteExperience(int id);
+        bool DeleteSocialMediaLink(int id);
+        bool DeleteEducation(int id);
+        bool DeleteOtherExperience(int id);
     }
 }

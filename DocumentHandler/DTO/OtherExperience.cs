@@ -7,6 +7,14 @@ namespace DocumentHandler.DTO
 {
     public class OtherExperience
     {
+        public static int OtherExperienceIdCounter { get; set; } = 0;
+
+        public OtherExperience()
+        {
+            OtherExperienceIdCounter += 1;
+            Id = OtherExperienceIdCounter;
+        }
+
         [JsonPropertyName("active")]
         public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
@@ -15,5 +23,7 @@ namespace DocumentHandler.DTO
         public string Name { get; set; } = string.Empty;
         [JsonPropertyName("element")]
         public Element Element { get; set; } = new("Other Experience");
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
     }
 }

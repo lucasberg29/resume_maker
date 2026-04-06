@@ -26,7 +26,7 @@ namespace DocumentHandler.Handlers
         public void AddParagraph(string path, string text)
         {
             using var doc = WordprocessingDocument.Open(path, true);
-            var body = doc.MainDocumentPart!.Document.Body!;
+            var body = doc.MainDocumentPart!?.Document?.Body!;
             body.AppendChild(new Paragraph(new Run(new Text(text))));
         }
 

@@ -4,6 +4,13 @@ namespace DocumentHandler.DTO
 {
     public class Education
     {
+        public static int EducationIdCounter { get; set; } = 0;
+        public Education() 
+        {
+            EducationIdCounter += 1;
+            Id = EducationIdCounter;
+        }
+
         [JsonPropertyName("active")]
         public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
@@ -22,5 +29,7 @@ namespace DocumentHandler.DTO
         public DateTime EndDate { get; set; }
         [JsonPropertyName("bulletPoints")]
         public List<string> BulletPoints { get; set; } = new List<string>();
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
     }
 }

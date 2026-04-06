@@ -7,3 +7,4 @@
     <SolidColorBrush x:Key="Resume.MenuSelectedBackgroundColourBrush"
                  Color="{StaticResource Resume.MenuSelectedBackgroundColour}"/>
 </ResourceDictionary>
+    

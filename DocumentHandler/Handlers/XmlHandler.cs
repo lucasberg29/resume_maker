@@ -2,39 +2,17 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Attribute;
+using DocumentHandler.DTO.Paragraphs;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 
 namespace DocumentHandler.Handlers
 {
     public class XmlHandler
     {
-        //public static Resume ParseXml(string docPath)
-        //{
-        //    Resume resume = new Resume();
-
-        //    using var wordDoc = WordprocessingDocument.Open(docPath, false);
-
-        //    var bodyElements = wordDoc.MainDocumentPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
-
-        //    resume.FullName.Text = bodyElements.ElementAt(0).InnerText.Trim();
-
-        //    string[] contact = bodyElements.ElementAt(1).InnerText.Trim().Split(" - ", StringSplitOptions.TrimEntries);
-
-        //    resume.Contact.Email.Text = contact[0];
-        //    resume.Contact.PhoneNumber.Text = contact[1];
-        //    resume.Contact.Location.Text = contact[2];
-
-        //    var socialMediaLinks = bodyElements.ElementAt(3);
-
-        //    resume.Introduction.Text = bodyElements.ElementAt(3).InnerText.Trim();
-
-        //    int experienceIndex = FindTextIndexByText("Experience", docPath);
-
-        //    int educationIndex = FindTextIndexByText("Education", docPath); 
-
-        //    int skillsIndex = FindTextIndexByText("Skills", docPath);   
-        //    return resume;
-        //}
-
         public static void SaveResumeToDocx(Resume resume, string filePath)
         {
             using var wordDoc = WordprocessingDocument.Create( filePath, WordprocessingDocumentType.Document);
@@ -47,18 +25,159 @@ namespace DocumentHandler.Handlers
             if (body != null)
             {
                 body.Append(CreateParagraph(
-                    resume.FullName.Text,
+                    resume.PersonalInfo.FullName.Elements[0].Text,
                     bold: true,
                     fontSize: "14"));
 
-                body.Append(CreateParagraph(resume.Contact.Email.Text));
-                body.Append(CreateParagraph(resume.Contact.PhoneNumber.Text));
+                body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[0].Text));
+                body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[1].Text));
 
                 body.Append(new Paragraph(new Run(new Break())));
             }
 
             mainPart.Document.Save();
         }
+
+        internal static bool ExportResumeToDOCX(string fileName, Resume currentResume, string resumeFolderPath)
+        {
+            string path = Path.Combine(resumeFolderPath, fileName);
+            using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
+            var mainPart = doc.AddMainDocumentPart();
+            mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
+
+            // Full Name
+            var fullName = currentResume.PersonalInfo.FullName;
+
+            var run = CreateRunText(fullName.Elements.First().ElementStyle, fullName.Elements.First().Text);
+            var paragraph = CreateParagraph(fullName, run);
+
+            if (mainPart.Document.Body != null)
+            {
+                mainPart.Document.Body.AppendChild(paragraph);
+            }
+
+            // Contact Info
+            var contact = currentResume.PersonalInfo.Contact;
+
+            var paragraphProperties = new ParagraphProperties();
+            switch (contact.ParagraphStyle.TextAlignment?.ToLower())
+            {
+                case "center":
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
+                    break;
+
+                case "right":
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Right });
+                    break;
+
+                default:
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Left });
+                    break;
+            }
+
+            var contactParagraph = new DocumentFormat.OpenXml.Math.Paragraph(paragraphProperties);
+
+            contactParagraph.Append(
+                CreateRunText(contact.Elements[0].ElementStyle, contact.Elements[0].Text)
+            );
+
+            contactParagraph.Append(
+                CreateRunText(contact.Elements[0].ElementStyle, " - ")
+            );
+
+            contactParagraph.Append(
+                CreateRunText(contact.Elements[1].ElementStyle, contact.Elements[1].Text)
+            );
+
+            contactParagraph.Append(
+                CreateRunText(contact.Elements[2].ElementStyle, " - ")
+            );
+
+            contactParagraph.Append(
+                CreateRunText(contact.Elements[3].ElementStyle, contact.Elements[3].Text)
+            );
+
+
+            mainPart.Document?.Body?.AppendChild(contactParagraph);
+
+            var socialParagraph = CreateSocialMediaIconsParagraph(doc, currentResume, resumeFolderPath);
+            mainPart.Document?.Body?.Append(socialParagraph);
+
+            mainPart.Document?.Save();
+
+            return true;
+        }
+
+        private static Run CreateRunText(ElementStyle style, string text)
+        {
+            var runProperties = new RunProperties();
+
+            runProperties.Append(
+                new RunFonts()
+                {
+                    Ascii = style.FontFamily,
+                    HighAnsi = style.FontFamily,
+                    ComplexScript = style.FontFamily
+                },
+                new FontSize()
+                {
+                    Val = (style.FontSize * 2).ToString()
+                },
+                new Color()
+                {
+                    Val = style.Color.Replace("#", "")
+                },
+                new Bold()
+                {
+                    Val = style.IsBold
+                },
+                new Italic()
+                {
+                    Val = style.IsItalic
+                }
+            );
+
+            var run = new Run(
+                runProperties,
+                new Text()
+                {
+                    Text = text,
+                    Space = SpaceProcessingModeValues.Preserve,
+                }
+            );
+
+            return run;
+        }
+
+        private static Paragraph CreateParagraph(ResumeParagraph paragraph, Run run)
+        {
+            var paragraphProperties = new ParagraphProperties();
+            switch (paragraph.ParagraphStyle.TextAlignment?.ToLower())
+            {
+                case "center":
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
+                    break;
+
+                case "right":
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Right });
+                    break;
+
+                default:
+                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Left });
+                    break;
+            }
+
+            paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
+            {
+                Before = "100",
+                After = "100",
+                Line = "100",
+                LineRule = LineSpacingRuleValues.Auto
+            };
+
+            return new Paragraph(paragraphProperties, run);
+        }
+
 
         private static Paragraph CreateParagraph( string text, bool bold = false, string fontSize = "12")
         {
@@ -77,6 +196,97 @@ namespace DocumentHandler.Handlers
             int index= -1;
             using var wordDoc = WordprocessingDocument.Open(docPath, false);
             return index;
+        }
+
+        private static Paragraph CreateSocialMediaIconsParagraph(WordprocessingDocument doc, Resume currentResume, string resumeFolderPath)
+        {
+            var paragraphProperties = new ParagraphProperties();
+
+            paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
+
+            var paragraph = new Paragraph(paragraphProperties);
+
+            foreach (var link in currentResume.PersonalInfo.SocialMediaLinks)
+            {
+                string imagePath = Path.Combine(resumeFolderPath, link.FilePath);
+
+                paragraph.Append(
+                    CreateHyperlinkedImage(doc, imagePath, link.ElementStyle.Hyperlink, 300000L, 300000L)
+                );
+
+                // spacing between icons
+                paragraph.Append(new Run(new Text("  ")));
+            }
+
+            return paragraph;
+        }
+
+        private static Hyperlink CreateHyperlinkedImage(WordprocessingDocument doc, string imagePath, string url,
+                                        long widthEmu = 300000L, long heightEmu = 300000L)
+        {
+            var mainPart = doc.MainDocumentPart;
+
+            var hyperlinkRel = mainPart?.AddHyperlinkRelationship(
+                new Uri(url),
+                true);
+
+            var imagePart = mainPart?.AddImagePart(ImagePartType.Png);
+            using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
+            {
+                imagePart?.FeedData(stream);
+            }
+
+            var relId = mainPart?.GetIdOfPart(imagePart);
+
+            var drawing = new Drawing(
+                new DW.Inline(
+                    new DW.Extent() { Cx = widthEmu, Cy = heightEmu },
+                    new DW.EffectExtent()
+                    {
+                        LeftEdge = 0L,
+                        TopEdge = 0L,
+                        RightEdge = 0L,
+                        BottomEdge = 0L
+                    },
+                    new DW.DocProperties()
+                    {
+                        Id = (UInt32Value)1U,
+                        Name = Path.GetFileName(imagePath)
+                    },
+                    new DW.NonVisualGraphicFrameDrawingProperties(
+                        new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                    new A.Graphic(
+                        new A.GraphicData(
+                            new PIC.Picture(
+                                new PIC.NonVisualPictureProperties(
+                                    new PIC.NonVisualDrawingProperties()
+                                    {
+                                        Id = (UInt32Value)0U,
+                                        Name = Path.GetFileName(imagePath)
+                                    },
+                                    new PIC.NonVisualPictureDrawingProperties()),
+                                new PIC.BlipFill(
+                                    new A.Blip()
+                                    {
+                                        Embed = relId
+                                    },
+                                    new A.Stretch(new A.FillRectangle())),
+                                new PIC.ShapeProperties(
+                                    new A.Transform2D(
+                                        new A.Offset() { X = 0L, Y = 0L },
+                                        new A.Extents() { Cx = widthEmu, Cy = heightEmu }),
+                                    new A.PresetGeometry(
+                                        new A.AdjustValueList())
+                                    { Preset = A.ShapeTypeValues.Rectangle }))
+                        )
+                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+                )
+            );
+
+            return new Hyperlink(
+                new Run(drawing)
+            )
+            { Id = hyperlinkRel?.Id };
         }
     }
 }

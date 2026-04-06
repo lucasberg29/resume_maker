@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DocumentHandler.DTO.Attribute;
+using Microsoft.Win32;
 using ResumeHandlerGUI.Windows;
 using System.IO;
 using System.Linq;
@@ -47,8 +48,10 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateHeader()
         {
+            var personalInfo = DocumentHandler.CurrentResume.PersonalInfo;
+
             // Full Name
-            var run = CreateRun(DocumentHandler.CurrentResume.FullName.Text, DocumentHandler.CurrentResume.FullName.Style);
+            var run = CreateRun(personalInfo.FullName.Elements.First().Text, personalInfo.FullName.Elements.First().ElementStyle);
 
             var fullNameParagraph = new System.Windows.Documents.Paragraph(run)
             {
@@ -58,13 +61,15 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(fullNameParagraph);
 
             // Contact Info
-            var emailRun = CreateRun(DocumentHandler.CurrentResume.Contact.Email.Text, DocumentHandler.CurrentResume.Contact.Email.Style);
-            var phoneRun = CreateRun(DocumentHandler.CurrentResume.Contact.PhoneNumber.Text, DocumentHandler.CurrentResume.Contact.PhoneNumber.Style);
-            var locationRun = CreateRun(DocumentHandler.CurrentResume.Contact.Location.Text, DocumentHandler.CurrentResume.Contact.Location.Style);
+            var contact = DocumentHandler.CurrentResume.PersonalInfo.Contact;
+
+            var emailRun = CreateRun(contact.Elements[0].Text, contact.Elements[0].ElementStyle);
+            var phoneRun = CreateRun(contact.Elements[1].Text, contact.Elements[1].ElementStyle);
+            var locationRun = CreateRun(contact.Elements[2].Text, contact.Elements[2].ElementStyle);
 
             var contatInfoParagraph = new System.Windows.Documents.Paragraph
             {
-                Style = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.Contact.Style)
+                Style = DtoStyleToWindowsStyle(contact.ParagraphStyle)
             };
 
             contatInfoParagraph.Inlines.Add(emailRun);
@@ -82,7 +87,9 @@ namespace ResumeHandlerGUI.Handlers
                 TextAlignment = TextAlignment.Center
             };
 
-            foreach (var link in DocumentHandler.CurrentResume.SocialMediaLinks)
+            var socialMediaLinks = DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks.OrderBy(s => s.Position).ToList();
+
+            foreach (var link in socialMediaLinks)
             {
                 if (!link.Active)
                 {
@@ -126,7 +133,7 @@ namespace ResumeHandlerGUI.Handlers
 
                 var hyperlink = new Hyperlink
                 {
-                    NavigateUri = new Uri(link.Hyperlink),
+                    NavigateUri = new Uri(link.ElementStyle.Hyperlink),
                     TextDecorations = null,
                 };
 
@@ -148,7 +155,8 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(socialParagraph);
 
             // Introduction
-            var introductionRun = CreateRun(DocumentHandler.CurrentResume.Introduction.Text, DocumentHandler.CurrentResume.Introduction.Style);
+            var introduction = DocumentHandler.CurrentResume.PersonalInfo.Introduction.Elements.First();
+            var introductionRun = CreateRun(introduction.Text, introduction.ElementStyle);
             var introductionParagraph = new Paragraph(introductionRun)
             {
                 TextAlignment = TextAlignment.Center,
@@ -158,7 +166,7 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(introductionParagraph);
         }
 
-        private Run CreateRun(string text, DocumentHandler.DTO.Style style)
+        private Run CreateRun(string text, ElementStyle style)
         {
             var fullNameStyle = DtoStyleToWindowsStyle(style);
 
@@ -172,9 +180,11 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateTechnicalSkills()
         {
-            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.TechnicalSkillsHeader.Style);
+            var technicalSkills = DocumentHandler.CurrentResume.AllTechnicalSkills;    
 
-            var technicalSkillsHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.TechnicalSkillsHeader.Text))
+            Style headerStyle = DtoStyleToWindowsStyle(technicalSkills.TechnicalSkillsHeader.ElementStyle);
+
+            var technicalSkillsHeader = new Paragraph(new Run(technicalSkills.TechnicalSkillsHeader.Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -183,21 +193,23 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(technicalSkillsHeader);
 
-            string technicalSkills = string.Join(" ◈ ", DocumentHandler.CurrentResume.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
-            AddParagraph(technicalSkills);
+            string technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
+            AddParagraph(technicalSkillsText);
 
-            technicalSkills = string.Join(" ◈ ", DocumentHandler.CurrentResume.TechnicalSkills.Where(t => t.Type == "framework").Select(t => t.Text));
-            AddParagraph(technicalSkills);
+            technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Select(t => t.Text));
+            AddParagraph(technicalSkillsText);
 
-            technicalSkills = string.Join(" ◈ ", DocumentHandler.CurrentResume.TechnicalSkills.Where(t => t.Type == "tool").Select(t => t.Text));
-            AddParagraph(technicalSkills);
+            technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Select(t => t.Text));
+            AddParagraph(technicalSkillsText);
         }
 
         private void UpdateExperience()
         {
-            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.ExperienceHeader.Style);
+            var experiences = DocumentHandler.CurrentResume.AllExperiences;
 
-            var experienceHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.ExperienceHeader.Text))
+            Style headerStyle = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ElementStyle);
+
+            var experienceHeader = new Paragraph(new Run(experiences.ExperienceHeader.Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -206,9 +218,7 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(experienceHeader);
 
-            var experience = DocumentHandler.CurrentResume.Experience;
-
-            foreach (var exp in experience)
+            foreach (var exp in experiences.Experiences)
             {
                 var table = new Table();
 
@@ -266,7 +276,7 @@ namespace ResumeHandlerGUI.Handlers
 
                     var paragraph = new Paragraph(new Run($"◇ {exp.BulletPoints[i].Text}"))
                     {
-                        Style = DtoStyleToWindowsStyle(exp.BulletPoints[i].Style),
+                        Style = DtoStyleToWindowsStyle(exp.BulletPoints[i].ElementStyle),
                         TextAlignment = TextAlignment.Left,
                         Margin = new Thickness(0, 0, 0, 2)
                     };
@@ -287,9 +297,11 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateEducation()
         {
-            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.EducationHeader.Style);
+            var education = DocumentHandler.CurrentResume.AllEducation;
 
-            var educationHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.EducationHeader.Text))
+            Style headerStyle = DtoStyleToWindowsStyle(education.EducationHeader.ElementStyle);
+
+            var educationHeader = new Paragraph(new Run(education.EducationHeader.Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -298,9 +310,8 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(educationHeader);
 
-            var education = DocumentHandler.CurrentResume.Education;
 
-            foreach (var edu in education)
+            foreach (var edu in education.Education)
             {
                 var table = new Table();
 
@@ -367,9 +378,9 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateSkills()
         {
-            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.OtherExperienceHeader.Style);
+            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.AllOtherExperience.OtherExperienceHeader.ElementStyle);
 
-            var educationHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.OtherExperienceHeader.Text))
+            var educationHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.AllOtherExperience.OtherExperienceHeader.Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -378,11 +389,11 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(educationHeader);
 
-            var skills = DocumentHandler.CurrentResume.OtherExperience;
+            var skills = DocumentHandler.CurrentResume.AllOtherExperience.OtherExperience;
 
             foreach (var skill in skills)
             {
-                Style style = DtoStyleToWindowsStyle(skill.Element.Style);
+                Style style = DtoStyleToWindowsStyle(skill.Element.ElementStyle);
 
                 var bulletParagraph = new Paragraph(new Run($"◇ {skill.Element.Text}"))
                 {
@@ -392,7 +403,7 @@ namespace ResumeHandlerGUI.Handlers
             }
         }
 
-        private Style DtoStyleToWindowsStyle(DocumentHandler.DTO.Style style)
+        private Style DtoStyleToWindowsStyle(ElementStyle style)
         {
             Style newStyle = new Style();
 
@@ -414,6 +425,25 @@ namespace ResumeHandlerGUI.Handlers
 
             return newStyle;
         }
+
+        private Style DtoStyleToWindowsStyle(ParagraphStyle style)
+        {
+            Style newStyle = new Style();
+
+            List<int> numbers = style.Margin.Split(',').Select(int.Parse).ToList();
+
+            Thickness margin = new Thickness();
+
+            if (numbers.Count == 4)
+            {
+                margin = new Thickness(numbers[0], numbers[1], numbers[2], numbers[3]);
+            }
+
+            newStyle.Setters.Add(new Setter(MarginProperty, margin));
+
+            return newStyle;
+        }
+
 
         private bool AddParagraph(string paragraphText)
         {

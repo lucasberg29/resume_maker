@@ -2,18 +2,15 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
-
-using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
-using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using A = DocumentFormat.OpenXml.Drawing;
-using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 namespace DocumentHandler.Handlers
 {
     public class DocumentHandler : IDocumentHandler
     {
         public Resume CurrentResume = new Resume();
+        public static IErrorHandler ErrorHandler;
 
         private string DocumentPath = string.Empty;
         private string DataFolderName = "Data";
@@ -44,11 +41,14 @@ namespace DocumentHandler.Handlers
         public void InitHandler()
         {
             CreateFolder();
+            ErrorHandler = new ErrorHandler();
         }
 
         public bool SaveResume()
         {
-            foreach (var socialMediaLink in CurrentResume.SocialMediaLinks)
+            var socialMendiaLinks = CurrentResume.PersonalInfo.SocialMediaLinks;
+
+            foreach (var socialMediaLink in socialMendiaLinks)
             {
                 string result = CopyResumeImage(socialMediaLink.FilePath, ResumeFolderPath);
 
@@ -81,7 +81,9 @@ namespace DocumentHandler.Handlers
 
         public void AddTechnicalSkill(string skillName, string skillType)
         {
-            CurrentResume.TechnicalSkills.Add(new TechnicalSkill
+
+
+            CurrentResume.PersonalInfo.TechnicalSkills.Add(new TechnicalSkill
             {
                 Text = skillName,
                 Type = skillType
@@ -90,12 +92,12 @@ namespace DocumentHandler.Handlers
 
         public void AddExperience(Experience experience)
         {
-            CurrentResume.Experience.Add(experience);
+            CurrentResume.AllExperiences.Experiences.Add(experience);
         }
 
         public void AddSocialMediaLink(SocialMediaLink socialMediaLink)
         {
-            CurrentResume.SocialMediaLinks.Add(socialMediaLink);
+            CurrentResume.PersonalInfo.SocialMediaLinks.Add(socialMediaLink);
         }
 
         public static string CopyResumeImage(string sourcePath, string destinationFolder)
@@ -107,8 +109,6 @@ namespace DocumentHandler.Handlers
 
             string fileName = System.IO.Path.GetFileName(sourcePath);
             string destinationPath = System.IO.Path.Combine(destinationFolder, fileName);
-
-            int counter = 1;
 
             while (File.Exists(destinationPath))
             {
@@ -122,235 +122,18 @@ namespace DocumentHandler.Handlers
 
         public bool ExportResumeToDOCX(string fileName = "Resume.docx")
         {
-            string path = Path.Combine(ResumeFolderPath, fileName);
-            using var doc = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document);
-            var mainPart = doc.AddMainDocumentPart();
-            mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
-
-            // Full Name
-            var run = CreateRunText(CurrentResume.FullName.Style, CurrentResume.FullName.Text);
-            var paragraph = CreateParagraph(CurrentResume.FullName, run);
-
-            mainPart.Document.Body.AppendChild(paragraph);
-
-            // Contact Info
-            var paragraphProperties = new ParagraphProperties();
-            switch (CurrentResume.Contact.Email.Style.TextAlignment?.ToLower())
-            {
-                case "center":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
-                    break;
-
-                case "right":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Right });
-                    break;
-
-                default:
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Left });
-                    break;
-            }
-
-            var contactParagraph = new Paragraph(paragraphProperties);
-
-            contactParagraph.Append(
-                CreateRunText(CurrentResume.Contact.Email.Style, CurrentResume.Contact.Email.Text)
-            );
-
-            contactParagraph.Append(
-                CreateRunText(CurrentResume.Contact.Email.Style, " - ")
-            );
-
-            contactParagraph.Append(
-                CreateRunText(CurrentResume.Contact.PhoneNumber.Style, CurrentResume.Contact.PhoneNumber.Text)
-            );
-
-            contactParagraph.Append(
-                CreateRunText(CurrentResume.Contact.PhoneNumber.Style, " - ")
-            );
-
-            contactParagraph.Append(
-                CreateRunText(CurrentResume.Contact.Location.Style, CurrentResume.Contact.Location.Text)
-            );
-
-            mainPart.Document.Body.AppendChild(contactParagraph);
-
-            var socialParagraph = CreateSocialMediaIconsParagraph(doc);
-            mainPart.Document.Body.Append(socialParagraph);
-
-            mainPart.Document.Save();
-
-            return true;
-        }
-
-        private Paragraph CreateParagraph(Element element, Run run)
-        {
-            var paragraphProperties = new ParagraphProperties();
-            switch (element.Style.TextAlignment?.ToLower())
-            {
-                case "center":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
-                    break;
-
-                case "right":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Right });
-                    break;
-
-                default:
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Left });
-                    break;
-            }
-
-            paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
-            {
-                Before = "100",
-                After = "100",
-                Line = "100",
-                LineRule = LineSpacingRuleValues.Auto
-            };
-
-            return new Paragraph(paragraphProperties, run);
-        }
-
-        private Run CreateRunText(DTO.Style style, string text)
-        {
-            var runProperties = new RunProperties();
-
-            runProperties.Append(
-                new RunFonts()
-                {
-                    Ascii = style.FontFamily,
-                    HighAnsi = style.FontFamily,
-                    ComplexScript = style.FontFamily
-                },
-                new FontSize()
-                {
-                    Val = (style.FontSize * 2).ToString()
-                },
-                new Color()
-                {
-                    Val = style.Color.Replace("#", "")
-                },
-                new Bold()
-                {
-                    Val = style.IsBold
-                },
-                new Italic()
-                {
-                    Val = style.IsItalic
-                }
-            );
-
-            var run = new Run(
-                runProperties,
-                new Text()
-                {
-                    Text = text,
-                    Space = SpaceProcessingModeValues.Preserve,
-                }
-            );
-
-            return run;
-        }
-
-        private Hyperlink CreateHyperlinkedImage(WordprocessingDocument doc, string imagePath,string url,
-                                                long widthEmu = 300000L,long heightEmu = 300000L)
-        {
-            var mainPart = doc.MainDocumentPart;
-
-            var hyperlinkRel = mainPart.AddHyperlinkRelationship(
-                new Uri(url),
-                true);
-
-            var imagePart = mainPart.AddImagePart(ImagePartType.Png);
-            using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
-            {
-                imagePart.FeedData(stream);
-            }
-
-            var relId = mainPart.GetIdOfPart(imagePart);
-
-            var drawing = new Drawing(
-                new DW.Inline(
-                    new DW.Extent() { Cx = widthEmu, Cy = heightEmu },
-                    new DW.EffectExtent()
-                    {
-                        LeftEdge = 0L,
-                        TopEdge = 0L,
-                        RightEdge = 0L,
-                        BottomEdge = 0L
-                    },
-                    new DW.DocProperties()
-                    {
-                        Id = (UInt32Value)1U,
-                        Name = Path.GetFileName(imagePath)
-                    },
-                    new DW.NonVisualGraphicFrameDrawingProperties(
-                        new A.GraphicFrameLocks() { NoChangeAspect = true }),
-                    new A.Graphic(
-                        new A.GraphicData(
-                            new PIC.Picture(
-                                new PIC.NonVisualPictureProperties(
-                                    new PIC.NonVisualDrawingProperties()
-                                    {
-                                        Id = (UInt32Value)0U,
-                                        Name = Path.GetFileName(imagePath)
-                                    },
-                                    new PIC.NonVisualPictureDrawingProperties()),
-                                new PIC.BlipFill(
-                                    new A.Blip()
-                                    {
-                                        Embed = relId
-                                    },
-                                    new A.Stretch(new A.FillRectangle())),
-                                new PIC.ShapeProperties(
-                                    new A.Transform2D(
-                                        new A.Offset() { X = 0L, Y = 0L },
-                                        new A.Extents() { Cx = widthEmu, Cy = heightEmu }),
-                                    new A.PresetGeometry(
-                                        new A.AdjustValueList())
-                                    { Preset = A.ShapeTypeValues.Rectangle }))
-                        )
-                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
-                )
-            );
-
-            return new Hyperlink(
-                new Run(drawing)
-            )
-            { Id = hyperlinkRel.Id };
-        }
-
-        private Paragraph CreateSocialMediaIconsParagraph(WordprocessingDocument doc)
-        {
-            var paragraphProperties = new ParagraphProperties();
-
-            paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
-
-            var paragraph = new Paragraph(paragraphProperties);
-
-            foreach (var link in CurrentResume.SocialMediaLinks)
-            {
-                string imagePath = Path.Combine(ResumeFolderPath, link.FilePath);
-
-                paragraph.Append(
-                    CreateHyperlinkedImage(doc, imagePath, link.Hyperlink, 300000L, 300000L)
-                );
-
-                // spacing between icons
-                paragraph.Append(new Run(new Text("  ")));
-            }
-
-            return paragraph;
+            bool result = XmlHandler.ExportResumeToDOCX(fileName, CurrentResume, ResumeFolderPath);
+            return result;
         }
 
         public void AddEducation(Education education)
         {
-            CurrentResume.Education.Add(education);
+            CurrentResume.AllEducation.Education.Add(education);
         }
 
         public void AddOtherExperience(OtherExperience otherExperience)
         {
-            CurrentResume.OtherExperience.Add(otherExperience);
+            CurrentResume.AllOtherExperience.OtherExperience.Add(otherExperience);
         }
 
         public bool CreateNewResume(string resumeName)
@@ -361,13 +144,13 @@ namespace DocumentHandler.Handlers
             return true;
         }
 
-        public void SetTechnicalSkillActive(string technicalSkillName, bool isActive)
+        public void SetTechnicalSkillActive(int id, bool isActive)
         {
-            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
+            for (var i = 0; i < CurrentResume.AllTechnicalSkills.TechnicalSkills.Count; i++)
             {
-                if (CurrentResume.TechnicalSkills[i].Text == technicalSkillName)
+                if (CurrentResume.AllTechnicalSkills.TechnicalSkills[i].Id == id)
                 {
-                    CurrentResume.TechnicalSkills[i].Active = isActive;
+                    CurrentResume.AllTechnicalSkills.TechnicalSkills[i].Active = isActive;
                     break;
                 }
             }
@@ -375,11 +158,11 @@ namespace DocumentHandler.Handlers
 
         public void SetExperienceActive(string experienceName, bool isActive)
         {
-            for (var i = 0; i < CurrentResume.Experience.Count; i++)
+            for (var i = 0; i < CurrentResume.AllExperiences.Experiences.Count; i++)
             {
-                if (CurrentResume.Experience[i].CompanyName.Text == experienceName)
+                if (CurrentResume.AllExperiences.Experiences[i].CompanyName.Text == experienceName)
                 {
-                    CurrentResume.Experience[i].Active = isActive;
+                    CurrentResume.AllExperiences.Experiences[i].Active = isActive;
                     break;
                 }
             }
@@ -387,112 +170,25 @@ namespace DocumentHandler.Handlers
 
         public void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive)
         {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            for (var i = 0; i < CurrentResume.PersonalInfo.SocialMediaLinks.Count; i++)
             {
-                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
+                if (CurrentResume.PersonalInfo.SocialMediaLinks[i].Name == socialMediaLinkName)
                 {
-                    CurrentResume.SocialMediaLinks[i].Active = isActive;
+                    CurrentResume.PersonalInfo.SocialMediaLinks[i].Active = isActive;
                     break;
                 }
             }
-        }
-
-        public void SetEducationActive(string educationName, bool isActive)
-        {
-            for (var i = 0; i < CurrentResume.Education.Count; i++)
-            {
-                if (CurrentResume.Education[i].CollegeName == educationName)
-                {
-                    CurrentResume.Education[i].Active = isActive;
-                    break;
-                }
-            }
-        }
-
-        public void SetOtherExperienceActive(string otherExperienceName, bool isActive)
-        {
-            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
-            {
-                if (CurrentResume.OtherExperience[i].Name == otherExperienceName)
-                {
-                    CurrentResume.OtherExperience[i].Active = isActive;
-                    break;
-                }
-            }
-        }
-
-        public TechnicalSkill GetTechnicalSkillByName(string technicalSkillName)
-        {
-            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
-            {
-                if (CurrentResume.TechnicalSkills[i].Text == technicalSkillName)
-                {
-                    return CurrentResume.TechnicalSkills[i];
-                }
-            }
-
-            return new TechnicalSkill();    
-        }
-
-        public SocialMediaLink GetSocialMediaLinkByName(string socialMediaLinkName)
-        {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
-            {
-                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
-                {
-                    return CurrentResume.SocialMediaLinks[i];
-                }
-            }
-
-            return new SocialMediaLink();
-        }
-
-        public Experience GetExperienceByName(string experienceName)
-        {
-            for (var i = 0; i < CurrentResume.Experience.Count; i++)
-            {
-                if (CurrentResume.Experience[i].CompanyName.Text == experienceName)
-                {
-                    return CurrentResume.Experience[i];
-                }
-            }
-
-            return new Experience();
-        }
-
-        public Education GetEducationByName(string educationName)
-        {
-            for (var i = 0; i < CurrentResume.Education.Count; i++)
-            {
-                if (CurrentResume.Education[i].CollegeName == educationName)
-                {
-                    return CurrentResume.Education[i];
-                }
-            }
-
-            return new Education();
-        }
-
-        public OtherExperience GetOtherExperienceByName(string otherExperienceName)
-        {
-            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
-            {
-                if (CurrentResume.OtherExperience[i].Name == otherExperienceName)
-                {
-                    return CurrentResume.OtherExperience[i];
-                }
-            }
-
-            return new OtherExperience();
         }
 
         public bool UpdateTechnicalSkill(TechnicalSkill technicalSkill)
         {
-            for (var i = 0; i < CurrentResume.TechnicalSkills.Count; i++)
+            var technicalSkills = CurrentResume.AllTechnicalSkills.TechnicalSkills;
+
+            for (var i = 0; i < technicalSkills.Count; i++)
             {
-                if (CurrentResume.TechnicalSkills[i].Text == technicalSkill.Text)
+                if (technicalSkills[i].Id == technicalSkill.Id)
                 {
-                    CurrentResume.TechnicalSkills[i] = technicalSkill;
+                    CurrentResume.AllTechnicalSkills.TechnicalSkills[i] = technicalSkill;
                     return true;
                 }
             }
@@ -502,11 +198,11 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateExperience(Experience experience)
         {
-            for (var i = 0; i < CurrentResume.Experience.Count; i++)
+            for (var i = 0; i < CurrentResume.AllExperiences.Experiences.Count; i++)
             {
-                if (CurrentResume.Experience[i].CompanyName == experience.CompanyName)
+                if (CurrentResume.AllExperiences.Experiences[i].Id == experience.Id)
                 {
-                    CurrentResume.Experience[i] = experience;
+                    CurrentResume.AllExperiences.Experiences[i] = experience;
                     return true;
                 }
             }
@@ -516,11 +212,11 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateSocialMediaLink(SocialMediaLink socialMediaLink)
         {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
+            for (var i = 0; i < CurrentResume.PersonalInfo.SocialMediaLinks.Count; i++)
             {
-                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLink.Name)
+                if (CurrentResume.PersonalInfo.SocialMediaLinks[i].Id == socialMediaLink.Id)
                 {
-                    CurrentResume.SocialMediaLinks[i] = socialMediaLink;
+                    CurrentResume.PersonalInfo.SocialMediaLinks[i] = socialMediaLink;
                     return true;
                 }
             }
@@ -530,11 +226,11 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateEducation(Education education)
         {
-            for (var i = 0; i < CurrentResume.Education.Count; i++)
+            for (var i = 0; i < CurrentResume.AllEducation.Education.Count; i++)
             {
-                if (CurrentResume.Education[i].CollegeName == education.CollegeName)
+                if (CurrentResume.AllEducation.Education[i].Id == education.Id)
                 {
-                    CurrentResume.Education[i] = education;
+                    CurrentResume.AllEducation.Education[i] = education;
                     return true;
                 }
             }
@@ -544,11 +240,11 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateOtherExperience(OtherExperience otherExperience)
         {
-            for (var i = 0; i < CurrentResume.OtherExperience.Count; i++)
+            for (var i = 0; i < CurrentResume.AllOtherExperience.OtherExperience.Count; i++)
             {
-                if (CurrentResume.OtherExperience[i].Name == otherExperience.Name)
+                if (CurrentResume.AllOtherExperience.OtherExperience[i].Id == otherExperience.Id)
                 {
-                    CurrentResume.OtherExperience[i] = otherExperience;
+                    CurrentResume.AllOtherExperience.OtherExperience[i] = otherExperience;
                     return true;
                 }
             }
@@ -556,41 +252,129 @@ namespace DocumentHandler.Handlers
             return false;
         }
 
-        public bool DeleteTechnicalSkill(string technicalSkillName)
+        public bool DeleteTechnicalSkill(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteExperience(string experienceName)
+        public bool DeleteExperience(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteSocialMediaLink(string socialMediaLinkName)
-        {
-            for (var i = 0; i < CurrentResume.SocialMediaLinks.Count; i++)
-            {
-                if (CurrentResume.SocialMediaLinks[i].Name == socialMediaLinkName)
-                {
-                    File.Delete(Path.Combine(ResumeFolderPath, CurrentResume.SocialMediaLinks[i].FilePath));
-
-                    CurrentResume.SocialMediaLinks.RemoveAt(i);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool DeleteEducation(string educationName)
+        public bool DeleteEducation(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteOtherExperience(string otherExperienceName)
+        public bool DeleteOtherExperience(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddTechnicalSkill(TechnicalSkill technicalSkill)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TechnicalSkill GetTechnicalSkillById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SocialMediaLink GetSocialMediaLinkById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Experience GetExperienceById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Education GetEducationById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OtherExperience GetOtherExperienceById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetExperienceActive(int id, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetSocialMediaLinkActive(int id, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetEducationActive(int id, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetOtherExperienceActive(int id, bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteSocialMediaLink(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFullName(string fullName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPhoneNumber(string phoneNumber)
+        {
+            CurrentResume.PersonalInfo.SetPhoneNumberText(phoneNumber);
+        }
+
+        public void SetEmail(string email)
+        {
+            CurrentResume.PersonalInfo.SetEmailText(email);
+        }
+
+        public void SetIntroduction(string introduction)
+        {
+            CurrentResume.PersonalInfo.SetIntroductionText(introduction);   
+        }
+
+        public void SetLocation(string location)
+        {
+            CurrentResume.PersonalInfo.SetLocationText(location);
+        }
+
+        public Element GetFullName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Element GetPhoneNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Element GetEmail()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Element GetLocation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Element GetIntroduction()
+        {
+            return CurrentResume.PersonalInfo.Introduction.Elements.First() ;
         }
     }
 }

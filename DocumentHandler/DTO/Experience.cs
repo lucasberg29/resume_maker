@@ -5,6 +5,14 @@ namespace DocumentHandler.DTO
 {
     public class Experience
     {
+        public static int ExperienceIdCounter { get; set; } = 0;
+
+        public Experience()
+        {
+            ExperienceIdCounter += 1;
+            Id = ExperienceIdCounter;
+        }
+
         [JsonPropertyName("active")]
         public bool Active { get; set; } = true;
         [JsonPropertyName("position")]
@@ -23,5 +31,7 @@ namespace DocumentHandler.DTO
         public DateTime EndDate { get; set; }
         [JsonPropertyName("bulletPoints")]
         public List<Element> BulletPoints { get; set; } = new();
+        [JsonPropertyName("id")]
+        public int Id { get; set; } = 0;
     }
 }

@@ -19,11 +19,11 @@ namespace ResumeHandlerGUI.Windows
     /// </summary>
     public partial class EditSocialMediaLinkWindow : Window
     {
-        string _socialMediaLinkName = "";
+        int _socialMediaLinkId = 0;
 
-        public EditSocialMediaLinkWindow(string socialMediaLinkName)
+        public EditSocialMediaLinkWindow(int id)
         {
-            _socialMediaLinkName = socialMediaLinkName;
+            _socialMediaLinkId = id;
 
             InitializeComponent();
 
@@ -32,15 +32,15 @@ namespace ResumeHandlerGUI.Windows
 
         private void LoadSocialMediaLink()
         {
-            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.SocialMediaLinks
-                .FirstOrDefault(s => s.Name == _socialMediaLinkName);
+            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks
+                .FirstOrDefault(s => s.Id == _socialMediaLinkId);
 
             if (socialMediaLink != null)
             {
                 LinkSelected.Text = socialMediaLink.Name;   
                 FileText.Text = socialMediaLink.FileName;
                 NameTextBox.Text = socialMediaLink.Name;
-                HyperlinkTextBox.Text = socialMediaLink.Hyperlink;
+                HyperlinkTextBox.Text = socialMediaLink.ElementStyle.Hyperlink;
                 AltTextBox.Text = socialMediaLink.Alt;
             }
         }
@@ -57,10 +57,10 @@ namespace ResumeHandlerGUI.Windows
 
         private void UpdateSocialMediaLinkButton_Click(object sender, RoutedEventArgs e)
         {
-            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetSocialMediaLinkByName(_socialMediaLinkName);
+            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetSocialMediaLinkById(_socialMediaLinkId);
 
             socialMediaLink.FileName = FileText.Text;
-            socialMediaLink.Hyperlink = HyperlinkTextBox.Text;
+            socialMediaLink.ElementStyle.Hyperlink = HyperlinkTextBox.Text;
             socialMediaLink.Alt = AltTextBox.Text;
 
             MainWindow._wpfDocumentHandler.DocumentHandler.UpdateSocialMediaLink(socialMediaLink);
@@ -74,8 +74,8 @@ namespace ResumeHandlerGUI.Windows
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetSocialMediaLinkByName(_socialMediaLinkName);
-            bool deletedSuccesfully = MainWindow._wpfDocumentHandler.DocumentHandler.DeleteSocialMediaLink(socialMediaLink.Name);
+            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetSocialMediaLinkById(_socialMediaLinkId);
+            bool deletedSuccesfully = MainWindow._wpfDocumentHandler.DocumentHandler.DeleteSocialMediaLink(_socialMediaLinkId);
 
             if (deletedSuccesfully)
             {

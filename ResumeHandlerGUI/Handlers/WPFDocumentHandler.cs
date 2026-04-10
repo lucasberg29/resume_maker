@@ -1,12 +1,8 @@
 ﻿using DocumentHandler.DTO.Attribute;
-using Microsoft.Win32;
-using ResumeHandlerGUI.Windows;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -25,9 +21,11 @@ namespace ResumeHandlerGUI.Handlers
 
             string lastResume = Properties.Settings.Default.LastResume;
 
-            string lastResumePath = Path.Combine(Directory.GetCurrentDirectory(), lastResume);
-
-            DocumentHandler.LoadResumeFromDocument(lastResumePath, lastResume);
+            if (lastResume != string.Empty)
+            {
+                string lastResumePath = Path.Combine(Directory.GetCurrentDirectory(), lastResume);
+                DocumentHandler.LoadResumeFromDocument(lastResumePath, lastResume);
+            }
         }
 
         private static Style GetStyle(string key)
@@ -53,9 +51,9 @@ namespace ResumeHandlerGUI.Handlers
             // Full Name
             var run = CreateRun(personalInfo.FullName.Elements.First().Text, personalInfo.FullName.Elements.First().ElementStyle);
 
-            var fullNameParagraph = new System.Windows.Documents.Paragraph(run)
+            var fullNameParagraph = new Paragraph(run)
             {
-                Style = GetStyle("Resume.FullNameParagraph")
+                Style = DtoStyleToWindowsStyle(personalInfo.FullName.ParagraphStyle)
             };
 
             FlowDocument.Blocks.Add(fullNameParagraph);
@@ -67,7 +65,7 @@ namespace ResumeHandlerGUI.Handlers
             var phoneRun = CreateRun(contact.Elements[1].Text, contact.Elements[1].ElementStyle);
             var locationRun = CreateRun(contact.Elements[2].Text, contact.Elements[2].ElementStyle);
 
-            var contatInfoParagraph = new System.Windows.Documents.Paragraph
+            var contatInfoParagraph = new Paragraph
             {
                 Style = DtoStyleToWindowsStyle(contact.ParagraphStyle)
             };
@@ -389,7 +387,7 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(educationHeader);
 
-            var skills = DocumentHandler.CurrentResume.AllOtherExperience.OtherExperience;
+            var skills = DocumentHandler.CurrentResume.AllOtherExperience.OtherExperiences;
 
             foreach (var skill in skills)
             {
@@ -430,16 +428,33 @@ namespace ResumeHandlerGUI.Handlers
         {
             Style newStyle = new Style();
 
-            List<int> numbers = style.Margin.Split(',').Select(int.Parse).ToList();
-
-            Thickness margin = new Thickness();
-
-            if (numbers.Count == 4)
-            {
-                margin = new Thickness(numbers[0], numbers[1], numbers[2], numbers[3]);
-            }
+            // Margin
+            List<int> marginNumbers = style.Margin.Split(',').Select(int.Parse).ToList();
+            Thickness margin = marginNumbers.Count == 4
+                ? new Thickness(marginNumbers[0], marginNumbers[1], marginNumbers[2], marginNumbers[3])
+                : new Thickness();
 
             newStyle.Setters.Add(new Setter(MarginProperty, margin));
+
+            // Padding
+            List<int> paddingNumbers = style.Padding.Split(',').Select(int.Parse).ToList();
+            Thickness padding = paddingNumbers.Count == 4
+                ? new Thickness(paddingNumbers[0], paddingNumbers[1], paddingNumbers[2], paddingNumbers[3])
+                : new Thickness();
+
+            newStyle.Setters.Add(new Setter(PaddingProperty, padding));
+
+            // Text Alignment
+            TextAlignment alignment = style.TextAlignment switch
+            {
+                "left" => TextAlignment.Left,
+                "center" => TextAlignment.Center,
+                "right" => TextAlignment.Right,
+                "justify" => TextAlignment.Justify,
+                _ => TextAlignment.Left  // default
+            };
+
+            newStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, alignment));
 
             return newStyle;
         }

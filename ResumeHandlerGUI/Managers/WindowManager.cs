@@ -1,8 +1,6 @@
-﻿using DocumentFormat.OpenXml.Presentation;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using ResumeHandlerGUI.Windows;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace ResumeHandlerGUI.Managers
 {
@@ -15,40 +13,20 @@ namespace ResumeHandlerGUI.Managers
             _owner = owner;
         }
 
-        public void EditPhoneNumber()
-        {
-            var dialog = new PhoneNumberWindow();
-
-            if (ShowDialog(dialog))
-            {
-                MainWindow._wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        public void EditAddress()
-        {
-            var dialog = new AddressWindow();
-
-            if (ShowDialog(dialog))
-            {
-                MainWindow._wpfDocumentHandler.UpdateResume();
-            }
-        }
-
-        public void EditIntroduction()
-        {
-            var dialog = new IntroductionWindow();
-
-            if (ShowDialog(dialog))
-            {
-                MainWindow._wpfDocumentHandler.UpdateResume();
-            }
-        }
-
         public void AddSocialMediaLink()
         {
             var dialog = new AddSocialMediaLinkWindow();
 
+            if (ShowDialog(dialog))
+            {
+                _owner.UpdateUI();
+                _owner.UpdateResume();
+            }
+        }
+
+        public void EditParagraphStyling(int paragraphId)
+        {
+            var dialog = new EditParagraphStylingWindow(paragraphId);
             if (ShowDialog(dialog))
             {
                 _owner.UpdateUI();

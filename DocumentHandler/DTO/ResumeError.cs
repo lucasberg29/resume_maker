@@ -11,13 +11,12 @@ namespace DocumentHandler.DTO
 
         public string Location { get; set; } = string.Empty;
 
-        public int LineNumber { get; set; } = 0;
+        public string MethodName { get; set; } = string.Empty;  
 
-        public ResumeMakerError(Exception exception)
-        {
-            Message = exception.Message;
-            Time = DateTime.Now;
-            LineNumber = 0;
-        }
+        public string ClassName { get; set; } = string.Empty;
+
+        public string FileName { get; set; } = string.Empty;
+
+        public int LineNumber { get; set; } = 0;
     }
 }

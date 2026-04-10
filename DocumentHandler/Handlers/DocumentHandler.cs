@@ -2,6 +2,8 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Attribute;
+using DocumentHandler.DTO.Paragraphs;
 using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
 
@@ -10,7 +12,7 @@ namespace DocumentHandler.Handlers
     public class DocumentHandler : IDocumentHandler
     {
         public Resume CurrentResume = new Resume();
-        public static IErrorHandler ErrorHandler;
+        public static IErrorHandler ErrorHandler { get; set; } = new ErrorHandler();
 
         private string DocumentPath = string.Empty;
         private string DataFolderName = "Data";
@@ -18,7 +20,7 @@ namespace DocumentHandler.Handlers
         public string ResumeFolderPath { get; } = Path.Combine(AppContext.BaseDirectory, "Data", "Resume");
 
         public string ResumeFileName = "Resume.docx";
-        public static string CurrentResumeDataName = "data.json";  
+        public static string CurrentResumeDataName = "data.json";
 
         private void CreateFolder()
         {
@@ -41,7 +43,6 @@ namespace DocumentHandler.Handlers
         public void InitHandler()
         {
             CreateFolder();
-            ErrorHandler = new ErrorHandler();
         }
 
         public bool SaveResume()
@@ -81,8 +82,6 @@ namespace DocumentHandler.Handlers
 
         public void AddTechnicalSkill(string skillName, string skillType)
         {
-
-
             CurrentResume.PersonalInfo.TechnicalSkills.Add(new TechnicalSkill
             {
                 Text = skillName,
@@ -133,7 +132,7 @@ namespace DocumentHandler.Handlers
 
         public void AddOtherExperience(OtherExperience otherExperience)
         {
-            CurrentResume.AllOtherExperience.OtherExperience.Add(otherExperience);
+            CurrentResume.AllOtherExperience.OtherExperiences.Add(otherExperience);
         }
 
         public bool CreateNewResume(string resumeName)
@@ -240,11 +239,11 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateOtherExperience(OtherExperience otherExperience)
         {
-            for (var i = 0; i < CurrentResume.AllOtherExperience.OtherExperience.Count; i++)
+            for (var i = 0; i < CurrentResume.AllOtherExperience.OtherExperiences.Count; i++)
             {
-                if (CurrentResume.AllOtherExperience.OtherExperience[i].Id == otherExperience.Id)
+                if (CurrentResume.AllOtherExperience.OtherExperiences[i].Id == otherExperience.Id)
                 {
-                    CurrentResume.AllOtherExperience.OtherExperience[i] = otherExperience;
+                    CurrentResume.AllOtherExperience.OtherExperiences[i] = otherExperience;
                     return true;
                 }
             }
@@ -254,22 +253,40 @@ namespace DocumentHandler.Handlers
 
         public bool DeleteTechnicalSkill(int id)
         {
+            int numberOfDeleted = CurrentResume.AllTechnicalSkills.TechnicalSkills.RemoveAll(ts => ts.Id == id);
+
+            if (numberOfDeleted == 0)
+            {
+
+            }
+            else if (numberOfDeleted == 1)
+            {
+
+            }
+            else
+            {
+                ErrorHandler.AddError(new Exception($"Multiple technical skills with the same id {id} were deleted."), new System.Diagnostics.StackTrace());
+            }
+
             throw new NotImplementedException();
         }
 
         public bool DeleteExperience(int id)
         {
-            throw new NotImplementedException();
+            bool deletedSuccessfully = CurrentResume.AllExperiences.DeleteExperience(id);
+            return deletedSuccessfully;
         }
 
         public bool DeleteEducation(int id)
         {
-            throw new NotImplementedException();
+            bool deletedSuccessfully = CurrentResume.AllEducation.DeleteEducation(id);
+            return deletedSuccessfully;
         }
 
         public bool DeleteOtherExperience(int id)
         {
-            throw new NotImplementedException();
+            bool deletedSuccessfully = CurrentResume.AllOtherExperience.DeleteOtherExperience(id);
+            return deletedSuccessfully;
         }
 
         public void AddTechnicalSkill(TechnicalSkill technicalSkill)
@@ -352,29 +369,97 @@ namespace DocumentHandler.Handlers
             CurrentResume.PersonalInfo.SetLocationText(location);
         }
 
-        public Element GetFullName()
+        public Element? GetFullName()
         {
-            throw new NotImplementedException();
+            return CurrentResume.PersonalInfo.FullName.Elements.First();    
         }
 
-        public Element GetPhoneNumber()
+        public Element? GetPhoneNumber()
         {
-            throw new NotImplementedException();
+            var phoneNumber = CurrentResume.PersonalInfo.Contact.GetElementByTag("PhoneNumber");
+
+            if (phoneNumber == null)
+            {
+                ErrorHandler.AddError(new Exception("Phone number element not found."), new System.Diagnostics.StackTrace());
+                return null;
+            }
+            else
+            {
+                return phoneNumber;
+            }
         }
 
-        public Element GetEmail()
+        public Element? GetEmail()
         {
-            throw new NotImplementedException();
+            var email = CurrentResume.PersonalInfo.Contact.GetElementByTag("Email");
+
+            if (email == null)
+            {
+                ErrorHandler.AddError(new Exception("Email element not found."), new System.Diagnostics.StackTrace());
+                return null;
+            }
+            else
+            {
+                return email;
+            }
         }
 
-        public Element GetLocation()
+        public Element? GetLocation()
         {
-            throw new NotImplementedException();
+            var location = CurrentResume.PersonalInfo.Contact.GetElementByTag("Location");
+
+            if (location == null)
+            {
+                ErrorHandler.AddError(new Exception("Location element not found."), new System.Diagnostics.StackTrace());
+                return null;
+            }
+            else
+            {
+                return location;
+            }
         }
 
-        public Element GetIntroduction()
+        public Element? GetIntroduction()
         {
-            return CurrentResume.PersonalInfo.Introduction.Elements.First() ;
+            return CurrentResume.PersonalInfo.Introduction.Elements.First();
+        }
+
+        public void SetTechnicalSkillsHeader(string technicalSkillsHeader)
+        {
+            CurrentResume.AllTechnicalSkills.TechnicalSkillsHeader.Text = technicalSkillsHeader;
+        }
+
+        public void SetExperienceHeader(string experienceHeader)
+        {
+            CurrentResume.AllExperiences.ExperienceHeader.Text = experienceHeader;  
+        }
+
+        public void SetEducationHeader(string educationHeader)
+        {
+            CurrentResume.AllEducation.EducationHeader.Text = educationHeader;  
+        }
+
+        public void SetOtherExperienceHeader(string otherExperienceHeader)
+        {
+            CurrentResume.AllOtherExperience.OtherExperienceHeader.Text = otherExperienceHeader;    
+        }
+
+        public Element? GetElementById(int id)
+        {
+            var element = ElementHandler.GetById(id);
+            return element;
+        }
+
+        public ResumeParagraph? GetParagraphById(int id)
+        {
+            var resumeParagraph = ParagraphHandler.GetById(id);
+            return resumeParagraph;
+        }
+
+        public void UpdateParagraphStyling(ParagraphStyle paragraphStyle, int id)
+        {
+            var paragraph = ParagraphHandler.GetById(id);
+            paragraph.ParagraphStyle = paragraphStyle;
         }
     }
 }

@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Paragraphs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,11 +41,20 @@ namespace DocumentHandler.Interfaces
         void SetLocation(string location);
         void SetIntroduction(string introduction);
 
-        Element GetFullName();
-        Element GetPhoneNumber();
-        Element GetEmail();  
-        Element GetLocation();
-        Element GetIntroduction();
+        Element? GetElementById(int id);
+
+        Element? GetFullName();
+        Element? GetPhoneNumber();
+        Element? GetEmail();  
+        Element? GetLocation();
+        Element? GetIntroduction();
+
+        ResumeParagraph? GetParagraphById(int id);
+
+        void SetTechnicalSkillsHeader(string technicalSkillsHeader);
+        void SetExperienceHeader(string experienceHeader);
+        void SetEducationHeader(string educationHeader);
+        void SetOtherExperienceHeader(string otherExperienceHeader); 
 
         void SetTechnicalSkillActive(int id, bool isActive);
         void SetExperienceActive(int id, bool isActive);

@@ -142,11 +142,23 @@
         <Setter Property="Width" Value="24" />
         <Setter Property="Height" Value="24" />
         <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Image Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}, FallbackValue=/Art/StylingIcon.png}"
-                            RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    <Border Background="Transparent" IsHitTestVisible="True">
+                        <Image x:Name="ButtonImage"
+                           Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}, FallbackValue=/Art/StylingIcon.png}"
+                           RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ButtonImage" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

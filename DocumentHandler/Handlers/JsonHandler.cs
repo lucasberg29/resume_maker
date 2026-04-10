@@ -2,6 +2,7 @@
 using DocumentHandler.DTO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
@@ -19,7 +20,8 @@ namespace DocumentHandler.Handlers
             }
             catch (Exception ex)
             {
-                DocumentHandler.ErrorHandler.AddError(ex);
+                var stackTrace = new StackTrace(ex, true);
+                DocumentHandler.ErrorHandler.AddError(ex, stackTrace);
             }
         }
 

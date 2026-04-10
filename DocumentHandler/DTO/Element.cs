@@ -1,5 +1,7 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentHandler.DTO.Attribute;
+using DocumentHandler.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,17 +15,33 @@ namespace DocumentHandler.DTO
 
         public Element() 
         {
-            ElementIdCounter = ElementIdCounter + 1;
-            Id = ElementIdCounter;
+            Id = GetID();
+            ElementHandler.Register(this);
         }
 
         public Element(string text)
         {
             Text = text;
-            ElementIdCounter = ElementIdCounter + 1;
-            Id = ElementIdCounter;
+            Id = GetID();
+            ElementHandler.Register(this);
         }
 
+        public Element(string text, string tag)
+        {
+            Text = text;
+            Tag = tag;
+            Id = GetID();
+            ElementHandler.Register(this);
+        }
+
+        private int GetID()
+        {
+            ElementIdCounter = ElementIdCounter + 1;
+            return ElementIdCounter;
+        }
+
+        [JsonPropertyName("tag")]
+        public string Tag { get; set; } = string.Empty; 
         [JsonPropertyName("text")]
         public string Text { get; set; } = string.Empty;
         [JsonPropertyName("style")]

@@ -12,9 +12,22 @@ namespace DocumentHandler.DTO.Paragraphs
         {
             ParagraphTag = "Contact";
 
-            Elements.Add(new Element("Email"));
-            Elements.Add(new Element("Phone Number"));
-            Elements.Add(new Element("Location"));
+            Elements.Add(new Element("Email", "Email"));
+            Elements.Add(new Element("PhoneNumber", "PhoneNumber"));
+            Elements.Add(new Element("Location", "Location"));
+        }
+
+        public Element? GetElementByTag(string tag)
+        {
+            foreach (var element in Elements)
+            {
+                if (element.Tag == tag)
+                {
+                    return element;
+                }
+            }
+
+            return null;
         }
     }
 }

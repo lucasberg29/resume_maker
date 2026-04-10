@@ -13,8 +13,14 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Margin="10" Grid.Column="0">
+            <StackPanel  Margin="10" Grid.Column="0">
+                <TextBlock x:Name="HeaderTitle" Text="Header:" Margin="0,10,0,4"/>
+                <TextBlock x:Name="TechnicalSkillsTitle" Text="Technical Skills" Margin="0,0,0,4" TextAlignment="center" FontWeight="bold"/>
+                <TextBox x:Name="NewTechnicalSkillsHeader" Width="200" TextChanged="NewTechnicalSkillsHeader_TextChanged"/>
+            </StackPanel>
+            <StackPanel Margin="10" Grid.Column="1">
                 <TextBlock x:Name="LanguageTitle" Text="Languages:" Margin="0,10,0,4"/>
                 <ListBox x:Name="LanguagesListBox" 
                          Width="200" 
@@ -29,7 +35,7 @@
                         Margin="10,10,10,10" 
                         Content="Add Language"></Button>
             </StackPanel>
-            <StackPanel Margin="10" Grid.Column="1">
+            <StackPanel Margin="10" Grid.Column="2">
                 <TextBlock x:Name="FrameworkTitle" Text="Frameworks:" Margin="0,10,0,4"/>
                 <ListBox x:Name="FrameworksListBox" 
                          Width="200" 
@@ -44,7 +50,7 @@
                         Margin="10,10,10,10" 
                         Content="Add Framework"></Button>
             </StackPanel>
-            <StackPanel Margin="10" Grid.Column="2">
+            <StackPanel Margin="10" Grid.Column="3">
                 <TextBlock x:Name="ToolsTitle" Text="Tools:" Margin="0,10,0,4"/>
                 <ListBox x:Name="ToolsListBox" 
                          Width="200" 

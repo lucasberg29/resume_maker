@@ -252,6 +252,16 @@ namespace ResumeHandlerGUI.Views
             }
         }
 
+        private void NewTechnicalSkillsHeader_TextChanged(object sender, EventArgs e)
+        {
+            var technicalSkillHeader = sender as TextBox;
+
+            if (technicalSkillHeader != null)
+            {
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetTechnicalSkillsHeader(technicalSkillHeader.Text); ;
+            }
+        }
+
         private void AddFrameworkButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow._windowManager.AddTechnicalSkill("framework");

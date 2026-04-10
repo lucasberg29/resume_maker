@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Paragraphs;
 using DocumentHandler.DTO.Section;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace ResumeHandlerGUI.Views
     /// </summary>
     public partial class HeaderRibbon : UserControl
     {
+        ResumeParagraph fullNameParagraph = new ResumeParagraph();  
+
+
         public HeaderRibbon()
         {
             InitializeComponent();
@@ -36,12 +40,15 @@ namespace ResumeHandlerGUI.Views
         {
             var personalInfo = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo;
 
+            fullNameParagraph = personalInfo.FullName;
+
             FullName.Text = personalInfo.FullName.Elements.First().Text;
 
             Email.Text = personalInfo.Contact.Elements[0].Text;
             PhoneNumber.Text = personalInfo.Contact.Elements[1].Text;
             Location.Text = personalInfo.Contact.Elements[2].Text;
 
+            MaskPhoneNumber();
 
             Introduction.Text = MainWindow._wpfDocumentHandler.DocumentHandler.GetIntroduction().Text;
 
@@ -89,6 +96,27 @@ namespace ResumeHandlerGUI.Views
             }
         }
 
+        private void MaskPhoneNumber()
+        {
+            var phoneNumber = PhoneNumber.Text;
+
+            phoneNumber = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+            var phoneNumberOnlyNumbers = phoneNumber;
+            if (phoneNumberOnlyNumbers.Length < 10)
+            {
+                return;
+            }
+
+            var maskedPhoneNumber = "";
+
+            maskedPhoneNumber += $"({phoneNumberOnlyNumbers[0]}{phoneNumberOnlyNumbers[1]}{phoneNumberOnlyNumbers[2]})";
+            maskedPhoneNumber += $" {phoneNumberOnlyNumbers[3]}{phoneNumberOnlyNumbers[4]}{phoneNumberOnlyNumbers[5]}";
+            maskedPhoneNumber += $" - {phoneNumberOnlyNumbers[6]}{phoneNumberOnlyNumbers[7]}{phoneNumberOnlyNumbers[8]}{phoneNumberOnlyNumbers[9]}";
+
+            PhoneNumber.Text = maskedPhoneNumber; 
+        }
+
         public void UpdateMainWindow()
         {
             MainWindow? mainWindow = Window.GetWindow(this) as MainWindow;
@@ -109,6 +137,8 @@ namespace ResumeHandlerGUI.Views
         private void NewPhoneNumberInputField_TextChanged(object sender, TextChangedEventArgs e)
         {
             PhoneNumber.Text = NewPhoneNumberInputField.Text;
+
+            MaskPhoneNumber();
 
             MainWindow._wpfDocumentHandler.DocumentHandler.SetPhoneNumber(PhoneNumber.Text);
             UpdateMainWindow();
@@ -169,7 +199,7 @@ namespace ResumeHandlerGUI.Views
 
         private void FirtParagraphButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainWindow._windowManager.EditParagraphStyling(fullNameParagraph.Id);
         }
 
         private void SecondParagraphButton_Click(object sender, RoutedEventArgs e)

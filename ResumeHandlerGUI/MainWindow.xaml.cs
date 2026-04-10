@@ -2,7 +2,6 @@
 using ResumeHandlerGUI.Managers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace ResumeHandlerGUI
@@ -22,12 +21,25 @@ namespace ResumeHandlerGUI
             UpdateResume();
 
             CreateHeaderRibbons();
+
+            CheckErrors();  
         }
 
         public void Update()
         {
             _wpfDocumentHandler.UpdateResume();
             DocViewer.Document = _wpfDocumentHandler.FlowDocument;
+        }
+
+        private void CheckErrors()
+        {
+            var errors = DocumentHandler.Handlers.DocumentHandler.ErrorHandler.GetErros();
+
+            if (errors.Count > 0)
+            {
+                string allErrors = string.Join("\n\n", errors.Select(e => $"Error in {e.Location} at line {e.LineNumber}: {e.Message}"));
+                MessageBox.Show($"Resume loaded with {errors.Count} errors. Please check the error log for details. \n{allErrors}", "Resume Loaded", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void CreateHeaderRibbons()

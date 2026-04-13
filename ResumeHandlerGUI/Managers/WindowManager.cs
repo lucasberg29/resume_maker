@@ -34,6 +34,16 @@ namespace ResumeHandlerGUI.Managers
             }
         }
 
+        public void EditElementStyling(int elementId)
+        {
+            var dialog = new EditElementStylingWindow(elementId);
+            if (ShowDialog(dialog))
+            {
+                _owner.UpdateUI();
+                _owner.UpdateResume();
+            }
+        }
+
         public void EditSocialMediaLink(int id)
         {
             var dialog = new EditSocialMediaLinkWindow(id);

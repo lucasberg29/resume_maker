@@ -1,4 +1,5 @@
-﻿using DocumentHandler.DTO.Section;
+﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,10 @@ namespace DocumentHandler.DTO
         public AllEducation AllEducation { get; set; } = new AllEducation();
         [JsonPropertyName("allOtherExperience")]
         public AllOtherExperience AllOtherExperience { get; set; } = new AllOtherExperience();
+
+        public void Init()
+        {
+            PersonalInfo.Init();
+        }
     }
 }

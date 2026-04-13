@@ -25,5 +25,7 @@ namespace DocumentHandler.DTO
         public ElementStyle Style { get; set; } = new ElementStyle();
         [JsonPropertyName("id")]
         public int Id { get; set; } = 0;
+        [JsonPropertyName("tag")]
+        public string Tag { get; set; } = "";   
     }
 }

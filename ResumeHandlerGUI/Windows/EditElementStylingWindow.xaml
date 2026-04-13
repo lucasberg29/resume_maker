@@ -5,8 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ResumeHandlerGUI.Windows"
         mc:Ignorable="d"
-        Title="EditElementStyling" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Edit Element Styling" 
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="15">
+        <TextBlock x:Name="fontSizeTitle" Text="Font Size:" Margin="0,10,0,4"/>
+        <TextBox x:Name="fontSize" MinWidth="50" HorizontalAlignment="Center"></TextBox>
+
+        <TextBlock x:Name="fontFamilyTitle" Text="Font family:" Margin="0,10,0,4"/>
+        <ComboBox x:Name="fontFamilyComboBox" 
+          HorizontalAlignment="Center"
+          MinWidth="150">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Source}" 
+                       FontFamily="{Binding}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <TextBlock x:Name="margin" Text="Margin:" Margin="0,10,0,4"/>
+        <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" MinWidth="40" Margin="0,0,10,10">
+                <TextBlock  x:Name="LeftMargin" Text="Left:" Margin="3,3,3,3" />
+                <TextBox  x:Name="LeftMarginTextBox" Text="0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" MinWidth="40" Margin="0,0,10,10">
+                <TextBlock  x:Name="TopMargin" Text="Top:" Margin="3,3,3,3" />
+                <TextBox  x:Name="TopMarginTextBox" Text="0"  />
+            </StackPanel>
+            <StackPanel Grid.Column="2" MinWidth="40" Margin="0,0,10,10">
+                <TextBlock  x:Name="RightMargin" Text="Right:" Margin="3,3,3,3" />
+                <TextBox  x:Name="RightMarginTextBox" Text="0" />
+            </StackPanel>
+            <StackPanel Grid.Column="3" MinWidth="40" Margin="0,0,10,10">
+                <TextBlock  x:Name="BottomMargin" Text="Bottom:"  Margin="3,3,3,3"/>
+                <TextBox  x:Name="BottomMarginTextBox" Text="0" />
+            </StackPanel>
+        </Grid>
+        <TextBlock x:Name="color" Text="Color:" Margin="0,10,0,4"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0"
+              x:Name="isBold"
+              Content="Bold"
+              FontWeight="Bold"
+              HorizontalAlignment="Center"
+              Margin="0,10,0,4"/>
+
+            <CheckBox Grid.Column="1"
+              x:Name="isItalic"
+              Content="Italic"
+              FontStyle="Italic"
+              HorizontalAlignment="Center"
+              Margin="0,10,0,4"/>
+
+            <CheckBox Grid.Column="2"
+              x:Name="isUnderline"
+              Content="Underline"
+              HorizontalAlignment="Center"
+              Margin="0,10,0,4">
+                <CheckBox.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextDecorations" Value="Underline"/>
+                    </Style>
+                </CheckBox.Resources>
+            </CheckBox>
+        </Grid>
+        <TextBlock x:Name="hyperlink" Text="Hyperlink:" Margin="0,10,0,4"/>
+        <TextBox x:Name="hyperlinkTextBox"></TextBox>
+
+        <StackPanel x:Name="ButtonsPanel"
+            Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="10,15,0,0">
+            <Button x:Name="CancelButton" Content="Cancel"
+                    Width="40"
+                    Margin="5,5,0,0"
+                    Click="CancelButton_Click"></Button>
+            <Button x:Name="UpdateElementStylingButton" Content="Update"
+                    Width="70"
+                    Margin="5,5,0,0"
+                    Click="UpdateElementStylingButton_Click"/>
+        </StackPanel>
+    </StackPanel>
 </Window>

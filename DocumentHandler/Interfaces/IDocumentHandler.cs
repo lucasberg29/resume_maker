@@ -2,7 +2,9 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
+using DocumentHandler.DTO.Attribute;
 using DocumentHandler.DTO.Paragraphs;
+using DocumentHandler.DTO.Section;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +36,12 @@ namespace DocumentHandler.Interfaces
         Experience GetExperienceById(int id);
         Education GetEducationById(int id);
         OtherExperience GetOtherExperienceById(int id);
+
+        public PersonalInfo GetPersonalInfo();
+        public AllTechnicalSkills GetAllTechnicalSkills();  
+        public AllExperiences GetAllExperience();
+        public AllEducation GetAllEducation();
+        public AllOtherExperience GetAllOtherExperience();
 
         void SetFullName(string fullName);
         void SetPhoneNumber(string phoneNumber);    
@@ -67,6 +75,9 @@ namespace DocumentHandler.Interfaces
         bool UpdateSocialMediaLink(SocialMediaLink socialMediaLink);
         bool UpdateEducation(Education education);
         bool UpdateOtherExperience(OtherExperience otherExperience);
+
+        bool UpdateParagraphStyling(ParagraphStyle paragraph, int id);    
+        bool UpdateElementStyling(ElementStyle element, int id);    
 
         bool DeleteTechnicalSkill(int id);
         bool DeleteExperience(int id);

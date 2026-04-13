@@ -39,7 +39,7 @@ namespace ResumeHandlerGUI.Views
         private void UpdateLanguages()
         {
             LanguagesListBox.Items.Clear();
-            languages = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+            languages = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
                 TechnicalSkills.Where(t => t.Type == "language").ToList();
 
             foreach (var language in languages)
@@ -87,7 +87,7 @@ namespace ResumeHandlerGUI.Views
         private void UpdateFrameworks()
         {
             FrameworksListBox.Items.Clear();
-            frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+            frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
                 TechnicalSkills.Where(t => t.Type == "framework").ToList();
 
             foreach (var framework in frameworks)
@@ -136,7 +136,7 @@ namespace ResumeHandlerGUI.Views
         private void UpdateTools()
         {
             ToolsListBox.Items.Clear();
-            tools = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.AllTechnicalSkills.
+            tools = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
                 TechnicalSkills.Where(t => t.Type == "tool").ToList();
 
             foreach (var tool in tools)

@@ -22,8 +22,16 @@ namespace ResumeHandlerGUI.Views
     /// </summary>
     public partial class HeaderRibbon : UserControl
     {
-        ResumeParagraph fullNameParagraph = new ResumeParagraph();  
+        ResumeParagraph fullNameParagraph;
+        ResumeParagraph contactParagraph;
 
+        Element? fullNameElement;
+        Element? phoneNumberElement;
+        Element? emailElement;
+        Element? locationElement;
+        Element? introductionElement;
+
+        List<SocialMediaLink> socialMediaLinks = new List<SocialMediaLink>();
 
         public HeaderRibbon()
         {
@@ -38,9 +46,18 @@ namespace ResumeHandlerGUI.Views
 
         public void UpdateFields()
         {
-            var personalInfo = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo;
+            var personalInfo = MainWindow._wpfDocumentHandler.DocumentHandler.GetPersonalInfo();
 
             fullNameParagraph = personalInfo.FullName;
+            contactParagraph = personalInfo.Contact;
+            socialMediaLinks = personalInfo.SocialMediaLinks;
+
+            fullNameElement = personalInfo.FullName.Elements.First();
+
+            phoneNumberElement = MainWindow._wpfDocumentHandler.DocumentHandler.GetPhoneNumber();
+            emailElement = MainWindow._wpfDocumentHandler.DocumentHandler.GetEmail();
+            locationElement = MainWindow._wpfDocumentHandler.DocumentHandler.GetLocation();
+            introductionElement = MainWindow._wpfDocumentHandler.DocumentHandler.GetIntroduction();
 
             FullName.Text = personalInfo.FullName.Elements.First().Text;
 
@@ -54,7 +71,7 @@ namespace ResumeHandlerGUI.Views
 
             SocialMediaLinksListBox.Items.Clear();
 
-            foreach (var socialMediaLink in MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks)
+            foreach (var socialMediaLink in personalInfo.SocialMediaLinks)
             {
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -130,7 +147,7 @@ namespace ResumeHandlerGUI.Views
         {
             FullName.Text = NewFullNameInputField.Text;
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SetFullNameText(FullName.Text);
+            MainWindow._wpfDocumentHandler.DocumentHandler.SetFullName(FullName.Text);
             UpdateMainWindow();
         }
 
@@ -172,15 +189,15 @@ namespace ResumeHandlerGUI.Views
         {
             var listBox = sender as ListBox;
 
-            foreach (var item in listBox.Items)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                var listBoxItem = item as ListBoxItem;
+                var listBoxItem = listBox.Items[i] as ListBoxItem;
                 var grid = listBoxItem.Content as Grid;
 
                 var linkNameBlock = grid.Children[0] as TextBlock;
                 string socialMediaLink = linkNameBlock.Text.ToString();
                 var isActive = listBoxItem.IsSelected;
-                MainWindow._wpfDocumentHandler.DocumentHandler.SetSocialMediaLinkActive(socialMediaLink, isActive);
+                MainWindow._wpfDocumentHandler.DocumentHandler.SetSocialMediaLinkActive(socialMediaLinks[i].Id, isActive);
             }
 
             UpdateMainWindow();
@@ -199,12 +216,17 @@ namespace ResumeHandlerGUI.Views
 
         private void FirtParagraphButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow._windowManager.EditParagraphStyling(fullNameParagraph.Id);
+            MainWindow._windowManager?.EditParagraphStyling(fullNameParagraph.Id);
         }
 
         private void SecondParagraphButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow._windowManager?.EditParagraphStyling(contactParagraph.Id);
+        }
 
+        private void FullNameStylingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditElementStyling(fullNameElement.Id);
         }
     }
 }

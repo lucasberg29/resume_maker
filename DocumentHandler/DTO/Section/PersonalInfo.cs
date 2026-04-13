@@ -18,6 +18,11 @@ namespace DocumentHandler.DTO.Section
         [JsonPropertyName("technicalSkills")]
         public List<TechnicalSkill> TechnicalSkills { get; set; } = new List<TechnicalSkill>();
 
+        public void Init()
+        {
+            Contact.Init();
+        }
+
         public void SetFullNameText(string text)
         {
             FullName.Elements.First().Text = text;  

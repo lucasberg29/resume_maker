@@ -19,7 +19,10 @@ namespace DocumentHandler.DTO.Attribute
         public bool IsBold { get; set; } = false;
         [JsonPropertyName("isItalic")]
         public bool IsItalic { get; set; } = false;
+        [JsonPropertyName("isUnderline")]
+        public bool IsUnderline { get; set; } = false;
         [JsonPropertyName("hyperlink")]
         public string Hyperlink { get; set; } = string.Empty;
+
     }
 }

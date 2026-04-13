@@ -1,4 +1,5 @@
 ﻿using DocumentHandler.DTO.Attribute;
+using DocumentHandler.Interfaces;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,7 +12,7 @@ namespace ResumeHandlerGUI.Handlers
     public class WPFDocumentHandler : Control
     {
         public FlowDocument FlowDocument = new();
-        public DocumentHandler.Handlers.DocumentHandler DocumentHandler = new();
+        public IDocumentHandler DocumentHandler = new DocumentHandler.Handlers.DocumentHandler();
 
         public WPFDocumentHandler()
         {
@@ -46,7 +47,7 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateHeader()
         {
-            var personalInfo = DocumentHandler.CurrentResume.PersonalInfo;
+            var personalInfo = DocumentHandler.GetPersonalInfo();
 
             // Full Name
             var run = CreateRun(personalInfo.FullName.Elements.First().Text, personalInfo.FullName.Elements.First().ElementStyle);
@@ -59,7 +60,7 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(fullNameParagraph);
 
             // Contact Info
-            var contact = DocumentHandler.CurrentResume.PersonalInfo.Contact;
+            var contact = DocumentHandler.GetPersonalInfo().Contact;
 
             var emailRun = CreateRun(contact.Elements[0].Text, contact.Elements[0].ElementStyle);
             var phoneRun = CreateRun(contact.Elements[1].Text, contact.Elements[1].ElementStyle);
@@ -85,7 +86,7 @@ namespace ResumeHandlerGUI.Handlers
                 TextAlignment = TextAlignment.Center
             };
 
-            var socialMediaLinks = DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks.OrderBy(s => s.Position).ToList();
+            var socialMediaLinks = personalInfo.SocialMediaLinks.OrderBy(s => s.Position).ToList();
 
             foreach (var link in socialMediaLinks)
             {
@@ -153,7 +154,7 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(socialParagraph);
 
             // Introduction
-            var introduction = DocumentHandler.CurrentResume.PersonalInfo.Introduction.Elements.First();
+            var introduction = personalInfo.Introduction.Elements.First();
             var introductionRun = CreateRun(introduction.Text, introduction.ElementStyle);
             var introductionParagraph = new Paragraph(introductionRun)
             {
@@ -164,21 +165,10 @@ namespace ResumeHandlerGUI.Handlers
             FlowDocument.Blocks.Add(introductionParagraph);
         }
 
-        private Run CreateRun(string text, ElementStyle style)
-        {
-            var fullNameStyle = DtoStyleToWindowsStyle(style);
-
-            var run = new Run(text)
-            {
-                Style = fullNameStyle
-            };
-
-            return run;
-        }
 
         private void UpdateTechnicalSkills()
         {
-            var technicalSkills = DocumentHandler.CurrentResume.AllTechnicalSkills;    
+            var technicalSkills = DocumentHandler.GetAllTechnicalSkills();    
 
             Style headerStyle = DtoStyleToWindowsStyle(technicalSkills.TechnicalSkillsHeader.ElementStyle);
 
@@ -203,7 +193,7 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateExperience()
         {
-            var experiences = DocumentHandler.CurrentResume.AllExperiences;
+            var experiences = DocumentHandler.GetAllExperience();
 
             Style headerStyle = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ElementStyle);
 
@@ -295,7 +285,7 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateEducation()
         {
-            var education = DocumentHandler.CurrentResume.AllEducation;
+            var education = DocumentHandler.GetAllEducation();
 
             Style headerStyle = DtoStyleToWindowsStyle(education.EducationHeader.ElementStyle);
 
@@ -376,9 +366,11 @@ namespace ResumeHandlerGUI.Handlers
 
         private void UpdateSkills()
         {
-            Style headerStyle = DtoStyleToWindowsStyle(DocumentHandler.CurrentResume.AllOtherExperience.OtherExperienceHeader.ElementStyle);
+            var allOtherExperience = DocumentHandler.GetAllOtherExperience();   
 
-            var educationHeader = new Paragraph(new Run(DocumentHandler.CurrentResume.AllOtherExperience.OtherExperienceHeader.Text))
+            Style headerStyle = DtoStyleToWindowsStyle(allOtherExperience.OtherExperienceHeader.ElementStyle);
+
+            var educationHeader = new Paragraph(new Run(allOtherExperience.OtherExperienceHeader.Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -387,7 +379,7 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(educationHeader);
 
-            var skills = DocumentHandler.CurrentResume.AllOtherExperience.OtherExperiences;
+            var skills = allOtherExperience.OtherExperiences;
 
             foreach (var skill in skills)
             {
@@ -399,6 +391,18 @@ namespace ResumeHandlerGUI.Handlers
                 };
                 FlowDocument.Blocks.Add(bulletParagraph);
             }
+        }
+
+        private Run CreateRun(string text, ElementStyle style)
+        {
+            var fullNameStyle = DtoStyleToWindowsStyle(style);
+
+            var run = new Run(text)
+            {
+                Style = fullNameStyle
+            };
+
+            return run;
         }
 
         private Style DtoStyleToWindowsStyle(ElementStyle style)
@@ -453,6 +457,12 @@ namespace ResumeHandlerGUI.Handlers
                 "justify" => TextAlignment.Justify,
                 _ => TextAlignment.Left  // default
             };
+
+            // Line Spacing
+            if (style.LineSpacing > 0)
+            {
+                newStyle.Setters.Add(new Setter(Block.LineHeightProperty, style.LineSpacing));
+            }
 
             newStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, alignment));
 

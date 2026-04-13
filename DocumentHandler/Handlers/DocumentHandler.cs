@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentHandler.DTO;
@@ -456,10 +457,68 @@ namespace DocumentHandler.Handlers
             return resumeParagraph;
         }
 
-        public void UpdateParagraphStyling(ParagraphStyle paragraphStyle, int id)
+        public bool UpdateParagraphStyling(ParagraphStyle paragraphStyle, int id)
         {
             var paragraph = ParagraphHandler.GetById(id);
-            paragraph.ParagraphStyle = paragraphStyle;
+
+            if (paragraph != null)
+            {
+                paragraph.ParagraphStyle = paragraphStyle;
+                return true;
+
+            }
+            return false;
         }
+
+        public bool UpdateElementStyling(ElementStyle elementStyle, int id)
+        {
+            var element = ElementHandler.GetById(id);
+
+            if (element != null)
+            {
+                element.ElementStyle = elementStyle;
+                return true;
+            }
+            return false;
+        }
+
+        public void UpdateParagraph(ResumeParagraph paragraph)
+        {
+            var updatedParagraph = ParagraphHandler.GetById(paragraph.Id);
+            updatedParagraph = paragraph;
+        }
+
+        public void UpdateElement(Element element)
+        {
+            var updatedElement = ElementHandler.GetById(element.Id);
+            updatedElement = element;
+        }   
+
+        public PersonalInfo GetPersonalInfo()
+        {
+            return CurrentResume.PersonalInfo;
+        }
+
+        public AllTechnicalSkills GetAllTechnicalSkills()
+        {
+            return CurrentResume.AllTechnicalSkills;
+        }
+
+        public AllExperiences GetAllExperience()
+        {
+            return CurrentResume.AllExperiences;
+        }
+
+        public AllEducation GetAllEducation()
+        {
+            return CurrentResume.AllEducation;  
+        }
+
+        public AllOtherExperience GetAllOtherExperience()
+        {
+            return CurrentResume.AllOtherExperience;
+        }
+
+
     }
 }

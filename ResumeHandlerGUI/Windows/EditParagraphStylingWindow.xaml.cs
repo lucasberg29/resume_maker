@@ -1,29 +1,16 @@
 ﻿using DocumentHandler.DTO.Attribute;
 using DocumentHandler.DTO.Paragraphs;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace ResumeHandlerGUI.Windows
 {
-    /// <summary>
-    /// Interaction logic for EditParagraphStyling.xaml
-    /// </summary>
     public partial class EditParagraphStylingWindow : Window
     {
         ResumeParagraph? Paragraph = null;    
 
         public EditParagraphStylingWindow()
         {
-
             InitializeComponent();
         }
 
@@ -62,12 +49,13 @@ namespace ResumeHandlerGUI.Windows
                     AlignJustify.IsChecked = true;
                     break;
             }
+
+            LineSpacingTextBox.Text = Paragraph.ParagraphStyle.LineSpacing.ToString();
         }
 
         public EditParagraphStylingWindow(int paragraphId) : this()
         {
             Paragraph = MainWindow._wpfDocumentHandler.DocumentHandler.GetParagraphById(paragraphId);
-
             UpdateStyling();
         }
 
@@ -83,7 +71,8 @@ namespace ResumeHandlerGUI.Windows
             {
                 Margin = $"{LeftMarginTextBox.Text},{TopMarginTextBox.Text},{RightMarginTextBox.Text},{BottomMarginTextBox.Text}",
                 Padding = $"{LeftPaddingTextBox.Text},{TopPaddingTextBox.Text},{RightPaddingTextBox.Text},{BottomPaddingTextBox.Text}",
-                TextAlignment = AlignLeft.IsChecked == true ? "left" : AlignCenter.IsChecked == true ? "center" : AlignRight.IsChecked == true ? "right" : "justify"
+                TextAlignment = AlignLeft.IsChecked == true ? "left" : AlignCenter.IsChecked == true ? "center" : AlignRight.IsChecked == true ? "right" : "justify",
+                LineSpacing = double.TryParse(LineSpacingTextBox.Text, out double lineSpaice) ? lineSpaice : 0  
             };
           
             MainWindow._wpfDocumentHandler.DocumentHandler.UpdateParagraphStyling(paragraphStyle, Paragraph.Id);

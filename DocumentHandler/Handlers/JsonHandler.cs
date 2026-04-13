@@ -17,6 +17,9 @@ namespace DocumentHandler.Handlers
                 string jsonFilePath = Path.Combine(AppContext.BaseDirectory, jsonFileName);
                 string json = File.ReadAllText(jsonFilePath);
                 CurrentResume = JsonSerializer.Deserialize<Resume>(json);
+                CurrentResume.Init();
+
+                bool corrent = true;
             }
             catch (Exception ex)
             {

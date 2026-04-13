@@ -29,5 +29,12 @@ namespace DocumentHandler.DTO.Paragraphs
 
             return null;
         }
+
+        internal void Init()
+        {
+            Elements[0].Tag = "Email";
+            Elements[1].Tag = "PhoneNumber";
+            Elements[2].Tag = "Location";
+        }
     }
 }

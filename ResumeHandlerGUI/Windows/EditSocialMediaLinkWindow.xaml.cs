@@ -32,7 +32,7 @@ namespace ResumeHandlerGUI.Windows
 
         private void LoadSocialMediaLink()
         {
-            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.CurrentResume.PersonalInfo.SocialMediaLinks
+            var socialMediaLink = MainWindow._wpfDocumentHandler.DocumentHandler.GetPersonalInfo().SocialMediaLinks
                 .FirstOrDefault(s => s.Id == _socialMediaLinkId);
 
             if (socialMediaLink != null)

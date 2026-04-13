@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DocumentHandler.DTO;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ResumeHandlerGUI
@@ -37,7 +38,13 @@ namespace ResumeHandlerGUI
                 return;
             }
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(SkillName, SkillType.ToLower());
+            TechnicalSkill technicalSkill = new TechnicalSkill()
+            {
+                Text = SkillName,
+                Tag = SkillType.ToLower(),  
+            };
+
+            MainWindow._wpfDocumentHandler.DocumentHandler.AddTechnicalSkill(technicalSkill);
             DialogResult = true;
             Close();
         }

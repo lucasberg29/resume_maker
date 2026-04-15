@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="DocumentHandler/DocumentHandler.csproj" Id="9d3af41e-569f-4a28-b449-4257bcd9b3f0" />
   <Project Path="ResumeHandlerGUI/ResumeHandlerGUI.csproj" Id="fb528208-dd67-44fa-93f7-7a5e04c7c988" />
 </Solution>

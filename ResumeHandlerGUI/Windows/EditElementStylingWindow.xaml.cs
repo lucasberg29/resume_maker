@@ -23,13 +23,26 @@ namespace ResumeHandlerGUI.Windows
         {
             InitializeComponent();
 
-            fontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList();
+            FontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList();
         }
 
         public void UpdateStyling()
         {
             var elementStyle = Element.ElementStyle;
 
+            // Font size
+            FontSizeTextBox.Text = elementStyle.FontSize.ToString();
+
+            // Font family
+            var fontFamily = Fonts.SystemFontFamilies.FirstOrDefault(f => f.Source == elementStyle.FontFamily);
+            if (fontFamily is null)
+            {
+                fontFamily = Fonts.SystemFontFamilies.FirstOrDefault(f => f.Source.Contains(elementStyle.FontFamily));
+            }
+
+            FontFamilyComboBox.SelectedItem = fontFamily;
+
+            // Margin
             string rawMargins = elementStyle.Margin;
 
             List<string> margins = rawMargins.Split(',').ToList();

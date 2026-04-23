@@ -1,11 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentHandler.DTO.Paragraphs;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO.Section
 {
     public class AllExperiences
     {
         [JsonPropertyName("experienceHeader")]
-        public Element ExperienceHeader { get; set; } = new Element("Experience");
+        public ResumeParagraph ExperienceHeader { get; set; } = new ResumeParagraph("ExperienceHeader", "Experience");
         [JsonPropertyName("experiences")]
         public List<Experience> Experiences { get; set; } = new List<Experience>();
 
@@ -26,5 +28,16 @@ namespace DocumentHandler.DTO.Section
 
             return false;
         }
+
+        public List<ResumeParagraph> GetAllParagraphs()
+        {
+            var paragraphs = new List<ResumeParagraph>();
+            foreach (var experience in Experiences)
+            {
+                paragraphs.AddRange(experience.GetAllParagraphs());
+            }
+            return paragraphs;
+        }
+
     }
 }

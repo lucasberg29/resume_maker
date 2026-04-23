@@ -1,4 +1,5 @@
 ﻿using DocumentHandler.DTO.Attribute;
+using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
 using System.IO;
 using System.Windows;
@@ -170,9 +171,9 @@ namespace ResumeHandlerGUI.Handlers
         {
             var technicalSkills = DocumentHandler.GetAllTechnicalSkills();    
 
-            Style headerStyle = DtoStyleToWindowsStyle(technicalSkills.TechnicalSkillsHeader.ElementStyle);
+            Style headerStyle = DtoStyleToWindowsStyle(technicalSkills.TechnicalSkillsHeader.Elements.First().ElementStyle);
 
-            var technicalSkillsHeader = new Paragraph(new Run(technicalSkills.TechnicalSkillsHeader.Text))
+            var technicalSkillsHeader = new Paragraph(new Run(technicalSkills.TechnicalSkillsHeader.Elements.First().Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -181,27 +182,37 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(technicalSkillsHeader);
 
-            string technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
-            AddParagraph(technicalSkillsText);
+            string technicalSkillsText = string.Empty;
 
-            technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Select(t => t.Text));
-            AddParagraph(technicalSkillsText);
+            if (technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Count() > 0)
+            {
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
+                AddParagraph(technicalSkillsText);
+            }
 
-            technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Select(t => t.Text));
-            AddParagraph(technicalSkillsText);
+            if(technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Count() > 0)
+            {
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Select(t => t.Text));
+                AddParagraph(technicalSkillsText);
+            }
+
+            if (technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Count() > 0)
+            {
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Select(t => t.Text));
+                AddParagraph(technicalSkillsText);
+            }
         }
 
         private void UpdateExperience()
         {
+            //Experience Header
             var experiences = DocumentHandler.GetAllExperience();
 
-            Style headerStyle = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ElementStyle);
+            var run = CreateRun(experiences.ExperienceHeader.Elements.First().Text, experiences.ExperienceHeader.Elements.First().ElementStyle);
 
-            var experienceHeader = new Paragraph(new Run(experiences.ExperienceHeader.Text))
+            var experienceHeader = new Paragraph(run)
             {
-                Style = headerStyle,
-                BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(0, 0, 0, 1)
+                Style = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ParagraphStyle)
             };
 
             FlowDocument.Blocks.Add(experienceHeader);
@@ -260,11 +271,9 @@ namespace ResumeHandlerGUI.Handlers
                 {
                     var bulletPointRow = new TableRow();
 
-
-
-                    var paragraph = new Paragraph(new Run($"◇ {exp.BulletPoints[i].Text}"))
+                    var paragraph = new Paragraph(new Run($"◇ {exp.BulletPoints[i].Elements.First().Text}"))
                     {
-                        Style = DtoStyleToWindowsStyle(exp.BulletPoints[i].ElementStyle),
+                        Style = DtoStyleToWindowsStyle(exp.BulletPoints[i].Elements.First().ElementStyle),
                         TextAlignment = TextAlignment.Left,
                         Margin = new Thickness(0, 0, 0, 2)
                     };
@@ -287,9 +296,9 @@ namespace ResumeHandlerGUI.Handlers
         {
             var education = DocumentHandler.GetAllEducation();
 
-            Style headerStyle = DtoStyleToWindowsStyle(education.EducationHeader.ElementStyle);
+            Style headerStyle = DtoStyleToWindowsStyle(education.EducationHeader.Elements.First().ElementStyle);
 
-            var educationHeader = new Paragraph(new Run(education.EducationHeader.Text))
+            var educationHeader = new Paragraph(new Run(education.EducationHeader.Elements.First().Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,
@@ -309,13 +318,13 @@ namespace ResumeHandlerGUI.Handlers
                 var rowGroup = new TableRowGroup();
                 var row = new TableRow();
 
-                var titleCell = new TableCell(new Paragraph(new Run(edu.ProgramTitle))
+                var titleCell = new TableCell(new Paragraph(new Run(edu.ProgramTitle.Text))
                 {
                     FontSize = 11,
                     FontWeight = FontWeights.Bold
                 });
 
-                var locationCell = new TableCell(new Paragraph(new Run(edu.Location))
+                var locationCell = new TableCell(new Paragraph(new Run(edu.Location.Text))
                 {
                     FontSize = 11,
                     FontWeight = FontWeights.Bold,
@@ -328,7 +337,7 @@ namespace ResumeHandlerGUI.Handlers
 
                 var secondRow = new TableRow();
 
-                var companyNameCell = new TableCell(new Paragraph(new Run(edu.CollegeName))
+                var companyNameCell = new TableCell(new Paragraph(new Run(edu.CollegeName.Text))
                 {
                     FontSize = 11,
                     FontStyle = FontStyles.Italic
@@ -368,9 +377,9 @@ namespace ResumeHandlerGUI.Handlers
         {
             var allOtherExperience = DocumentHandler.GetAllOtherExperience();   
 
-            Style headerStyle = DtoStyleToWindowsStyle(allOtherExperience.OtherExperienceHeader.ElementStyle);
+            Style headerStyle = DtoStyleToWindowsStyle(allOtherExperience.OtherExperienceHeader.Elements.First().ElementStyle);
 
-            var educationHeader = new Paragraph(new Run(allOtherExperience.OtherExperienceHeader.Text))
+            var educationHeader = new Paragraph(new Run(allOtherExperience.OtherExperienceHeader.Elements.First().Text))
             {
                 Style = headerStyle,
                 BorderBrush = Brushes.Black,

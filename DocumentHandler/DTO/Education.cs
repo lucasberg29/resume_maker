@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentHandler.DTO.Paragraphs;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
 {
@@ -16,20 +17,25 @@ namespace DocumentHandler.DTO
         [JsonPropertyName("position")]
         public int Position { get; set; } = 0;
         [JsonPropertyName("programTitle")]
-        public string ProgramTitle { get; set; } = "";
+        public Element ProgramTitle { get; set; } = new();
         [JsonPropertyName("location")]
-        public string Location { get; set; } = "";
+        public Element Location { get; set; } = new();
         [JsonPropertyName("collegeName")]
-        public string CollegeName { get; set; } = "";
+        public Element CollegeName { get; set; } = new();
         [JsonPropertyName("collegeWebsiteLink")]
-        public string CollegeWebsiteLink { get; set; } = "";
+        public Element CollegeWebsiteLink { get; set; } = new();
         [JsonPropertyName("startDate")]
         public DateTime StartDate { get; set; }
         [JsonPropertyName("endDate")]
         public DateTime EndDate { get; set; }
         [JsonPropertyName("bulletPoints")]
-        public List<string> BulletPoints { get; set; } = new List<string>();
+        public List<ResumeParagraph> BulletPoints { get; set; } = new();
         [JsonPropertyName("id")]
         public int Id { get; set; } = 0;
+
+        public List<ResumeParagraph> GetAllParagraphs()
+        {
+            return BulletPoints;
+        }
     }
 }

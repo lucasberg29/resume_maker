@@ -31,11 +31,11 @@ namespace DocumentHandler.Interfaces
         void AddEducation(Education education);
         void AddOtherExperience(OtherExperience otherExperience);
 
-        TechnicalSkill GetTechnicalSkillById(int id );
-        SocialMediaLink GetSocialMediaLinkById(int id);
-        Experience GetExperienceById(int id);
-        Education GetEducationById(int id);
-        OtherExperience GetOtherExperienceById(int id);
+        TechnicalSkill? GetTechnicalSkillById(int id );
+        SocialMediaLink? GetSocialMediaLinkById(int id);
+        Experience? GetExperienceById(int id);
+        Education? GetEducationById(int id);
+        OtherExperience? GetOtherExperienceById(int id);
 
         public PersonalInfo GetPersonalInfo();
         public AllTechnicalSkills GetAllTechnicalSkills();  
@@ -50,14 +50,13 @@ namespace DocumentHandler.Interfaces
         void SetIntroduction(string introduction);
 
         Element? GetElementById(int id);
+        ResumeParagraph? GetParagraphById(int id);
 
         Element? GetFullName();
         Element? GetPhoneNumber();
         Element? GetEmail();  
         Element? GetLocation();
         Element? GetIntroduction();
-
-        ResumeParagraph? GetParagraphById(int id);
 
         void SetTechnicalSkillsHeader(string technicalSkillsHeader);
         void SetExperienceHeader(string experienceHeader);

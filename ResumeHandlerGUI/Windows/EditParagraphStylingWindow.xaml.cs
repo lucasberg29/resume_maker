@@ -77,8 +77,7 @@ namespace ResumeHandlerGUI.Windows
           
             MainWindow._wpfDocumentHandler.DocumentHandler.UpdateParagraphStyling(paragraphStyle, Paragraph.Id);
 
-            DialogResult=true;  
-
+            DialogResult = true;  
             Close();
         }
     }

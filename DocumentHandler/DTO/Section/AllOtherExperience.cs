@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentHandler.DTO.Paragraphs;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO.Section
 {
     public class AllOtherExperience
     {
         [JsonPropertyName("otherExperienceHeader")]
-        public Element OtherExperienceHeader { get; set; } = new Element("Other Experience");
+        public ResumeParagraph OtherExperienceHeader { get; set; } = new ResumeParagraph("OtherExperienceHeader", "Other Experience");
         [JsonPropertyName("otherExperience")]
         public List<OtherExperience> OtherExperiences { get; set; } = new List<OtherExperience>();
 

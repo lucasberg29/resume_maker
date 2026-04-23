@@ -1,4 +1,5 @@
 ﻿using DocumentHandler.DTO;
+using DocumentHandler.DTO.Attribute;
 using DocumentHandler.DTO.Paragraphs;
 using System;
 using System.Collections.Generic;
@@ -33,5 +34,19 @@ namespace DocumentHandler.Handlers
         public static void Clear() => _paragraphs.Clear();
 
         public static int Count => _paragraphs.Count;
+
+        public static bool UpdateParagraphStyling(int id, ParagraphStyle paragraphStyle)
+        {
+            for (int i = 0; i < _paragraphs.Count; i++)
+            {
+                if (id == _paragraphs[i].Id)
+                {
+                    _paragraphs[i].ParagraphStyle = paragraphStyle;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

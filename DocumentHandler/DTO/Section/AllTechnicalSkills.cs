@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using DocumentHandler.DTO.Paragraphs;
+using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO.Section
 {
     public class AllTechnicalSkills
     {
         [JsonPropertyName("technicalSkillsHeader")]
-        public Element TechnicalSkillsHeader { get; set; } = new Element("Technical Skills");
+        public ResumeParagraph TechnicalSkillsHeader { get; set; } = new ResumeParagraph("TechnicalSkillHeader", "Technical Skills");
         [JsonPropertyName("technicalSkills")]
         public List<TechnicalSkill> TechnicalSkills { get; set; } = new List<TechnicalSkill>(); 
     }

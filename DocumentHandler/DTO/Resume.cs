@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentHandler.DTO.Paragraphs;
 using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
 using System;
@@ -24,6 +25,37 @@ namespace DocumentHandler.DTO
         public void Init()
         {
             PersonalInfo.Init();
+        }
+
+        public List<ResumeParagraph> GetAllParagraphs()
+        {
+            var paragraphs = new List<ResumeParagraph>
+            {
+                PersonalInfo.FullName,
+                PersonalInfo.Contact,
+                PersonalInfo.Introduction,
+                AllTechnicalSkills.TechnicalSkillsHeader,
+                AllExperiences.ExperienceHeader,
+                AllEducation.EducationHeader,
+                AllOtherExperience.OtherExperienceHeader,
+            };
+
+            foreach (var exp in AllExperiences.Experiences)
+            {
+                paragraphs.AddRange(exp.GetAllParagraphs());
+            }
+
+            foreach (var edu in AllEducation.Education)
+            {
+                paragraphs.AddRange(edu.GetAllParagraphs());
+            }
+
+            return paragraphs;
+        }
+
+        public List<Element> GetAllElements()
+        {
+            return GetAllParagraphs().SelectMany(p => p.Elements).ToList();
         }
     }
 }

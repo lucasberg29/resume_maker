@@ -1,4 +1,5 @@
 ﻿using DocumentHandler.DTO;
+using DocumentHandler.DTO.Paragraphs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,7 +56,7 @@ namespace ResumeHandlerGUI
             var bulletPoints = BulletPoints.ToList();
             foreach (var bullet in bulletPoints)
             {
-                experience.BulletPoints.Add(new Element(bullet));
+                experience.BulletPoints.Add(new ResumeParagraph(bullet));
             }
 
             MainWindow._wpfDocumentHandler.DocumentHandler.AddExperience(experience);

@@ -12,7 +12,10 @@ namespace DocumentHandler.Handlers
 
         public static void Register(Element element)
         {
-            _elements.Add(element);
+            if (_elements.Find(e => e.Id == element.Id) == null)
+            {
+                _elements.Add(element);
+            }
         }
 
         public static IReadOnlyList<Element> GetAll() => _elements.AsReadOnly();

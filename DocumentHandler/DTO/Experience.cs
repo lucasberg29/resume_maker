@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentHandler.DTO.Paragraphs;
 using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO
@@ -30,8 +31,13 @@ namespace DocumentHandler.DTO
         [JsonPropertyName("endDate")]
         public DateTime EndDate { get; set; }
         [JsonPropertyName("bulletPoints")]
-        public List<Element> BulletPoints { get; set; } = new();
+        public List<ResumeParagraph> BulletPoints { get; set; } = new();
         [JsonPropertyName("id")]
         public int Id { get; set; } = 0;
+
+        public List<ResumeParagraph> GetAllParagraphs()
+        {
+            return BulletPoints;
+        }
     }
 }

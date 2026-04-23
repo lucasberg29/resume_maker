@@ -12,7 +12,7 @@ namespace DocumentHandler.Handlers
 {
     public class DocumentHandler : IDocumentHandler
     {
-        public Resume CurrentResume = new Resume();
+        public Resume CurrentResume = new();
         public static IErrorHandler ErrorHandler { get; set; } = new ErrorHandler();
 
         private string DocumentPath = string.Empty;
@@ -81,15 +81,6 @@ namespace DocumentHandler.Handlers
             return ResumeFileName;
         }
 
-        public void AddTechnicalSkill(string skillName, string skillType)
-        {
-            CurrentResume.PersonalInfo.TechnicalSkills.Add(new TechnicalSkill
-            {
-                Text = skillName,
-                Type = skillType
-            });
-        }
-
         public void AddExperience(Experience experience)
         {
             CurrentResume.AllExperiences.Experiences.Add(experience);
@@ -151,30 +142,6 @@ namespace DocumentHandler.Handlers
                 if (CurrentResume.AllTechnicalSkills.TechnicalSkills[i].Id == id)
                 {
                     CurrentResume.AllTechnicalSkills.TechnicalSkills[i].Active = isActive;
-                    break;
-                }
-            }
-        }
-
-        public void SetExperienceActive(string experienceName, bool isActive)
-        {
-            for (var i = 0; i < CurrentResume.AllExperiences.Experiences.Count; i++)
-            {
-                if (CurrentResume.AllExperiences.Experiences[i].CompanyName.Text == experienceName)
-                {
-                    CurrentResume.AllExperiences.Experiences[i].Active = isActive;
-                    break;
-                }
-            }
-        }
-
-        public void SetSocialMediaLinkActive(string socialMediaLinkName, bool isActive)
-        {
-            for (var i = 0; i < CurrentResume.PersonalInfo.SocialMediaLinks.Count; i++)
-            {
-                if (CurrentResume.PersonalInfo.SocialMediaLinks[i].Name == socialMediaLinkName)
-                {
-                    CurrentResume.PersonalInfo.SocialMediaLinks[i].Active = isActive;
                     break;
                 }
             }
@@ -292,62 +259,144 @@ namespace DocumentHandler.Handlers
 
         public void AddTechnicalSkill(TechnicalSkill technicalSkill)
         {
-            throw new NotImplementedException();
+            CurrentResume.AllTechnicalSkills.TechnicalSkills.Add(technicalSkill);
         }
 
-        public TechnicalSkill GetTechnicalSkillById(int id)
+        public TechnicalSkill? GetTechnicalSkillById(int id)
         {
-            throw new NotImplementedException();
+            var technical = CurrentResume.AllTechnicalSkills.TechnicalSkills.FirstOrDefault(ts => ts.Id == id);
+
+            if (technical == null)
+            {
+                ErrorHandler.AddError(new Exception("Technical skill not found!"), new System.Diagnostics.StackTrace());
+                return null;
+            }
+
+            return technical;
         }
 
-        public SocialMediaLink GetSocialMediaLinkById(int id)
+        public SocialMediaLink? GetSocialMediaLinkById(int id)
         {
-            throw new NotImplementedException();
+            var socialMediaLink = CurrentResume.PersonalInfo.SocialMediaLinks.FirstOrDefault(ts => ts.Id == id);
+
+            if (socialMediaLink == null)
+            {
+                ErrorHandler.AddError(new Exception("social media link not found!"), new System.Diagnostics.StackTrace());
+                return null;
+            }
+
+            return socialMediaLink;
         }
 
-        public Experience GetExperienceById(int id)
+        public Experience? GetExperienceById(int id)
         {
-            throw new NotImplementedException();
+            var experience = CurrentResume.AllExperiences.Experiences.FirstOrDefault(ts => ts.Id == id);
+
+            if (experience == null)
+            {
+                ErrorHandler.AddError(new Exception("Experience not found!"), new System.Diagnostics.StackTrace());
+                return null;
+            }
+
+            return experience;
         }
 
-        public Education GetEducationById(int id)
+        public Education? GetEducationById(int id)
         {
-            throw new NotImplementedException();
+            var education = CurrentResume.AllEducation.Education.FirstOrDefault(ts => ts.Id == id);
+
+            if (education == null)
+            {
+                ErrorHandler.AddError(new Exception("Education not found!"), new System.Diagnostics.StackTrace());
+                return null;
+            }
+
+            return education;
         }
 
-        public OtherExperience GetOtherExperienceById(int id)
+        public OtherExperience? GetOtherExperienceById(int id)
         {
-            throw new NotImplementedException();
+            var otherExperience = CurrentResume.AllOtherExperience.OtherExperiences.FirstOrDefault(ts => ts.Id == id);
+
+            if (otherExperience == null)
+            {
+                ErrorHandler.AddError(new Exception("Other experience not found!"), new System.Diagnostics.StackTrace());
+                return null;
+            }
+
+            return otherExperience;
         }
 
         public void SetExperienceActive(int id, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.AllExperiences.Experiences.Count; i++)
+            {
+                if (CurrentResume.AllExperiences.Experiences[i].Id == id)
+                {
+                    CurrentResume.AllExperiences.Experiences[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public void SetSocialMediaLinkActive(int id, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.PersonalInfo.SocialMediaLinks.Count; i++)
+            {
+                if (CurrentResume.PersonalInfo.SocialMediaLinks[i].Id == id)
+                {
+                    CurrentResume.PersonalInfo.SocialMediaLinks[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public void SetEducationActive(int id, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.AllEducation.Education.Count; i++)
+            {
+                if (CurrentResume.AllEducation.Education[i].Id == id)
+                {
+                    CurrentResume.AllEducation.Education[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public void SetOtherExperienceActive(int id, bool isActive)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < CurrentResume.AllOtherExperience.OtherExperiences.Count; i++)
+            {
+                if (CurrentResume.AllOtherExperience.OtherExperiences[i].Id == id)
+                {
+                    CurrentResume.AllOtherExperience.OtherExperiences[i].Active = isActive;
+                    break;
+                }
+            }
         }
 
         public bool DeleteSocialMediaLink(int id)
         {
-            throw new NotImplementedException();
+            int numberOfLinksDeleted = CurrentResume.PersonalInfo.SocialMediaLinks.RemoveAll(sml => sml.Id == id);
+
+            if (numberOfLinksDeleted == 0)
+            {
+                return false;
+            }
+            else if (numberOfLinksDeleted == 1)
+            {
+                return true;
+            }
+            else
+            {
+                ErrorHandler.AddError(new Exception($"Multiple social media links with the same id {id} were deleted."), new System.Diagnostics.StackTrace());
+                return true;
+            }
         }
 
         public void SetFullName(string fullName)
         {
-            throw new NotImplementedException();
+            CurrentResume.PersonalInfo.SetFullNameText(fullName);   
         }
 
         public void SetPhoneNumber(string phoneNumber)
@@ -427,22 +476,22 @@ namespace DocumentHandler.Handlers
 
         public void SetTechnicalSkillsHeader(string technicalSkillsHeader)
         {
-            CurrentResume.AllTechnicalSkills.TechnicalSkillsHeader.Text = technicalSkillsHeader;
+            CurrentResume.AllTechnicalSkills.TechnicalSkillsHeader.Elements.First().Text = technicalSkillsHeader;
         }
 
         public void SetExperienceHeader(string experienceHeader)
         {
-            CurrentResume.AllExperiences.ExperienceHeader.Text = experienceHeader;  
+            CurrentResume.AllExperiences.ExperienceHeader.Elements.First().Text = experienceHeader;  
         }
 
         public void SetEducationHeader(string educationHeader)
         {
-            CurrentResume.AllEducation.EducationHeader.Text = educationHeader;  
+            CurrentResume.AllEducation.EducationHeader.Elements.First().Text = educationHeader;  
         }
 
         public void SetOtherExperienceHeader(string otherExperienceHeader)
         {
-            CurrentResume.AllOtherExperience.OtherExperienceHeader.Text = otherExperienceHeader;    
+            CurrentResume.AllOtherExperience.OtherExperienceHeader.Elements.First().Text = otherExperienceHeader;    
         }
 
         public Element? GetElementById(int id)
@@ -459,15 +508,8 @@ namespace DocumentHandler.Handlers
 
         public bool UpdateParagraphStyling(ParagraphStyle paragraphStyle, int id)
         {
-            var paragraph = ParagraphHandler.GetById(id);
 
-            if (paragraph != null)
-            {
-                paragraph.ParagraphStyle = paragraphStyle;
-                return true;
-
-            }
-            return false;
+            return ParagraphHandler.UpdateParagraphStyling(id, paragraphStyle);
         }
 
         public bool UpdateElementStyling(ElementStyle elementStyle, int id)
@@ -518,7 +560,5 @@ namespace DocumentHandler.Handlers
         {
             return CurrentResume.AllOtherExperience;
         }
-
-
     }
 }

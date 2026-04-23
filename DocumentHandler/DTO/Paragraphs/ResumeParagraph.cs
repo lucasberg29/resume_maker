@@ -18,6 +18,21 @@ namespace DocumentHandler.DTO.Paragraphs
             ParagraphHandler.Register(this);
         }
 
+        public ResumeParagraph(string paragraphTag)
+        {
+            ParagraphTag = paragraphTag;
+            Id = GetID();
+            ParagraphHandler.Register(this);
+        }
+
+        public ResumeParagraph(string paragraphTag, string firstElement)
+        {
+            ParagraphTag = paragraphTag;
+            Elements.Add(new Element(firstElement));
+            Id = GetID();
+            ParagraphHandler.Register(this);
+        }
+
         private int GetID()
         {
             ParagraphIdCounter = ParagraphIdCounter + 1;

@@ -1,4 +1,5 @@
-﻿using DocumentHandler.DTO.Attribute;
+﻿using DocumentHandler.DTO;
+using DocumentHandler.DTO.Attribute;
 using DocumentHandler.DTO.Section;
 using DocumentHandler.Interfaces;
 using System.IO;
@@ -51,9 +52,9 @@ namespace ResumeHandlerGUI.Handlers
             var personalInfo = DocumentHandler.GetPersonalInfo();
 
             // Full Name
-            var run = CreateRun(personalInfo.FullName.Elements.First().Text, personalInfo.FullName.Elements.First().ElementStyle);
+            var fullNameRun = CreateRun(personalInfo.FullName.Elements.First());
 
-            var fullNameParagraph = new Paragraph(run)
+            var fullNameParagraph = new Paragraph(fullNameRun)
             {
                 Style = DtoStyleToWindowsStyle(personalInfo.FullName.ParagraphStyle)
             };
@@ -63,9 +64,9 @@ namespace ResumeHandlerGUI.Handlers
             // Contact Info
             var contact = DocumentHandler.GetPersonalInfo().Contact;
 
-            var emailRun = CreateRun(contact.Elements[0].Text, contact.Elements[0].ElementStyle);
-            var phoneRun = CreateRun(contact.Elements[1].Text, contact.Elements[1].ElementStyle);
-            var locationRun = CreateRun(contact.Elements[2].Text, contact.Elements[2].ElementStyle);
+            var emailRun = CreateRun(contact.Elements[0]);
+            var phoneRun = CreateRun(contact.Elements[1]);
+            var locationRun = CreateRun(contact.Elements[2]);
 
             var contatInfoParagraph = new Paragraph
             {
@@ -156,7 +157,7 @@ namespace ResumeHandlerGUI.Handlers
 
             // Introduction
             var introduction = personalInfo.Introduction.Elements.First();
-            var introductionRun = CreateRun(introduction.Text, introduction.ElementStyle);
+            var introductionRun = CreateRun(introduction);
             var introductionParagraph = new Paragraph(introductionRun)
             {
                 TextAlignment = TextAlignment.Center,
@@ -165,7 +166,6 @@ namespace ResumeHandlerGUI.Handlers
 
             FlowDocument.Blocks.Add(introductionParagraph);
         }
-
 
         private void UpdateTechnicalSkills()
         {
@@ -208,11 +208,13 @@ namespace ResumeHandlerGUI.Handlers
             //Experience Header
             var experiences = DocumentHandler.GetAllExperience();
 
-            var run = CreateRun(experiences.ExperienceHeader.Elements.First().Text, experiences.ExperienceHeader.Elements.First().ElementStyle);
+            var run = CreateRun(experiences.ExperienceHeader.Elements.First());
 
             var experienceHeader = new Paragraph(run)
             {
-                Style = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ParagraphStyle)
+                Style = DtoStyleToWindowsStyle(experiences.ExperienceHeader.ParagraphStyle),
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(0, 0, 0, 1)
             };
 
             FlowDocument.Blocks.Add(experienceHeader);
@@ -227,13 +229,13 @@ namespace ResumeHandlerGUI.Handlers
                 var rowGroup = new TableRowGroup();
                 var row = new TableRow();
 
-                var titleCell = new TableCell(new Paragraph(new Run(exp.JobTitle.Text))
+                var titleCell = new TableCell(new Paragraph(CreateRun(exp.JobTitle))
                 {
                     FontSize = 11,
                     FontWeight = FontWeights.Bold
                 });
 
-                var locationCell = new TableCell(new Paragraph(new Run(exp.Location.Text))
+                var locationCell = new TableCell(new Paragraph(CreateRun(exp.JobTitle))
                 {
                     FontSize = 11,
                     FontWeight = FontWeights.Bold,
@@ -275,7 +277,7 @@ namespace ResumeHandlerGUI.Handlers
                     {
                         Style = DtoStyleToWindowsStyle(exp.BulletPoints[i].Elements.First().ElementStyle),
                         TextAlignment = TextAlignment.Left,
-                        Margin = new Thickness(0, 0, 0, 2)
+                        Margin = new Thickness(0, 0, 0, 1)
                     };
 
                     var tableCell = new TableCell(paragraph)
@@ -398,17 +400,18 @@ namespace ResumeHandlerGUI.Handlers
                 {
                     Style = style,
                 };
+
                 FlowDocument.Blocks.Add(bulletParagraph);
             }
         }
 
-        private Run CreateRun(string text, ElementStyle style)
+        private Run CreateRun(Element element)
         {
-            var fullNameStyle = DtoStyleToWindowsStyle(style);
+            var elementStyle = DtoStyleToWindowsStyle(element.ElementStyle);
 
-            var run = new Run(text)
+            var run = new Run(element.Text)
             {
-                Style = fullNameStyle
+                Style = elementStyle
             };
 
             return run;
@@ -477,7 +480,6 @@ namespace ResumeHandlerGUI.Handlers
 
             return newStyle;
         }
-
 
         private bool AddParagraph(string paragraphText)
         {

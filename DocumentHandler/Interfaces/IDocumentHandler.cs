@@ -1,13 +1,8 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentHandler.DTO;
+﻿using DocumentHandler.DTO;
 using DocumentHandler.DTO.Attribute;
 using DocumentHandler.DTO.Paragraphs;
 using DocumentHandler.DTO.Section;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace DocumentHandler.Interfaces
 {
@@ -77,6 +72,10 @@ namespace DocumentHandler.Interfaces
 
         bool UpdateParagraphStyling(ParagraphStyle paragraph, int id);    
         bool UpdateElementStyling(ElementStyle element, int id);    
+
+        bool UpdateElement(Element element);
+
+        bool UpdateParagraph(ResumeParagraph paragraph);  
 
         bool DeleteTechnicalSkill(int id);
         bool DeleteExperience(int id);

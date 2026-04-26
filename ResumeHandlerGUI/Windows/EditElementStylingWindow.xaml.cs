@@ -4,6 +4,7 @@ using DocumentHandler.DTO.Paragraphs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -52,6 +53,9 @@ namespace ResumeHandlerGUI.Windows
             RightMarginTextBox.Text = margins[2];
             BottomMarginTextBox.Text = margins[3];
 
+            // Color
+            ColorPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(elementStyle.Color);
+
         }
 
         public EditElementStylingWindow(int elementId) : this()
@@ -70,14 +74,34 @@ namespace ResumeHandlerGUI.Windows
         {
             ElementStyle elementStyle = new ElementStyle()
             {
-
+                FontSize = int.Parse(FontSizeTextBox.Text),    
+                FontFamily = (FontFamilyComboBox.SelectedItem as FontFamily)?.Source,
+                Margin = $"{LeftMarginTextBox.Text}, {TopMarginTextBox.Text}, {RightMarginTextBox.Text}, {BottomMarginTextBox.Text}",
+                IsBold = IsBoldCheckBox.IsChecked ?? false,
+                IsItalic = IsItalicCheckBox.IsChecked ?? false,
+                IsUnderline = IsUnderlineCheckBox.IsChecked ?? false,
+                Hyperlink = HyperlinkTextBox.Text,
+                Color = ColorPicker.SelectedColor.ToString()
             };
 
-            MainWindow._wpfDocumentHandler.DocumentHandler.UpdateElementStyling(elementStyle, Element.Id);
+            Element.ElementStyle = elementStyle;
+
+            MainWindow._wpfDocumentHandler.DocumentHandler.UpdateElement(Element);
 
             DialogResult = true;
 
             Close();
+        }
+
+        private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            if (Element is null) return;
+            var selectedColor = ColorPicker.SelectedColor;
+            if (selectedColor.HasValue)
+            {
+                Element.ElementStyle.Color = $"#{selectedColor.Value.R:X2}{selectedColor.Value.G:X2}{selectedColor.Value.B:X2}";
+            }
+
         }
     }
 }

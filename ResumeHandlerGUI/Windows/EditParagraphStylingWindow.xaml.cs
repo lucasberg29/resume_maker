@@ -74,8 +74,10 @@ namespace ResumeHandlerGUI.Windows
                 TextAlignment = AlignLeft.IsChecked == true ? "left" : AlignCenter.IsChecked == true ? "center" : AlignRight.IsChecked == true ? "right" : "justify",
                 LineSpacing = double.TryParse(LineSpacingTextBox.Text, out double lineSpaice) ? lineSpaice : 0  
             };
-          
-            MainWindow._wpfDocumentHandler.DocumentHandler.UpdateParagraphStyling(paragraphStyle, Paragraph.Id);
+
+            Paragraph.ParagraphStyle = paragraphStyle;
+
+            MainWindow._wpfDocumentHandler.DocumentHandler.UpdateParagraph(Paragraph);
 
             DialogResult = true;  
             Close();

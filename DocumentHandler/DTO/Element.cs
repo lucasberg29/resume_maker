@@ -16,14 +16,12 @@ namespace DocumentHandler.DTO
         public Element() 
         {
             Id = GetID();
-            ElementHandler.Register(this);
         }
 
         public Element(string text)
         {
             Text = text;
             Id = GetID();
-            ElementHandler.Register(this);
         }
 
         public Element(string text, string tag)
@@ -31,7 +29,6 @@ namespace DocumentHandler.DTO
             Text = text;
             Tag = tag;
             Id = GetID();
-            ElementHandler.Register(this);
         }
 
         private int GetID()

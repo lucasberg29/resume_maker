@@ -496,44 +496,103 @@ namespace DocumentHandler.Handlers
 
         public Element? GetElementById(int id)
         {
-            var element = ElementHandler.GetById(id);
-            return element;
+            var elements = CurrentResume.GetAllElements();
+
+            foreach (var element in elements)
+            {
+                if (element.Id == id)
+                {
+                    return element;
+                }
+            }
+
+            return null;
         }
 
         public ResumeParagraph? GetParagraphById(int id)
         {
-            var resumeParagraph = ParagraphHandler.GetById(id);
-            return resumeParagraph;
+            var paragraphs = CurrentResume.GetAllParagraphs();
+
+            foreach (var paragraph in paragraphs)
+            {
+                if (paragraph.Id == id)
+                {
+                    return paragraph;
+                }
+            }
+
+            return null;
         }
 
         public bool UpdateParagraphStyling(ParagraphStyle paragraphStyle, int id)
         {
+            var paragraphs = CurrentResume.GetAllParagraphs();
 
-            return ParagraphHandler.UpdateParagraphStyling(id, paragraphStyle);
+            foreach (var paragraph in paragraphs)
+            {
+                if (paragraph.Id == id)
+                {
+                    paragraph.ParagraphStyle = paragraphStyle;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public bool UpdateElementStyling(ElementStyle elementStyle, int id)
         {
-            var element = ElementHandler.GetById(id);
+            var elements = CurrentResume.GetAllElements();
 
-            if (element != null)
+            foreach(var element in elements)
             {
-                element.ElementStyle = elementStyle;
-                return true;
+                if (element.Id == id)
+                {
+                    element.ElementStyle = elementStyle;
+                    return true;
+                }
             }
+
             return false;
         }
 
-        public void UpdateParagraph(ResumeParagraph paragraph)
+        public bool UpdateParagraph(ResumeParagraph paragraph)
         {
-            var updatedParagraph = ParagraphHandler.GetById(paragraph.Id);
-            updatedParagraph = paragraph;
+            var paragraphs = CurrentResume.GetAllParagraphs();  
+
+            foreach(var p in paragraphs)
+            {
+                if (p.Id == paragraph.Id)
+                {
+                    p.ParagraphTag = paragraph.ParagraphTag;
+                    p.Elements = paragraph.Elements;
+                    p.Separator = paragraph.Separator;
+                    p.ParagraphStyle = paragraph.ParagraphStyle;
+                    p.Active = paragraph.Active;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        public void UpdateElement(Element element)
+        public bool UpdateElement(Element element)
         {
-            var updatedElement = ElementHandler.GetById(element.Id);
-            updatedElement = element;
+            var elements = CurrentResume.GetAllElements();
+
+            foreach(var el in elements)
+            {
+                if (el.Id == element.Id)
+                {
+                    el.Text = element.Text;
+                    el.Tag = element.Tag;
+                    el.ElementStyle = element.ElementStyle;
+                    el.Active = element.Active;
+                    return true;
+                }
+            }
+
+            return false;
         }   
 
         public PersonalInfo GetPersonalInfo()

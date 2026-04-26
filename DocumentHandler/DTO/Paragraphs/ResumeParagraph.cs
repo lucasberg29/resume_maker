@@ -15,14 +15,12 @@ namespace DocumentHandler.DTO.Paragraphs
         public ResumeParagraph()
         {
             Id =  GetID();
-            ParagraphHandler.Register(this);
         }
 
         public ResumeParagraph(string paragraphTag)
         {
             ParagraphTag = paragraphTag;
             Id = GetID();
-            ParagraphHandler.Register(this);
         }
 
         public ResumeParagraph(string paragraphTag, string firstElement)
@@ -30,7 +28,6 @@ namespace DocumentHandler.DTO.Paragraphs
             ParagraphTag = paragraphTag;
             Elements.Add(new Element(firstElement));
             Id = GetID();
-            ParagraphHandler.Register(this);
         }
 
         private int GetID()

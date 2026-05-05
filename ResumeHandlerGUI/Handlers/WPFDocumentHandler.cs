@@ -424,7 +424,6 @@ namespace ResumeHandlerGUI.Handlers
             }
 
             DocumentHandler.SetPosition(socialMediaLink, socialMediaLink.Position - 1);
-
         }
 
         public void MoveUpInOrder(TechnicalSkill paragraphId)

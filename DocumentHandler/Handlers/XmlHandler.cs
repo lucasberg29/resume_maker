@@ -48,60 +48,30 @@ namespace DocumentHandler.Handlers
             // Full Name
             var fullName = currentResume.PersonalInfo.FullName;
 
-            var run = CreateRunText(fullName.Elements.First().ElementStyle, fullName.Elements.First().Text);
-            var paragraph = CreateParagraph(fullName, run);
+            var fullNameRun = CreateRunText(fullName.Elements.First().ElementStyle, fullName.Elements.First().Text);
+            var fullNameParagraph = CreateParagraph(fullName, fullNameRun);
 
             if (mainPart.Document.Body != null)
             {
-                mainPart.Document.Body.AppendChild(paragraph);
+                mainPart.Document.Body.AppendChild(fullNameParagraph);
             }
 
             // Contact Info
             var contact = currentResume.PersonalInfo.Contact;
 
-            var paragraphProperties = new ParagraphProperties();
-            switch (contact.ParagraphStyle.TextAlignment?.ToLower())
-            {
-                case "center":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
-                    break;
+            var contactRun = CreateRunText(contact.Elements[0].ElementStyle, contact.Elements[0].Text);
 
-                case "right":
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Right });
-                    break;
+            contactRun.Append(CreateRunText(contact.Elements[0].ElementStyle, " - "));
+            contactRun.Append(CreateRunText(contact.Elements[1].ElementStyle, contact.Elements[1].Text));
+            contactRun.Append(CreateRunText(contact.Elements[1].ElementStyle, " - "));
+            contactRun.Append(CreateRunText(contact.Elements[2].ElementStyle, contact.Elements[2].Text));
 
-                default:
-                    paragraphProperties.Append(new Justification() { Val = JustificationValues.Left });
-                    break;
-            }
-
-            var contactParagraph = new DocumentFormat.OpenXml.Math.Paragraph(paragraphProperties);
-
-            contactParagraph.Append(
-                CreateRunText(contact.Elements[0].ElementStyle, contact.Elements[0].Text)
-            );
-
-            contactParagraph.Append(
-                CreateRunText(contact.Elements[0].ElementStyle, " - ")
-            );
-
-            contactParagraph.Append(
-                CreateRunText(contact.Elements[1].ElementStyle, contact.Elements[1].Text)
-            );
-
-            contactParagraph.Append(
-                CreateRunText(contact.Elements[2].ElementStyle, " - ")
-            );
-
-            contactParagraph.Append(
-                CreateRunText(contact.Elements[3].ElementStyle, contact.Elements[3].Text)
-            );
-
+            var contactParagraph = CreateParagraph(contact, contactRun);
 
             mainPart.Document?.Body?.AppendChild(contactParagraph);
 
-            var socialParagraph = CreateSocialMediaIconsParagraph(doc, currentResume, resumeFolderPath);
-            mainPart.Document?.Body?.Append(socialParagraph);
+            //var socialParagraph = CreateSocialMediaIconsParagraph(doc, currentResume, resumeFolderPath);
+            //mainPart.Document?.Body?.Append(socialParagraph);
 
             mainPart.Document?.Save();
 

@@ -1,9 +1,4 @@
-﻿using DocumentFormat.OpenXml.Presentation;
-using DocumentHandler.DTO.Attribute;
-using DocumentHandler.Handlers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DocumentHandler.DTO.Attribute;
 using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO.Paragraphs
@@ -34,6 +29,19 @@ namespace DocumentHandler.DTO.Paragraphs
         {
             ParagraphIdCounter = ParagraphIdCounter + 1;
             return ParagraphIdCounter;
+        }
+
+        public Element? GetElementByTag(string tag)
+        {
+            foreach (var element in Elements)
+            {
+                if (element.Tag == tag)
+                {
+                    return element;
+                }
+            }
+
+            return null;
         }
 
         [JsonPropertyName("paragraphTag")]

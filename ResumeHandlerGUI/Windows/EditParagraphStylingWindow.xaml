@@ -10,7 +10,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner">
     <StackPanel Margin="15">
-        <TextBlock x:Name="Margin" Text="Margin:" Margin="0,10,0,4"/>
+        <TextBlock x:Name="MarginTitle" Text="Margin:" Margin="0,10,0,4"/>
         <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -35,8 +35,7 @@
                 <TextBox  x:Name="BottomMarginTextBox" Text="0" />
             </StackPanel>
         </Grid>
-        <TextBlock x:Name="Padding" Text="Padding:" Margin="0,10,0,4"/>
-
+        <TextBlock x:Name="PaddingTitle" Text="Padding:" Margin="0,10,0,4"/>
         <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

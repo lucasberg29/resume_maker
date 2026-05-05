@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DocumentHandler.DTO.Attribute
 {
@@ -23,6 +20,5 @@ namespace DocumentHandler.DTO.Attribute
         public bool IsUnderline { get; set; } = false;
         [JsonPropertyName("hyperlink")]
         public string Hyperlink { get; set; } = string.Empty;
-
     }
 }

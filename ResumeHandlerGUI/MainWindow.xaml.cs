@@ -10,7 +10,7 @@ namespace ResumeHandlerGUI
     {
         public static WindowManager? _windowManager;
         public static readonly WPFDocumentHandler _wpfDocumentHandler = new();
-        public static UiManager _uiManager = new();
+        public static readonly UiManager _uiManager = new();
 
         public MainWindow()
         {

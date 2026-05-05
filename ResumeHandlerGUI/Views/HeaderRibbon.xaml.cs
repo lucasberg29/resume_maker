@@ -47,7 +47,80 @@ namespace ResumeHandlerGUI.Views
         public void UpdateFields()
         {
             var personalInfo = MainWindow._wpfDocumentHandler.DocumentHandler.GetPersonalInfo();
+            UpdatePersonalInfo(personalInfo);
+            UpdateSocialMediaLinks(personalInfo);
+        }
 
+        private void UpdateSocialMediaLinks(PersonalInfo personalInfo)
+        {
+            SocialMediaLinksListBox.Items.Clear();
+
+            var socialMediaLinks = personalInfo.SocialMediaLinks.OrderBy(socialMediaLink => socialMediaLink.Position).ToList();
+
+            foreach (var socialMediaLink in socialMediaLinks)
+            {
+                var grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+                var nameBlock = new TextBlock
+                {
+                    Text = socialMediaLink.Name,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                Grid.SetColumn(nameBlock, 0);
+                grid.Children.Add(nameBlock);
+
+                var moveUpInOrderButton = new Button
+                {
+                    Content = "↑",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 5, 0)
+                };
+
+                moveUpInOrderButton.Click += (s, e) =>
+                {
+                    MainWindow._wpfDocumentHandler.MoveUpInOrder(socialMediaLink);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                    MainWindow._uiManager.Update();
+                };
+
+                Grid.SetColumn(moveUpInOrderButton, 1);
+                grid.Children.Add(moveUpInOrderButton);
+
+                var editButton = new Button
+                {
+                    Content = "⚙",
+                    Width = 20,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                editButton.Click += (s, e) =>
+                {
+                    MainWindow._windowManager.EditSocialMediaLink(socialMediaLink.Id);
+                    MainWindow._wpfDocumentHandler.UpdateResume();
+                };
+
+                Grid.SetColumn(editButton, 2);
+                grid.Children.Add(editButton);
+
+                var item = new ListBoxItem
+                {
+                    Content = grid,
+                    IsSelected = socialMediaLink.Active,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
+
+                SocialMediaLinksListBox.Items.Add(item);
+            }
+        }
+
+        private void UpdatePersonalInfo(PersonalInfo personalInfo)
+        {
             fullNameParagraph = personalInfo.FullName;
             contactParagraph = personalInfo.Contact;
             socialMediaLinks = personalInfo.SocialMediaLinks;
@@ -68,49 +141,6 @@ namespace ResumeHandlerGUI.Views
             MaskPhoneNumber();
 
             Introduction.Text = MainWindow._wpfDocumentHandler.DocumentHandler.GetIntroduction().Text;
-
-            SocialMediaLinksListBox.Items.Clear();
-
-            foreach (var socialMediaLink in personalInfo.SocialMediaLinks)
-            {
-                var grid = new Grid();
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-
-                var nameBlock = new TextBlock
-                {
-                    Text = socialMediaLink.Name,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-
-                var button = new Button
-                {
-                    Content = "⚙",
-                    Width = 20,
-                    Padding = new Thickness(0),
-                    Margin = new Thickness(0, 0, 0, 0)
-                };
-
-                button.Click += (s, e) =>
-                {
-                    MainWindow._windowManager.EditSocialMediaLink(socialMediaLink.Id);
-                    MainWindow._wpfDocumentHandler.UpdateResume();
-                };
-
-                Grid.SetColumn(nameBlock, 0);
-                Grid.SetColumn(button, 1);
-                grid.Children.Add(nameBlock);
-                grid.Children.Add(button);
-
-                var item = new ListBoxItem
-                {
-                    Content = grid,
-                    IsSelected = socialMediaLink.Active,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch
-                };
-
-                SocialMediaLinksListBox.Items.Add(item);
-            }
         }
 
         private void MaskPhoneNumber()

@@ -53,6 +53,9 @@ namespace ResumeHandlerGUI
             _socialMediaLink.ElementStyle.Hyperlink = HyperlinkTextBox.Text.Trim();
             _socialMediaLink.Alt = AltTextBox.Text.Trim();
 
+            var socialMediaLinks = MainWindow._wpfDocumentHandler.DocumentHandler.GetPersonalInfo().SocialMediaLinks;
+            _socialMediaLink.Position = socialMediaLinks.Count + 1;
+
             MainWindow._wpfDocumentHandler.DocumentHandler.AddSocialMediaLink(_socialMediaLink);
 
             DialogResult = true;

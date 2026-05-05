@@ -82,5 +82,10 @@ namespace DocumentHandler.Interfaces
         bool DeleteSocialMediaLink(int id);
         bool DeleteEducation(int id);
         bool DeleteOtherExperience(int id);
+
+        bool SetPosition(Education education, int position);
+        bool SetPosition(Experience experience, int position);
+        bool SetPosition(OtherExperience otherExperience, int position);
+        bool SetPosition(SocialMediaLink socialMediaLink, int position);
     }
 }

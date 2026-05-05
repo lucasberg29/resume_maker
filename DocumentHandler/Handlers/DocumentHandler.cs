@@ -619,5 +619,64 @@ namespace DocumentHandler.Handlers
         {
             return CurrentResume.AllOtherExperience;
         }
+
+        public bool SetPosition(Education education, int position)
+        {
+            for (int i = 0; i < CurrentResume.AllEducation.Education.Count; i++)
+            {
+                if (CurrentResume.AllEducation.Education[i].Id == education.Id)
+                {
+                    CurrentResume.AllEducation.Education[i].Position = position;  
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool SetPosition(Experience experience, int position)
+        {
+            var allExperience = CurrentResume.AllExperiences;  
+            for (int i = 0; i < allExperience.Experiences.Count; i++)
+            {
+                if (allExperience.Experiences[i].Id == experience.Id)
+                {
+                    allExperience.Experiences[i].Position = position;  
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool SetPosition(OtherExperience otherExperience, int position)
+        {
+            var allOtherExperience = CurrentResume.AllOtherExperience;  
+            for (int i = 0; i < allOtherExperience.OtherExperiences.Count; i++)
+            {
+                if (allOtherExperience.OtherExperiences[i].Id == otherExperience.Id)
+                {
+                    allOtherExperience.OtherExperiences[i].Position = position;  
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool SetPosition(SocialMediaLink socialMediaLink, int position)
+        {
+            var allSocialMediaLinks = CurrentResume.PersonalInfo.SocialMediaLinks;  
+            for (int i = 0; i < allSocialMediaLinks.Count; i++)
+            {
+                if (allSocialMediaLinks[i].Id == socialMediaLink.Id)
+                {
+                    allSocialMediaLinks[i].Position = position;  
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

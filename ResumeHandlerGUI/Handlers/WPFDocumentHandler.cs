@@ -405,6 +405,33 @@ namespace ResumeHandlerGUI.Handlers
             }
         }
 
+        public void MoveUpInOrder(SocialMediaLink socialMediaLink)
+        {
+            if (socialMediaLink.Position <= 1)
+            {
+                return;
+            }
+
+            var socialMediaLinks = DocumentHandler.GetPersonalInfo().SocialMediaLinks;
+
+            for (int i = 0; i < socialMediaLinks.Count; i++)
+            {
+                if (socialMediaLinks[i].Position == socialMediaLink.Position - 1)
+                {
+                    DocumentHandler.SetPosition(socialMediaLinks[i], socialMediaLinks[i].Position + 1);
+                    break;
+                }
+            }
+
+            DocumentHandler.SetPosition(socialMediaLink, socialMediaLink.Position - 1);
+
+        }
+
+        public void MoveUpInOrder(TechnicalSkill paragraphId)
+        {
+
+        }
+
         private Run CreateRun(Element element)
         {
             var elementStyle = DtoStyleToWindowsStyle(element.ElementStyle);

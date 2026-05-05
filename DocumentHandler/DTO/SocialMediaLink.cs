@@ -9,8 +9,13 @@ namespace DocumentHandler.DTO
 
         public SocialMediaLink()
         {
+            Id = GetID();
+        }
+
+        private int GetID()
+        {
             SocialMediaLinkIdCounter = SocialMediaLinkIdCounter + 1;
-            Id = SocialMediaLinkIdCounter++;
+            return SocialMediaLinkIdCounter;
         }
 
         [JsonPropertyName("active")]

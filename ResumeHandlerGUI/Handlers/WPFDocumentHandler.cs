@@ -476,7 +476,8 @@ namespace ResumeHandlerGUI.Handlers
                 ? new Thickness(marginNumbers[0], marginNumbers[1], marginNumbers[2], marginNumbers[3])
                 : new Thickness();
 
-            newStyle.Setters.Add(new Setter(MarginProperty, margin));
+            newStyle.Setters.Add(new Setter(Block.MarginProperty, 
+                new Thickness(margin.Left, margin.Top + style.SpacingBefore, margin.Right, margin.Bottom + style.SpacingAfter)));
 
             // Padding
             List<int> paddingNumbers = style.Padding.Split(',').Select(int.Parse).ToList();
@@ -496,13 +497,13 @@ namespace ResumeHandlerGUI.Handlers
                 _ => TextAlignment.Left  // default
             };
 
+            newStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, alignment));
+
             // Line Spacing
             if (style.LineSpacing > 0)
             {
                 newStyle.Setters.Add(new Setter(Block.LineHeightProperty, style.LineSpacing));
             }
-
-            newStyle.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, alignment));
 
             return newStyle;
         }

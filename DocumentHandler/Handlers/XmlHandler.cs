@@ -121,8 +121,10 @@ namespace DocumentHandler.Handlers
 
         private static Paragraph CreateParagraph(ResumeParagraph paragraph, Run run)
         {
+            var paragraphStyle = paragraph.ParagraphStyle;
+
             var paragraphProperties = new ParagraphProperties();
-            switch (paragraph.ParagraphStyle.TextAlignment?.ToLower())
+            switch (paragraphStyle.TextAlignment?.ToLower())
             {
                 case "center":
                     paragraphProperties.Append(new Justification() { Val = JustificationValues.Center });
@@ -137,11 +139,23 @@ namespace DocumentHandler.Handlers
                     break;
             }
 
+            //paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
+            //{
+            //    Before = "100",
+            //    After = "100",
+            //    Line = "100",
+            //    LineRule = LineSpacingRuleValues.Auto
+            //};
+
+            // 100 equals 5 pt - 1 to 20 then
+
+            var lineSpacing =  (paragraphStyle.LineSpacing * 20).ToString();
+
             paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
             {
                 Before = "100",
                 After = "100",
-                Line = "100",
+                Line = lineSpacing,
                 LineRule = LineSpacingRuleValues.Auto
             };
 

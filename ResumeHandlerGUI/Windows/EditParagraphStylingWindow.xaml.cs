@@ -49,8 +49,10 @@ namespace ResumeHandlerGUI.Windows
                     AlignJustify.IsChecked = true;
                     break;
             }
-
-            LineSpacingTextBox.Text = Paragraph.ParagraphStyle.LineSpacing.ToString();
+            
+            LineSpacing.Text = Paragraph.ParagraphStyle.LineSpacing.ToString();
+            Before.Text = Paragraph.ParagraphStyle.SpacingBefore.ToString();
+            After.Text = Paragraph.ParagraphStyle.SpacingAfter.ToString();
         }
 
         public EditParagraphStylingWindow(int paragraphId) : this()
@@ -72,7 +74,9 @@ namespace ResumeHandlerGUI.Windows
                 Margin = $"{LeftMarginTextBox.Text},{TopMarginTextBox.Text},{RightMarginTextBox.Text},{BottomMarginTextBox.Text}",
                 Padding = $"{LeftPaddingTextBox.Text},{TopPaddingTextBox.Text},{RightPaddingTextBox.Text},{BottomPaddingTextBox.Text}",
                 TextAlignment = AlignLeft.IsChecked == true ? "left" : AlignCenter.IsChecked == true ? "center" : AlignRight.IsChecked == true ? "right" : "justify",
-                LineSpacing = double.TryParse(LineSpacingTextBox.Text, out double lineSpaice) ? lineSpaice : 0  
+                LineSpacing = double.TryParse(LineSpacing.Text, out double lineSpaice) ? lineSpaice : 0 ,
+                SpacingBefore = double.TryParse(Before.Text, out double spacingBefore) ? spacingBefore : 0,
+                SpacingAfter = double.TryParse(After.Text, out double spacingAfter) ? spacingAfter : 0
             };
 
             Paragraph.ParagraphStyle = paragraphStyle;

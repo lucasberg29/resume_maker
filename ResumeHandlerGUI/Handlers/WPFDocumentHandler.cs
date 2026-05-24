@@ -31,11 +31,6 @@ namespace ResumeHandlerGUI.Handlers
             }
         }
 
-        private static Style GetStyle(string key)
-        {
-            return (Style)Application.Current.FindResource(key);
-        }
-
         public void UpdateResume()
         {
             FlowDocument = new FlowDocument();
@@ -451,6 +446,8 @@ namespace ResumeHandlerGUI.Handlers
             newStyle.Setters.Add(new Setter(FontSizeProperty, Convert.ToDouble(style.FontSize)));
             newStyle.Setters.Add(new Setter(FontFamilyProperty, new FontFamily(style.FontFamily)));
             newStyle.Setters.Add(new Setter(ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString(style.Color))));
+            newStyle.Setters.Add(new Setter(TextBlock.TextDecorationsProperty, style.IsUnderline ? TextDecorations.Underline : null));
+            newStyle.Setters.Add(new Setter(FontStyleProperty, style.IsItalic ? FontStyles.Italic : FontStyles.Normal));
 
             List<int> numbers = style.Margin.Split(',').Select(int.Parse).ToList();
 

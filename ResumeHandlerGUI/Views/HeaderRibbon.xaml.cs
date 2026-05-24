@@ -239,11 +239,6 @@ namespace ResumeHandlerGUI.Views
             MainWindow._wpfDocumentHandler.UpdateResume();
         }
 
-        private void UpdateLinkButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void FirtParagraphButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow._windowManager?.EditParagraphStyling(fullNameParagraph.Id);
@@ -257,6 +252,26 @@ namespace ResumeHandlerGUI.Views
         private void FullNameStylingButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow._windowManager?.EditElementStyling(fullNameElement.Id);
+        }
+
+        private void PhoneNumberStylingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditElementStyling(phoneNumberElement.Id);
+        }
+
+        private void EmailStylingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditElementStyling(emailElement.Id);
+        }
+
+        private void LocationStylingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditElementStyling(locationElement.Id);
+        }
+
+        private void IntroductionStylingButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditElementStyling(introductionElement.Id);
         }
     }
 }

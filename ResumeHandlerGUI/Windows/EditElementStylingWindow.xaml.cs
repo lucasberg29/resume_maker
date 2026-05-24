@@ -56,6 +56,9 @@ namespace ResumeHandlerGUI.Windows
             // Color
             ColorPicker.SelectedColor = (Color)ColorConverter.ConvertFromString(elementStyle.Color);
 
+            IsItalicCheckBox.IsChecked = elementStyle.IsItalic;
+            IsBoldCheckBox.IsChecked = elementStyle.IsBold;
+            IsUnderlineCheckBox.IsChecked = elementStyle.IsUnderline; 
         }
 
         public EditElementStylingWindow(int elementId) : this()

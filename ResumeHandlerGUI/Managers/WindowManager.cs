@@ -55,6 +55,11 @@ namespace ResumeHandlerGUI.Managers
             }
         }
 
+        public void EditTechnicalSkill(int id)
+        {
+            
+        }
+
         public void AddExperience()
         {
             var dialog = new AddExperienceWindow();

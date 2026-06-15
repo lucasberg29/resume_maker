@@ -24,6 +24,7 @@ namespace ResumeHandlerGUI.Views
     {
         ResumeParagraph fullNameParagraph;
         ResumeParagraph contactParagraph;
+        ResumeParagraph introductionParagraph;
 
         Element? fullNameElement;
         Element? phoneNumberElement;
@@ -124,6 +125,7 @@ namespace ResumeHandlerGUI.Views
             fullNameParagraph = personalInfo.FullName;
             contactParagraph = personalInfo.Contact;
             socialMediaLinks = personalInfo.SocialMediaLinks;
+            introductionParagraph = personalInfo.Introduction;
 
             fullNameElement = personalInfo.FullName.Elements.First();
 
@@ -267,6 +269,11 @@ namespace ResumeHandlerGUI.Views
         private void LocationStylingButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow._windowManager?.EditElementStyling(locationElement.Id);
+        }
+
+        private void IntroductionParagraphButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow._windowManager?.EditParagraphStyling(introductionParagraph.Id);
         }
 
         private void IntroductionStylingButton_Click(object sender, RoutedEventArgs e)

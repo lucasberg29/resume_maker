@@ -22,18 +22,18 @@ namespace DocumentHandler.Handlers
 
             var body = mainPart.Document.Body;
 
-            if (body != null)
-            {
-                body.Append(CreateParagraph(
-                    resume.PersonalInfo.FullName.Elements[0].Text,
-                    bold: true,
-                    fontSize: "14"));
+            //if (body != null)
+            //{
+            //    body.Append(CreateParagraph(
+            //        resume.PersonalInfo.FullName.Elements[0].Text,
+            //        bold: true,
+            //        fontSize: "14"));
 
-                body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[0].Text));
-                body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[1].Text));
+            //    body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[0].Text));
+            //    body.Append(CreateParagraph(resume.PersonalInfo.Contact.Elements[1].Text));
 
-                body.Append(new Paragraph(new Run(new Break())));
-            }
+            //    body.Append(new Paragraph(new Run(new Break())));
+            //}
 
             mainPart.Document.Save();
         }
@@ -70,8 +70,16 @@ namespace DocumentHandler.Handlers
 
             mainPart.Document?.Body?.AppendChild(contactParagraph);
 
-            //var socialParagraph = CreateSocialMediaIconsParagraph(doc, currentResume, resumeFolderPath);
-            //mainPart.Document?.Body?.Append(socialParagraph);
+            // Social Media Icons
+            var socialParagraph = CreateSocialMediaIconsParagraph(doc, currentResume, resumeFolderPath);
+            mainPart.Document?.Body?.Append(socialParagraph);
+
+            // Introduction
+            var introduction = currentResume.PersonalInfo.Introduction; 
+
+            var introductionText = CreateRunText(introduction.Elements[0].ElementStyle, introduction.Elements[0].Text);
+            var introParagraph = CreateParagraph(introduction, introductionText);
+            mainPart.Document?.Body?.Append(introParagraph);
 
             mainPart.Document?.Save();
 
@@ -88,22 +96,26 @@ namespace DocumentHandler.Handlers
                     Ascii = style.FontFamily,
                     HighAnsi = style.FontFamily,
                     ComplexScript = style.FontFamily
+                }
+            );
+
+            if (style.IsBold)
+                runProperties.Append(new Bold());
+
+            if (style.IsItalic)
+                runProperties.Append(new Italic());
+
+            if (style.IsUnderline)
+                runProperties.Append(new Underline() { Val = UnderlineValues.Single });
+
+            runProperties.Append(
+                new Color()
+                {
+                    Val = ArgbToHex(style.Color)                
                 },
                 new FontSize()
                 {
                     Val = (style.FontSize * 2).ToString()
-                },
-                new Color()
-                {
-                    Val = style.Color.Replace("#", "")
-                },
-                new Bold()
-                {
-                    Val = style.IsBold
-                },
-                new Italic()
-                {
-                    Val = style.IsItalic
                 }
             );
 
@@ -117,6 +129,21 @@ namespace DocumentHandler.Handlers
             );
 
             return run;
+        }
+
+        private static string ArgbToHex(string argb)
+        {
+            var hex = argb.TrimStart('#');
+            if (hex.Length == 8)
+            {
+                hex = hex.Substring(2); // drop leading AA, keep RRGGBB
+            }
+            else if (hex.Length == 3)
+            {
+                hex = string.Concat(hex.Select(c => new string(c, 2)));
+            }
+
+            return hex;
         }
 
         private static Paragraph CreateParagraph(ResumeParagraph paragraph, Run run)
@@ -139,41 +166,34 @@ namespace DocumentHandler.Handlers
                     break;
             }
 
-            //paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
-            //{
-            //    Before = "100",
-            //    After = "100",
-            //    Line = "100",
-            //    LineRule = LineSpacingRuleValues.Auto
-            //};
+            var libToWordProportion = 20.0; // 100 equals 5 - 1 to 20
+            var beforeSpacing = (paragraphStyle.SpacingBefore * libToWordProportion).ToString();
+            var afterSpacing = (paragraphStyle.SpacingAfter *libToWordProportion).ToString();
 
-            // 100 equals 5 pt - 1 to 20 then
-
-            var lineSpacing =  (paragraphStyle.LineSpacing * 20).ToString();
+            var libToWordSpacingProportion = 240.0; // 100 equals 12 - 1 to 240
+            var lineSpacing = (paragraphStyle.LineSpacing * libToWordSpacingProportion).ToString();
 
             paragraphProperties.SpacingBetweenLines = new SpacingBetweenLines()
             {
-                Before = "100",
-                After = "100",
+                Before = beforeSpacing,
+                After = afterSpacing,
                 Line = lineSpacing,
-                LineRule = LineSpacingRuleValues.Auto
             };
 
             return new Paragraph(paragraphProperties, run);
         }
 
+        //private static Paragraph CreateParagraph( string text, bool bold = false, string fontSize = "12")
+        //{
+        //    var runProps = new RunProperties(
+        //        new FontSize { Val = fontSize });
 
-        private static Paragraph CreateParagraph( string text, bool bold = false, string fontSize = "12")
-        {
-            var runProps = new RunProperties(
-                new FontSize { Val = fontSize });
+        //    if (bold)
+        //        runProps.Append(new Bold());
 
-            if (bold)
-                runProps.Append(new Bold());
-
-            var run = new Run(runProps, new Text(text));
-            return new Paragraph(run);
-        }
+        //    var run = new Run(runProps, new Text(text));
+        //    return new Paragraph(run);
+        //}
 
         private static int FindTextIndexByText(string text, string docPath )
         {
@@ -198,7 +218,6 @@ namespace DocumentHandler.Handlers
                     CreateHyperlinkedImage(doc, imagePath, link.ElementStyle.Hyperlink, 300000L, 300000L)
                 );
 
-                // spacing between icons
                 paragraph.Append(new Run(new Text("  ")));
             }
 

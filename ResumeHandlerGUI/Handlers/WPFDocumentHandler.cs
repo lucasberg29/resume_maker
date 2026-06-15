@@ -179,21 +179,21 @@ namespace ResumeHandlerGUI.Handlers
 
             string technicalSkillsText = string.Empty;
 
-            if (technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Count() > 0)
+            if (technicalSkills.TechnicalSkills.Where(t => t.Tag == "language").Count() > 0)
             {
-                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "language").Select(t => t.Text));
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Tag == "language").Select(t => t.Text));
                 AddParagraph(technicalSkillsText);
             }
 
-            if(technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Count() > 0)
+            if(technicalSkills.TechnicalSkills.Where(t => t.Tag == "framework").Count() > 0)
             {
-                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "framework").Select(t => t.Text));
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Tag == "framework").Select(t => t.Text));
                 AddParagraph(technicalSkillsText);
             }
 
-            if (technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Count() > 0)
+            if (technicalSkills.TechnicalSkills.Where(t => t.Tag == "tool").Count() > 0)
             {
-                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Type == "tool").Select(t => t.Text));
+                technicalSkillsText = string.Join(" ◈ ", technicalSkills.TechnicalSkills.Where(t => t.Tag == "tool").Select(t => t.Text));
                 AddParagraph(technicalSkillsText);
             }
         }

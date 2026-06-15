@@ -1,4 +1,6 @@
-﻿namespace DocumentHandler.DTO.Paragraphs
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+
+namespace DocumentHandler.DTO.Paragraphs
 {
     public class Introduction: ResumeParagraph
     {

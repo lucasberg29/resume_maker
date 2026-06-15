@@ -39,8 +39,10 @@ namespace ResumeHandlerGUI.Views
         private void UpdateLanguages()
         {
             LanguagesListBox.Items.Clear();
-            languages = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
-                TechnicalSkills.Where(t => t.Type == "language").ToList();
+
+            var allTechnicalSkills = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills();
+
+            languages = allTechnicalSkills.TechnicalSkills.Where(t => t.Tag == "language").ToList();
 
             foreach (var language in languages)
             {
@@ -64,7 +66,7 @@ namespace ResumeHandlerGUI.Views
 
                 button.Click += (s, e) =>
                 {
-                    MainWindow._windowManager.EditSocialMediaLink(language.Id);
+                    MainWindow._windowManager.EditTechnicalSkill(language.Id);
                     MainWindow._wpfDocumentHandler.UpdateResume();
                 };
 
@@ -82,13 +84,12 @@ namespace ResumeHandlerGUI.Views
 
                 LanguagesListBox.Items.Add(item);
             }
-
         }
         private void UpdateFrameworks()
         {
             FrameworksListBox.Items.Clear();
             frameworks = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
-                TechnicalSkills.Where(t => t.Type == "framework").ToList();
+                TechnicalSkills.Where(t => t.Tag == "framework").ToList();
 
             foreach (var framework in frameworks)
             {
@@ -130,14 +131,13 @@ namespace ResumeHandlerGUI.Views
 
                 FrameworksListBox.Items.Add(item);
             }
-
         }
 
         private void UpdateTools()
         {
             ToolsListBox.Items.Clear();
             tools = MainWindow._wpfDocumentHandler.DocumentHandler.GetAllTechnicalSkills().
-                TechnicalSkills.Where(t => t.Type == "tool").ToList();
+                TechnicalSkills.Where(t => t.Tag == "tool").ToList();
 
             foreach (var tool in tools)
             {

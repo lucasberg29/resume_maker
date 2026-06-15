@@ -79,7 +79,9 @@ namespace ResumeHandlerGUI
             foreach (var item in MainMenu.Items)
             {
                 if (item is MenuItem menuItem)
+                {
                     menuItem.IsChecked = false;
+                }
             }
 
             selectedItem.IsChecked = true;

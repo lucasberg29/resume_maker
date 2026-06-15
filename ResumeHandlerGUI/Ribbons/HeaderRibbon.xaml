@@ -22,7 +22,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" VerticalAlignment="Center" x:Name="FirstParagraphTitle" Text="First Paragraph" FontSize="14" FontWeight="bold" />
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" x:Name="FirstParagraphTitle" Text="First Paragraph" Style="{StaticResource RibbonSectionHeader}" />
                     <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="FirtParagraphButton_Click" x:Name="FirtParagraphButton" Style="{StaticResource ImageButton}" Margin="0,3,0,4" Width="NaN">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -60,7 +60,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" x:Name="SecondParagraphTitle" Text="Second Paragraph" FontSize="14" FontWeight="bold" />
+                    <TextBlock Grid.Column="0" x:Name="SecondParagraphTitle" Text="Second Paragraph" Style="{StaticResource RibbonSectionHeader}" />
                     <Button Grid.Column="2" VerticalAlignment="Center" Margin="0,3,0,4" HorizontalAlignment="Right" x:Name="SecondParagraphButton"  Click="SecondParagraphButton_Click" Style="{StaticResource ImageButton}"  >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -125,7 +125,7 @@
                 <TextBox x:Name="NewLocationInputField" Width="220" TextChanged="NewLocationInputField_TextChanged"/>
             </StackPanel>
             <StackPanel Margin="5" Grid.Column="2">
-                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,10,0,4" FontSize="14" FontWeight="bold" VerticalAlignment="Center"/>
+                <TextBlock x:Name="SocialMediaLinksTitle" Text="Social Media Links" Margin="0,10,0,4" Style="{StaticResource RibbonSectionHeader}"/>
                 <ListBox x:Name="SocialMediaLinksListBox" 
                          Width="200" 
                          SelectionMode="Multiple"
@@ -134,16 +134,30 @@
                 <Button x:Name="AddLinkButton" Click="AddLinkButton_Click" Margin="10,10,10,10" Content="Add Social Media Link"></Button>
             </StackPanel>
             <StackPanel Margin="5" Grid.Column="3">
-                <TextBlock x:Name="IntroductionTitle" Text="Introduction" Margin="0,10,0,4" FontSize="14" FontWeight="bold" VerticalAlignment="Center"/>
-
-                <Grid Margin="0,0,0,4">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="1" VerticalAlignment="Center" x:Name="Introduction"  FontWeight="bold" TextAlignment="center" Text="Introduction"  Margin="0,0,0,4"/>
+                    <TextBlock Grid.Column="0" x:Name="IntroductionTitle" Text="Introduction" Margin="0,10,0,4" FontSize="14" FontWeight="bold" VerticalAlignment="Center"/>
+                    <Button Grid.Column="2" VerticalAlignment="Center" Margin="0,3,0,4" HorizontalAlignment="Right" x:Name="IntroductionParagraphButton"  Click="IntroductionParagraphButton_Click" Style="{StaticResource ImageButton}"  >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Image Source="/Art/StylingIcon.png" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                    <Grid Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="1" x:Name="Introduction" Text="Introduction"  Margin="0,0,0,4" Style="{StaticResource RibbonSectionHeader}"/>
 
                     <Button HorizontalAlignment="Right" Grid.Column="2" x:Name="IntroductionStylingButton"  Click="IntroductionStylingButton_Click" Style="{StaticResource ImageButton}"  >
                         <Button.Template>
@@ -153,12 +167,13 @@
                         </Button.Template>
                     </Button>
                 </Grid>
-                <TextBox x:Name="NewIntroductionInputField" 
+                    <TextBox x:Name="NewIntroductionInputField" 
                          TextWrapping="Wrap" 
                          AcceptsReturn="True" 
                          VerticalScrollBarVisibility="Auto"
                          Height="50"
                          TextChanged="NewIntroductionInputField_TextChanged"/>
+                    
             </StackPanel>
         </Grid>
     </Border>
